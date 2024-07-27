@@ -15,21 +15,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarOrderController {
     private final CarOrderService carOrderService;
-    private final static String CAR_ORDER_BASE_PATH_V1 = "api/v1/carOrders";
+    private final static String CAR_ORDER_BASE_PATH = "api/v1/carOrders";
 
-    @PostMapping(CAR_ORDER_BASE_PATH_V1)
+    @PostMapping(CAR_ORDER_BASE_PATH)
     public ResponseEntity createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {
         carOrderService.createCarOrder(carOrderDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(CAR_ORDER_BASE_PATH_V1+"/{id}")
+    @GetMapping(CAR_ORDER_BASE_PATH +"/{id}")
     public CarOrderDTO getCarOrderById (@PathVariable Long id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }
 
-    @DeleteMapping (CAR_ORDER_BASE_PATH_V1+"/{id}")
+    @DeleteMapping (CAR_ORDER_BASE_PATH +"/{id}")
     public ResponseEntity deleteCarOrderById (@PathVariable Long id) {
         if (!carOrderService.deleteCarOrderById(id))
             throw new NotFoundException();
@@ -37,7 +37,7 @@ public class CarOrderController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(CAR_ORDER_BASE_PATH_V1+"/{id}")
+    @PutMapping(CAR_ORDER_BASE_PATH +"/{id}")
     public ResponseEntity updateCarOrderByID (@PathVariable Long id, @RequestBody CarOrderDTO carOrderDTO) {
         if (carOrderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
             throw new NotFoundException();
@@ -46,12 +46,12 @@ public class CarOrderController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = CAR_ORDER_BASE_PATH_V1, method = RequestMethod.GET)
+    @RequestMapping(value = CAR_ORDER_BASE_PATH, method = RequestMethod.GET)
     public List<CarOrderDTO> getAllCarOrdersByStatus (@RequestParam OrderStatus orderStatus) {
         return carOrderService.getAllCarOrdersByStatus(orderStatus);
     }
 
-    @GetMapping(CAR_ORDER_BASE_PATH_V1 +"/byAdminAndStatus" + "/{adminId}")
+    @GetMapping(CAR_ORDER_BASE_PATH +"/byAdminAndStatus" + "/{adminId}")
     public List<CarOrderDTO> getCarsByAdminAndStatus (@PathVariable("adminId") Long adminId, @RequestParam OrderStatus orderStatus) {
 
         return carOrderService.getCarOrdersByAdminAndStatus(adminId, orderStatus);
