@@ -29,9 +29,6 @@ class CarControllerIT {
     @Autowired
     private CarRepository carRepository;
 
-    @Autowired
-    private Flyway flyway;
-
     @Test
     void getAllCars() {
         List<CarDTO> carDTOS = controller.getAllCars();

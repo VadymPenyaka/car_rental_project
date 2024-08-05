@@ -12,24 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class OrderDetailController {
-    private final static String ORDER_DETAIL_BASE_PATH_V1 = "api/v1/orderDetails";
-    private final static String ORDER_DETAIL_BASE_PATH_V2 = "api/v2/orderDetails";
-
+    private final static String ORDER_DETAIL_BASE_PATH = "api/v1/orderDetails";
     private final OrderDetailService orderDetailService;
 
-    @GetMapping(ORDER_DETAIL_BASE_PATH_V1+"/{id}")
+    @GetMapping(ORDER_DETAIL_BASE_PATH +"/{id}")
     public OrderDetailDTO gerOrderDetailById (@PathVariable Long id) {
         return orderDetailService.getOrderDetailById(id).orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping(ORDER_DETAIL_BASE_PATH_V1)
+    @PostMapping(ORDER_DETAIL_BASE_PATH)
     public ResponseEntity createOrderDetail  (@RequestBody OrderDetailDTO orderDetail) {
         orderDetailService.createOrderDetail(orderDetail);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping(ORDER_DETAIL_BASE_PATH_V2+"/{id}")
+    @PutMapping(ORDER_DETAIL_BASE_PATH+"/{id}")
     public ResponseEntity updateOrderDetailById (@RequestBody OrderDetailDTO orderDetail, @PathVariable Long id) {
         if(orderDetailService.updateOrderDetail(orderDetail, id).isEmpty())
             throw new NotFoundException();
@@ -37,7 +35,7 @@ public class OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(ORDER_DETAIL_BASE_PATH_V2)
+    @GetMapping(ORDER_DETAIL_BASE_PATH)
     public OrderDetailDTO getOrderDetailByOrder (@RequestBody CarOrderDTO carOrderDTO) {
         return orderDetailService.getOrderDetailByOrder(carOrderDTO).orElseThrow(NotFoundException::new);
     }

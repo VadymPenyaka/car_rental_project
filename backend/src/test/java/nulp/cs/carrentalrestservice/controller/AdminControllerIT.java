@@ -40,23 +40,12 @@ class AdminControllerIT {
     private AdminMapper adminMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private WebApplicationContext wac;
-    @Autowired
-    private Flyway flyway;
 
     private MockMvc mockMvc;
 
-
-
     @BeforeEach
     void setUp() {
-        Flyway flyway = Flyway.configure()
-                .locations("classpath:db/migration_test")
-                .dataSource("jdbc:h2:mem:testdb", "root", "12345678")
-                .load();
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
@@ -120,6 +109,8 @@ class AdminControllerIT {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(adminRepository.findById(admin.getId())).isEqualTo(Optional.empty());
     }
+
+
 
 
 }
