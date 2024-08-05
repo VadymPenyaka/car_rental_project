@@ -47,7 +47,7 @@ public class CarOrderController {
     }
 
     @RequestMapping(value = CAR_ORDER_BASE_PATH, method = RequestMethod.GET)
-    public List<CarOrderDTO> getAllCarOrdersByStatus (@RequestParam OrderStatus orderStatus) {
+    public List<CarOrderDTO> getAllCarOrdersByStatus (@RequestParam("orderStatus") OrderStatus orderStatus) {
         return carOrderService.getAllCarOrdersByStatus(orderStatus);
     }
 

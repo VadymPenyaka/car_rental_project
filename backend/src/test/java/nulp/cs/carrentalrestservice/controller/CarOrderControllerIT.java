@@ -2,9 +2,12 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
+import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
+import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
+import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,11 @@ class CarOrderControllerIT {
 
     @Autowired
     private CarOrderRepository carOrderRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
+    @Autowired
+    private AdminMapper adminMapper;
 
 
     @Test
@@ -88,5 +96,30 @@ class CarOrderControllerIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    @Transactional
+    void getAllCarOrdersByStatus () {
+        CarOrderDTO expected = carOrderMapper
+                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
+
+        List<CarOrderDTO> actual = controller.getAllCarOrdersByStatus(expected.getStatus());
+
+        assertThat(actual.size()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
+    void getCarsByAdminAndStatus () {
+        CarOrderDTO expected = carOrderMapper
+                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
+        AdminDTO adminDTO = adminMapper
+                .adminToAdminDto(adminRepository.findAll().get(0));
+
+        List<CarOrderDTO> actual = controller.getCarsByAdminAndStatus(adminDTO.getId(), expected.getStatus());
+
+        assertThat(actual.size()).isEqualTo(1);
+        assertThat(actual.get(0)).isEqualTo(expected);
     }
 }

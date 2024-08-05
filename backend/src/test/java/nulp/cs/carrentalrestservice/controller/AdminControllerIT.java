@@ -44,8 +44,6 @@ class AdminControllerIT {
 
     private MockMvc mockMvc;
 
-
-
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -111,6 +109,8 @@ class AdminControllerIT {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(adminRepository.findById(admin.getId())).isEqualTo(Optional.empty());
     }
+
+
 
 
 }
