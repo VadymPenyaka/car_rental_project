@@ -37,7 +37,7 @@ public class OrderDetail {
     @Column(columnDefinition = "varchar(50)")
     private String comment;
 
-    @OneToOne(mappedBy = "orderDetail")
+    @OneToOne(mappedBy = "orderDetail", cascade = CascadeType.REMOVE)
     private CarOrder carOrder;
 
 

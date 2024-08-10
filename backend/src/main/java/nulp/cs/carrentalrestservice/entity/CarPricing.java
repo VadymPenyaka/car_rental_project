@@ -23,6 +23,6 @@ public class CarPricing {
     private Double upToMonth;
     @Column(nullable = false)
     private Double moreThenMonth;
-    @OneToOne(mappedBy = "carPricing")
+    @OneToOne(mappedBy = "carPricing", cascade = CascadeType.REMOVE)
     private Car car;
 }

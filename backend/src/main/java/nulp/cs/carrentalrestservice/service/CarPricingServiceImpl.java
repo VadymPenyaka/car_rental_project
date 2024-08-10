@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
+import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequiredArgsConstructor
 public class CarPricingServiceImpl implements CarPricingService {
     private final CarPricingRepository carPricingRepository;
-    private final CarService carService;
+    private final CarRepository carRepository;
 
     private final CarMapper carMapper;
 
@@ -31,7 +32,7 @@ public class CarPricingServiceImpl implements CarPricingService {
     public Optional<CarPricingDTO> updateCarPricingByID(Long id, CarPricingDTO carPricing) {
         AtomicReference<Optional<CarPricingDTO>> atomicReference = new AtomicReference<>();
 
-        carPricingRepository.findByCarId(id).ifPresentOrElse( foundPricing -> {
+        carPricingRepository.findById(id).ifPresentOrElse( foundPricing -> {
             foundPricing.setPledge(carPricing.getPledge());
             foundPricing.setUpToThreeDays(carPricing.getUpToThreeDays());
             foundPricing.setUpToTenDays(carPricing.getUpToTenDays());
@@ -45,7 +46,7 @@ public class CarPricingServiceImpl implements CarPricingService {
                 }
         );
 
-        return Optional.empty();
+        return atomicReference.get();
     }
 
     @Override
@@ -60,7 +61,7 @@ public class CarPricingServiceImpl implements CarPricingService {
 
     @Override
     public Optional<CarPricingDTO> getCarPricingByCarId(Long carId) {
-        Car car = carMapper.carDtoToCar(carService.getCarByID(carId).get());
+        Car car = carRepository.findById(carId).get();
         CarPricingDTO carPricingDTO = carPricingMapper.carPricingToCarPricingDto(car.getCarPricing());
         return Optional.ofNullable(carPricingDTO);
     }
