@@ -47,7 +47,7 @@ public class Car {
     @OneToOne
     @JoinColumn(name = "carPricingId", referencedColumnName = "id")
     private CarPricing carPricing;
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
     private Set<OrderDetail> orderDetails;
 
 
