@@ -1,14 +1,22 @@
 import './App.css'
+import { Header, Main, Footer, SearchSection } from './components/'
 
 function App() {
-  const name = 'Vadym'
+	return (
+		<>
+			<Header />
+			<Main>
+				<SearchSection>
+					<h1>Автопрокат, якому довіряють!</h1>
+					{/* <Rating stars={4.5} />
+					<SearchBar /> */}
+				</SearchSection>
+			</Main>
+			<Footer>
 
-  return (
-    <>
-      <h1>Hello frontend</h1>
-      <p>We are begging our jorney, {name}</p>
-    </>
-  )
+			</Footer>
+		</>
+	)
 }
 
 export default App
