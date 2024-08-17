@@ -29,6 +29,8 @@ public class Customer {
     private LocalDate birthDate;
     @Column(nullable = false)
     private LocalDate expiryDate;
+    @Column(nullable = false)
+    private String email;
 
     @OneToMany(mappedBy = "customer")
     private Set<OrderDetail> orderDetails = new HashSet<>();

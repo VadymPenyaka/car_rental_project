@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.Exception.NotFoundException;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.service.AdminService;
 import org.springframework.http.HttpStatus;

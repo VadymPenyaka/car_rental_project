@@ -39,6 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
                     foundCustomer.setLastName(customerDTO.getLastName());
                     foundCustomer.setPassportId(customerDTO.getPassportId());
                     foundCustomer.setSureName(customerDTO.getSureName());
+                    foundCustomer.setEmail(customerDTO.getEmail());
 
                     atomicReference.set(Optional.ofNullable(customerMapper
                             .customerToCustomerDto(customerRepository.save(foundCustomer))));

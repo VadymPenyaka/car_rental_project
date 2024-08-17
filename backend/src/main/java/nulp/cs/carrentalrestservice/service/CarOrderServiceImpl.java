@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.Exception.NotFoundException;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;

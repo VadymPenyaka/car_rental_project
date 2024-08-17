@@ -1,6 +1,5 @@
 package nulp.cs.carrentalrestservice.service;
 
-import nulp.cs.carrentalrestservice.Exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.entity.CarPricing;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
@@ -20,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

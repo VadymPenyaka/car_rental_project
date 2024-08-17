@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.Exception;
+package nulp.cs.carrentalrestservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
