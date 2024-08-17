@@ -124,7 +124,7 @@ public class Bootstrap implements CommandLineRunner {
                             .lastName("LastName")
                             .sureName("SureName")
                             .passportId("12345678")
-                            .email("email@gmail.com")
+                            .email("vadym.penyaka@gmail.com")
                             .build()
             );
         }

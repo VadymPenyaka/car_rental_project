@@ -3,9 +3,12 @@ package nulp.cs.carrentalrestservice.service;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Properties;
-
+@Service
+@RequiredArgsConstructor
 public class MailingServiceImpl implements MailingService {
     private final static String SENDER_EMAIL = "vadym.peniaka.kn.2021@lpnu.ua";
     private final static String SENDER_PASSWORD = "herb whpq lcom slmj";

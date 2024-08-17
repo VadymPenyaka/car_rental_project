@@ -46,7 +46,7 @@ public class CarOrderController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = CAR_ORDER_BASE_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = CAR_ORDER_BASE_PATH, method = RequestMethod.GET)// refactor
     public List<CarOrderDTO> getAllCarOrdersByStatus (@RequestParam("orderStatus") OrderStatus orderStatus) {
         return carOrderService.getAllCarOrdersByStatus(orderStatus);
     }
@@ -55,6 +55,12 @@ public class CarOrderController {
     public List<CarOrderDTO> getCarsByAdminAndStatus (@PathVariable("adminId") Long adminId, @RequestParam OrderStatus orderStatus) {
 
         return carOrderService.getCarOrdersByAdminAndStatus(adminId, orderStatus);
+    }
+
+    @PutMapping(CAR_ORDER_BASE_PATH + "/changeStatus"+"/{orderId}")
+    public ResponseEntity changeOrderStatus (@PathVariable("orderId") Long orderId, @RequestParam OrderStatus orderStatus) {
+        carOrderService.changeOrderStatus(orderId, orderStatus);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

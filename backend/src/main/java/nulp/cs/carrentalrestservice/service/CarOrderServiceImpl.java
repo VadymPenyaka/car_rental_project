@@ -1,6 +1,11 @@
 package nulp.cs.carrentalrestservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.CarOrder;
+import nulp.cs.carrentalrestservice.entity.Customer;
+import nulp.cs.carrentalrestservice.entity.OrderDetail;
+import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
@@ -8,6 +13,9 @@ import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.repository.CustomerRepository;
+import nulp.cs.carrentalrestservice.repository.OrderDetailRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +29,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderMapper carOrderMapper;
 
     private final AdminRepository adminRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
@@ -68,5 +77,18 @@ public class CarOrderServiceImpl implements CarOrderService {
 
         return carOrderRepository.getCarOrdersByAdminAndStatus(admin, orderStatus).stream()
                 .map(carOrderMapper::carOrderToCarOrderDto).toList();
+    }
+
+    @Override
+    @Transactional
+    public void changeOrderStatus(Long orderId, OrderStatus status) {
+        CarOrder carOrder = carOrderRepository.findById(orderId).get();
+        OrderDetail orderDetail = carOrder.getOrderDetail();
+        Customer customer = orderDetail.getCustomer();
+
+        carOrder.setStatus(status);
+        publisher.publishEvent(new EmailEvent(this, carOrder, customer));
+
+        carOrderRepository.save(carOrder);
     }
 }
