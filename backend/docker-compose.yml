@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  server:
+    image: car_rental
+    build: .
+    restart: always
+    ports:
+      - 9090:9090
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_PORT: 3306
+
+  mysqldb:
+    platform: linux/x86_64
+    container_name: mysqldb
+    image: mysqldb
+    restart: always
+    ports:
+      - 3306:3307
+    environment:
+      MYSQL_DATABASE: car_rental_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
