@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.service;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -6,7 +6,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import java.util.Properties;
 
-public class MailingService {
+public class MailingServiceImpl implements MailingService {
     private final static String SENDER_EMAIL = "vadym.peniaka.kn.2021@lpnu.ua";
     private final static String SENDER_PASSWORD = "herb whpq lcom slmj";
 
@@ -28,7 +28,7 @@ public class MailingService {
                 });
     }
 
-    public static void sendEmail (String receiver, String subject, String text) {
+    public void sendEmail (String receiver, String subject, String text) {
         try {
 
             Message message = new MimeMessage(session);

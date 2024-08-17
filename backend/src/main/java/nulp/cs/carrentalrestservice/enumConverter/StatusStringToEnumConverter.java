@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.enumConverter;
 
 import nulp.cs.carrentalrestservice.model.OrderStatus;
 import org.springframework.core.convert.converter.Converter;

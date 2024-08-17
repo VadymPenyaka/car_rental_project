@@ -1,8 +1,8 @@
 package nulp.cs.carrentalrestservice.config;
 
-import nulp.cs.carrentalrestservice.util.FuelTypeStringToEnumConverter;
-import nulp.cs.carrentalrestservice.util.GearboxTypeStringToEnumConverter;
-import nulp.cs.carrentalrestservice.util.StatusStringToEnumConverter;
+import nulp.cs.carrentalrestservice.enumConverter.FuelTypeStringToEnumConverter;
+import nulp.cs.carrentalrestservice.enumConverter.GearboxTypeStringToEnumConverter;
+import nulp.cs.carrentalrestservice.enumConverter.StatusStringToEnumConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
