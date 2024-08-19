@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Properties;
 @Service
 @RequiredArgsConstructor
-public class MailingServiceImpl implements MailingService {
+public class MailingServiceImpl implements MailingService {//TODO refactor code, make Sender info as properties in config file
     private final static String SENDER_EMAIL = "vadym.peniaka.kn.2021@lpnu.ua";
     private final static String SENDER_PASSWORD = "herb whpq lcom slmj";
 
