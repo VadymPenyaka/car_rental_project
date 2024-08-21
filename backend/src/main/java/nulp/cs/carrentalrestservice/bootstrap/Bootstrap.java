@@ -121,7 +121,6 @@ public class Bootstrap implements CommandLineRunner {
                             .birthDate(LocalDate.now())
                             .expiryDate(LocalDate.now())
                             .firstName("FirstName")
-                            .lastName("LastName")
                             .sureName("SureName")
                             .passportId("12345678")
                             .email("vadym.penyaka@gmail.com")

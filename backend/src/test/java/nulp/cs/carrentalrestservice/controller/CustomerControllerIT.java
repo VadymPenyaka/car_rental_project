@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,7 +75,7 @@ class CustomerControllerIT {
         List<CustomerDTO> expected = customerRepository.findAll().stream()
                 .map(customerMapper::customerToCustomerDto).toList();
 
-        List<CustomerDTO> actual = controller.getCustomersByLastName(expected.get(0).getLastName());
+        List<CustomerDTO> actual = controller.getCustomersBySureName(expected.get(0).getSureName());
 
         assertThat(actual).isEqualTo(expected);
     }

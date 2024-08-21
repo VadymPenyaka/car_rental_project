@@ -36,7 +36,6 @@ public class OrderDetailRepositoryTest {
                 .birthDate(LocalDate.now())
                 .expiryDate(LocalDate.now())
                 .firstName("FirstName")
-                .lastName("LastName")
                 .sureName("SureName")
                 .email("email@gmail.com")
                 .passportId("12345678")

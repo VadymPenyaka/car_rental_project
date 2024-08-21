@@ -36,7 +36,6 @@ public class CustomerServiceImpl implements CustomerService {
                     foundCustomer.setBirthDate(customerDTO.getBirthDate());
                     foundCustomer.setExpiryDate(customerDTO.getExpiryDate());
                     foundCustomer.setFirstName(customerDTO.getFirstName());
-                    foundCustomer.setLastName(customerDTO.getLastName());
                     foundCustomer.setPassportId(customerDTO.getPassportId());
                     foundCustomer.setSureName(customerDTO.getSureName());
                     foundCustomer.setEmail(customerDTO.getEmail());
@@ -50,8 +49,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getCustomersByLastName(String lastName) {
-        return customerRepository.findAllByLastName(lastName).stream()
+    public List<CustomerDTO> getCustomersBySureName(String sureName) {
+        return customerRepository.findAllBySureName(sureName).stream()
                 .map(customerMapper::customerToCustomerDto).toList();
     }
 }

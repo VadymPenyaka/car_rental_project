@@ -38,8 +38,8 @@ public class CustomerController {
     }
 
     @GetMapping(CUSTOMER_BASE_PATH+"/findByName")
-    public List<CustomerDTO> getCustomersByLastName (@RequestParam String lastName) {
-        return customerService.getCustomersByLastName(lastName);
+    public List<CustomerDTO> getCustomersBySureName(@RequestParam String lastName) {
+        return customerService.getCustomersBySureName(lastName);
     }
 
 }

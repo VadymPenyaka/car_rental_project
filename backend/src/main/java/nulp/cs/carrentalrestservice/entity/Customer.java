@@ -19,8 +19,8 @@ public class Customer {
     private long id;
     @Column(nullable = false, length = 50)
     private String firstName;
-    @Column(nullable = false, length = 50)
-    private String lastName;
+//    @Column(nullable = false, length = 50)
+//    private String lastName;
     @Column(nullable = false, length = 50)
     private String sureName;
     @Column(nullable = false, length = 9)

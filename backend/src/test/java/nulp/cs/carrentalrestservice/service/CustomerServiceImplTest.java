@@ -41,7 +41,6 @@ class CustomerServiceImplTest {
                 .birthDate(LocalDate.now())
                 .expiryDate(LocalDate.now())
                 .firstName("FirstName")
-                .lastName("LastName")
                 .sureName("SureName")
                 .passportId("12345678")
                 .build();
@@ -50,7 +49,6 @@ class CustomerServiceImplTest {
                 .birthDate(LocalDate.now())
                 .expiryDate(LocalDate.now())
                 .firstName("FirstName")
-                .lastName("LastName")
                 .sureName("SureName")
                 .passportId("12345678")
                 .build();

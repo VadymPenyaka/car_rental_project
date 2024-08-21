@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class CustomerDTO {
     private long id;
     private String firstName;
-    private String lastName;
+//    private String lastName;
     private String sureName;
     private String passportId;
     private LocalDate birthDate;
