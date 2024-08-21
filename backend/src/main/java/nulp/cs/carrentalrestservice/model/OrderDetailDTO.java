@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class OrderDetailDTO {
     private  long id;
     private CarDTO car;
-    private CustomerDTO customer;
     private int numberOfDays;
     private LocalDate pickUpDate;
     private LocalDate dropOffDate;

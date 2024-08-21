@@ -19,8 +19,6 @@ public class Customer {
     private long id;
     @Column(nullable = false, length = 50)
     private String firstName;
-//    @Column(nullable = false, length = 50)
-//    private String lastName;
     @Column(nullable = false, length = 50)
     private String sureName;
     @Column(nullable = false, length = 9)
@@ -33,5 +31,5 @@ public class Customer {
     private String email;
 
     @OneToMany(mappedBy = "customer")
-    private Set<OrderDetail> orderDetails = new HashSet<>();
+    private Set<CarOrder> carOrders = new HashSet<>();
 }

@@ -1,28 +1,14 @@
 # CREATE SCHEMA IF NOT EXISTS `car_rental_service`;
 USE `car_rental_service`;
 
+DROP TABLE IF EXISTS `car_orders`;
+DROP TABLE IF EXISTS `orders_details`;
 DROP TABLE IF EXISTS `customers`;
-CREATE TABLE `customers` (
-                             `birth_date` date NOT NULL,
-                             `expiry_date` date NOT NULL,
-                             `id` bigint NOT NULL,
-                             `passport_id` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
-                             `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                             `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                             `sure_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS `admins`;
-CREATE TABLE `admins` (
-                          `id` bigint NOT NULL,
-                          `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
+DROP TABLE IF EXISTS `cars`;
 DROP TABLE IF EXISTS `car_pricing`;
+
+
 CREATE TABLE `car_pricing` (
                                `more_then_month` double NOT NULL,
                                `pledge` double NOT NULL,
@@ -33,7 +19,6 @@ CREATE TABLE `car_pricing` (
                                PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `cars`;
 CREATE TABLE `cars` (
                         `fuel_consumption` int NOT NULL,
                         `fuel_type` tinyint NOT NULL,
@@ -52,7 +37,26 @@ CREATE TABLE `cars` (
                         CONSTRAINT `cars_chk_1` CHECK ((`fuel_type` between 0 and 3))
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `orders_details`;
+
+CREATE TABLE `admins` (
+                          `id` bigint NOT NULL,
+                          `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `customers` (
+                             `birth_date` date NOT NULL,
+                             `expiry_date` date NOT NULL,
+                             `id` bigint NOT NULL,
+                             `passport_id` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
+                             `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                             `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                             `sure_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                             PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
 CREATE TABLE `orders_details` (
                                   `drop_off_date` date NOT NULL,
                                   `number_of_days` int NOT NULL,
@@ -69,15 +73,21 @@ CREATE TABLE `orders_details` (
                                   FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `car_orders`;
 CREATE TABLE `car_orders` (
                               `admin_id` bigint NOT NULL,
                               `id` bigint NOT NULL,
                               `order_detail_id` bigint DEFAULT NULL,
-                              `orderStatus` enum('APPROVED','IN_USE','RETURNED','DAMAGED','PAID') COLLATE utf8mb4_unicode_ci NOT NULL,
+                              `status` enum('APPROVED','IN_USE','RETURNED','DAMAGED','PAID') COLLATE utf8mb4_unicode_ci NOT NULL,
                               PRIMARY KEY (`id`),
                               FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`),
                               FOREIGN KEY (`order_detail_id`) REFERENCES `orders_details` (`id`)
 ) ENGINE=InnoDB;
+
+
+
+
+
+
+
 
 

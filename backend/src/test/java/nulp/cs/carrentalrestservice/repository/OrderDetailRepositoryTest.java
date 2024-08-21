@@ -52,7 +52,6 @@ public class OrderDetailRepositoryTest {
                 .numberOfDays(1)
                 .totalPrice(220.0)
                 .car(car)
-                .customer(customer)
                 .build();
     }
 

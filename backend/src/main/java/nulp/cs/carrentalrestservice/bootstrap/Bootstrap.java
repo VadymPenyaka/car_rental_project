@@ -39,10 +39,11 @@ public class Bootstrap implements CommandLineRunner {
 
     private void deleteAllData () {
         carOrderRepository.deleteAll();
+        customerRepository.deleteAll();
         orderDetailRepository.deleteAll();
         adminRepository.deleteAll();
         carRepository.deleteAll();
-        customerRepository.deleteAll();
+
     }
 
     private void createCarPricing() {
@@ -66,6 +67,7 @@ public class Bootstrap implements CommandLineRunner {
                             .status(OrderStatus.IN_USE)
                             .orderDetail(orderDetailRepository.findAll().get(0))
                             .admin(adminRepository.findAll().get(0))
+                            .customer(customerRepository.findAll().get(0))
                             .build()
             );
 
@@ -82,7 +84,6 @@ public class Bootstrap implements CommandLineRunner {
                     .dropOffDate(LocalDate.now())
                     .dropOffLocation("Lviv")
                     .totalPrice(123.2)
-                    .customer(customerRepository.findAll().get(0))
                     .car(carRepository.findAll().get(0))
                     .build();
             orderDetailRepository.saveAndFlush(orderDetail);

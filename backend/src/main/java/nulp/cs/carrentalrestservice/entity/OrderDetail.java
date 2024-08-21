@@ -18,7 +18,7 @@ public class OrderDetail {
     @Column(nullable = false)
     private int numberOfDays;
     @Column(nullable = false)
-    //separate into another entity
+    //TODO separate into another entity
     private LocalDate pickUpDate;
     @Column(nullable = false)
     private LocalDate dropOffDate;
@@ -28,9 +28,6 @@ public class OrderDetail {
     private String dropOffLocation;
     @Column(nullable = false)
     private double totalPrice;
-    @ManyToOne
-    @JoinColumn(name = "customerId", nullable = false)
-    private Customer customer;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carId", nullable = false)
     private Car car;

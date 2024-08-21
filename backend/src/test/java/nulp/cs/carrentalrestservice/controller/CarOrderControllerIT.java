@@ -43,7 +43,7 @@ class CarOrderControllerIT {
     void createCarOrder() {
         CarOrderDTO carOrderDTOToSave = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-
+        System.out.println(carOrderDTOToSave.toString());
         ResponseEntity responseEntity = controller.createCarOrder(carOrderDTOToSave);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -63,7 +63,7 @@ class CarOrderControllerIT {
     @Test
     @Rollback
     @Transactional
-    void deleteCarById () {
+    void deleteCarOrderById () {
         CarOrderDTO carOrderDTO = carOrderMapper.carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
 
         ResponseEntity responseEntity = controller.deleteCarOrderById(carOrderDTO.getId());

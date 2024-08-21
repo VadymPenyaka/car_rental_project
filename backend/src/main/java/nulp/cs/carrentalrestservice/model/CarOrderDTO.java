@@ -9,5 +9,6 @@ public class CarOrderDTO {
     private long id;
     private AdminDTO admin;
     private OrderStatus status;
+    private CustomerDTO customer;
     private OrderDetailDTO orderDetail;
 }

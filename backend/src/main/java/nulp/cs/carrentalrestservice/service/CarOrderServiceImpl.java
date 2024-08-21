@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.entity.Customer;
-import nulp.cs.carrentalrestservice.entity.OrderDetail;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Admin;
@@ -13,8 +12,6 @@ import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
-import nulp.cs.carrentalrestservice.repository.CustomerRepository;
-import nulp.cs.carrentalrestservice.repository.OrderDetailRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -83,8 +80,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     @Transactional
     public void changeOrderStatus(Long orderId, OrderStatus status) {
         CarOrder carOrder = carOrderRepository.findById(orderId).get();
-        OrderDetail orderDetail = carOrder.getOrderDetail();
-        Customer customer = orderDetail.getCustomer();
+        Customer customer = carOrder.getCustomer();
 
         carOrder.setStatus(status);
         publisher.publishEvent(new EmailEvent(this, carOrder, customer));

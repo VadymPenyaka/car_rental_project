@@ -50,7 +50,6 @@ class OrderDetailServiceImplTest {
                 .dropOffDate(LocalDate.now())
                 .dropOffLocation("Lviv")
                 .totalPrice(123.2)
-                .customer(null)
                 .car(null)
                 .build();
 
@@ -61,7 +60,6 @@ class OrderDetailServiceImplTest {
                 .dropOffDate(LocalDate.now())
                 .dropOffLocation("Lviv")
                 .totalPrice(123.2)
-                .customer(null)
                 .car(null)
                 .build();
     }
@@ -97,7 +95,6 @@ class OrderDetailServiceImplTest {
                 .dropOffDate(LocalDate.now())
                 .dropOffLocation("Lviv")
                 .totalPrice(123.2)
-                .customer(null)
                 .car(null)
                 .build();
 

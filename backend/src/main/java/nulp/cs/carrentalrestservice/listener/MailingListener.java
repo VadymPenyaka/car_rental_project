@@ -3,7 +3,6 @@ package nulp.cs.carrentalrestservice.listener;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.service.MailingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

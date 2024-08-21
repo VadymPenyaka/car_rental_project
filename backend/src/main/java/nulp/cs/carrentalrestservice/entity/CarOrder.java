@@ -20,6 +20,9 @@ public class CarOrder {
     @ManyToOne
     @JoinColumn(name = "adminId", nullable = false)
     private Admin admin;
+    @ManyToOne
+    @JoinColumn(name = "customerId", nullable = false)
+    private Customer customer;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
     private OrderStatus status;
