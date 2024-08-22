@@ -4,18 +4,21 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 @Service
 @RequiredArgsConstructor
-public class MailingServiceImpl implements MailingService {//TODO refactor code, make Sender info as properties in config file
-    private final static String SENDER_EMAIL = "vadym.peniaka.kn.2021@lpnu.ua";
-    private final static String SENDER_PASSWORD = "herb whpq lcom slmj";
-
-    private final static Session session;
-
-    static {
+public class MailingServiceImpl implements MailingService {
+    @Value("${mail.sender.email}")
+    private String senderEmail;
+    @Value("${mail.sender.password}")
+    private String senderPassword;
+    private final Session session;
+    @Autowired
+    public MailingServiceImpl() {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "465");
@@ -26,7 +29,7 @@ public class MailingServiceImpl implements MailingService {//TODO refactor code,
         session = Session.getInstance(properties,
                 new jakarta.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(SENDER_EMAIL, SENDER_PASSWORD);
+                        return new PasswordAuthentication(senderEmail, senderPassword);
                     }
                 });
     }
@@ -35,7 +38,7 @@ public class MailingServiceImpl implements MailingService {//TODO refactor code,
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(SENDER_EMAIL));
+            message.setFrom(new InternetAddress(senderEmail));
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse(receiver)

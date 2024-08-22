@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
@@ -55,6 +56,8 @@ public class CarOrderServiceImpl implements CarOrderService {
 
         carOrderRepository.findById(id).ifPresentOrElse(foundOrder -> {
             foundOrder.setStatus(carOrderDTO.getStatus());
+            CustomerDTO customer = carOrderDTO.getCustomer();
+            publisher.publishEvent(new EmailEvent(this, carOrderDTO, customer));
             atomicReference.set(Optional.of(carOrderMapper.carOrderToCarOrderDto(carOrderRepository.save(foundOrder))));
         }, ()-> atomicReference.set(Optional.empty()));
 
@@ -76,15 +79,4 @@ public class CarOrderServiceImpl implements CarOrderService {
                 .map(carOrderMapper::carOrderToCarOrderDto).toList();
     }
 
-    @Override
-    @Transactional
-    public void changeOrderStatus(Long orderId, OrderStatus status) {
-        CarOrder carOrder = carOrderRepository.findById(orderId).get();
-        Customer customer = carOrder.getCustomer();
-
-        carOrder.setStatus(status);
-        publisher.publishEvent(new EmailEvent(this, carOrder, customer));
-
-        carOrderRepository.save(carOrder);
-    }
 }

@@ -19,5 +19,4 @@ public interface CarOrderService {
 
     List<CarOrderDTO> getCarOrdersByAdminAndStatus (Long adminId, OrderStatus orderStatus);
 
-    void changeOrderStatus (Long orderId, OrderStatus status);
 }

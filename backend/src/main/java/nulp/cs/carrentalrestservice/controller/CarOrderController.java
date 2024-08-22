@@ -57,10 +57,4 @@ public class CarOrderController {
         return carOrderService.getCarOrdersByAdminAndStatus(adminId, orderStatus);
     }
 
-    @PutMapping(CAR_ORDER_BASE_PATH + "/changeStatus"+"/{orderId}")
-    public ResponseEntity changeOrderStatus (@PathVariable("orderId") Long orderId, @RequestParam OrderStatus orderStatus) {
-        carOrderService.changeOrderStatus(orderId, orderStatus);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
 }
