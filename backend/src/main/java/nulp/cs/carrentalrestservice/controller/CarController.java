@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.service.CarService;
 import org.springframework.http.HttpStatus;
@@ -54,9 +55,9 @@ public class CarController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping(BASE_PATH_V2+"/byClass")
-//    public List<CarDTO> getAllCarsByClass (@RequestParam CarClass carClass) {
-//        return carService.getCarsByCarClass(carClass);
-//    }
+    @GetMapping(BASE_PATH+"/byClass")
+    public List<CarDTO> getAllCarsByClass (@RequestParam CarClass carClass) {
+        return carService.getCarsByCarClass(carClass);
+    }
 
 }

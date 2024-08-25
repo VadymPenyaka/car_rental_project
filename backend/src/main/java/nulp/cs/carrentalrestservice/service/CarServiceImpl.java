@@ -71,9 +71,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> getCarsByCarClass(String carClassString) {
-        carClassString = carClassString.toUpperCase();//TODO
-        CarClass carClass = CarClass.valueOf(carClassString);
+    public List<CarDTO> getCarsByCarClass(CarClass carClass) {
 
         return carRepository.findAllByCarClass(carClass).stream()
                 .map(carMapper::carToCarDto).toList();

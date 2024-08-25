@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
+import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface CarService {
 
     Optional<CarDTO> updateCarByID(Long id, CarDTO carDTO);
 
-    List<CarDTO> getCarsByCarClass (String carClass);
+    List<CarDTO> getCarsByCarClass (CarClass carClass);
 
 }

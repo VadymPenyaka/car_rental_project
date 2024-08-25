@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.listener;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.service.MailingService;
@@ -7,11 +8,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class MailingListener {
     private final MailingService mailingService;
 
-
+    public MailingListener(MailingService mailingService) {
+        this.mailingService = mailingService;
+    }
 
     @EventListener
     public void handleEmailEvent (EmailEvent event) {
