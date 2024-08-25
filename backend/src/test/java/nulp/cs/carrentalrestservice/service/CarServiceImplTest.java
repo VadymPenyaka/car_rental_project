@@ -94,8 +94,6 @@ class CarServiceImplTest {
     @Test
     void deleteCarById_ReturnTrue() {
         when(carRepository.existsById(any())).thenReturn(true);
-        when(carRepository.findById(any())).thenReturn(Optional.ofNullable(car));
-
         boolean isDeleted = carService.deleteCarById(carDTO.getId());
 
         verify(carRepository).deleteById(carDTO.getId());
@@ -112,6 +110,8 @@ class CarServiceImplTest {
     }
 
     @Test
+    @Rollback
+    @Transactional
     void updateCarByID() {
         Car expectedCar = Car.builder()
                 .carClass(CarClass.BUSINESS)
