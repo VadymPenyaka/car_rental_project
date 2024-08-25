@@ -21,11 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderDetailServiceImpl implements OrderDetailService {
     private final OrderDetailRepository orderDetailRepository;
     private final OrderDetailMapper orderDetailMapper;
-
-    private final CarOrderService carOrderService;
-
-    private final CarMapper carMapper;
-
     private final CarOrderMapper carOrderMapper;
 
     @Override
@@ -59,18 +54,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         );
 
         return atomicReference.get();
-    }
-
-    @Override
-    public void deleteAllOrderDetailByCar(CarDTO car) {
-        List<OrderDetail> orderDetails = orderDetailRepository.getAllByCar(carMapper.carDtoToCar(car));
-
-        for (OrderDetail orderDetail : orderDetails) {
-            CarOrder carOrder = orderDetail.getCarOrder();
-            carOrderService.deleteCarOrderById(carOrder.getId());
-            deleteOrderDetailById(orderDetail.getId());
-        }
-
     }
 
     @Override

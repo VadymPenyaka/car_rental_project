@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
-    private final OrderDetailService orderDetailService;
 
 
     @Override
@@ -42,7 +41,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public Boolean deleteCarById(Long id) {
         if (carRepository.existsById(id)) {
-            orderDetailService.deleteAllOrderDetailByCar(carMapper.carToCarDto(carRepository.findById(id).get()));
             carRepository.deleteById(id);
             return true;
         }

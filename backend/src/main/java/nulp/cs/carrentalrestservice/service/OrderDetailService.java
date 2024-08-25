@@ -13,8 +13,6 @@ public interface OrderDetailService {
 
     Optional<OrderDetailDTO> updateOrderDetail (OrderDetailDTO orderDetailDTO, Long id);
 
-    void deleteAllOrderDetailByCar(CarDTO car);
-
     boolean deleteOrderDetailById (Long id);
 
     Optional<OrderDetailDTO> getOrderDetailByOrder(CarOrderDTO carOrderDTO);
