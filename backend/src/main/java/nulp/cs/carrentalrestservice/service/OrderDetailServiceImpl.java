@@ -41,11 +41,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailRepository.findById(id).ifPresentOrElse( foundDetail -> {
                 OrderDetailDTO foundDetailsDTO = orderDetailMapper.orderDetailToOrderDetailDto(foundDetail);
                 foundDetailsDTO.setCar(orderDetailDTO.getCar());
-                foundDetailsDTO.setNumberOfDays(orderDetailDTO.getNumberOfDays());
-                foundDetailsDTO.setPickUpDate(orderDetailDTO.getPickUpDate());
-                foundDetailsDTO.setDropOffDate(orderDetailDTO.getDropOffDate());
-                foundDetailsDTO.setPickUpLocation(orderDetailDTO.getPickUpLocation());
-                foundDetailsDTO.setDropOffLocation(orderDetailDTO.getDropOffLocation());
                 foundDetailsDTO.setTotalPrice(orderDetailDTO.getTotalPrice());
 
                 atomicReference.set(Optional.of(orderDetailMapper.orderDetailToOrderDetailDto(orderDetailRepository

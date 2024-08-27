@@ -45,11 +45,6 @@ public class OrderDetailRepositoryTest {
 
 
         orderDetail = OrderDetail.builder()
-                .pickUpDate(LocalDate.now())
-                .pickUpLocation("Lviv")
-                .dropOffLocation("Lviv")
-                .dropOffDate(LocalDate.now())
-                .numberOfDays(1)
                 .totalPrice(220.0)
                 .car(car)
                 .build();

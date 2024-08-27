@@ -70,7 +70,6 @@ public class Bootstrap implements CommandLineRunner {
                             .customer(customerRepository.findAll().get(0))
                             .build()
             );
-
         }
     }
 
@@ -78,19 +77,11 @@ public class Bootstrap implements CommandLineRunner {
         if (orderDetailRepository.count()==0) {
             OrderDetail orderDetail = OrderDetail.builder()
                     .id(Long.valueOf(123))
-                    .numberOfDays(1)
-                    .pickUpDate(LocalDate.now())
-                    .pickUpLocation("Lviv")
-                    .dropOffDate(LocalDate.now())
-                    .dropOffLocation("Lviv")
                     .totalPrice(123.2)
                     .car(carRepository.findAll().get(0))
                     .build();
             orderDetailRepository.saveAndFlush(orderDetail);
         }
-
-
-
     }
 
     private void createCars () {
