@@ -90,8 +90,6 @@ public class Bootstrap implements CommandLineRunner {
                     Car.builder()
                             .carClass(CarClass.BUSINESS)
                             .brand("BMW")
-                            .isAvailable(true)
-                            .pricePerDay(100.0)
                             .model("X5")
                             .carPricing(carPricingRepository.findAll().get(0))
                             .fuelConsumption(10)

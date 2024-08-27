@@ -46,16 +46,12 @@ class CarServiceImplTest {
         car = Car.builder()
                 .carClass(CarClass.BUSINESS)
                 .brand("BMW")
-                .isAvailable(true)
-                .pricePerDay(100.0)
                 .model("X5")
                 .build();
 
         carDTO = CarDTO.builder()
                 .carClass(CarClass.BUSINESS)
                 .brand("BMW")
-                .isAvailable(true)
-                .pricePerDay(100.0)
                 .model("X5")
                 .build();
     }
@@ -116,8 +112,6 @@ class CarServiceImplTest {
         Car expectedCar = Car.builder()
                 .carClass(CarClass.BUSINESS)
                 .brand("ToUpdate")
-                .isAvailable(true)
-                .pricePerDay(100.0)
                 .model("X5")
                 .build();
 

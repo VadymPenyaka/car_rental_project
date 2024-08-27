@@ -61,8 +61,6 @@ class CarPricingServiceImplTest {
         car = Car.builder()
                 .carClass(CarClass.BUSINESS)
                 .brand("BMW")
-                .isAvailable(true)
-                .pricePerDay(100.0)
                 .model("X5")
                 .carPricing(carPricing)
                 .fuelConsumption(10)

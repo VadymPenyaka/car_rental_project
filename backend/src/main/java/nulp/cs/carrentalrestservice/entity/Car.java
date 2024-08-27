@@ -25,13 +25,9 @@ public class Car {
     private String brand;
     @Column(nullable = false, length = 50)
     private String model;
-    @Column(nullable = false)
-    private double pricePerDay;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CarClass carClass;
-    @Column(nullable = false, length = 5, columnDefinition = "varchar(5)")
-    private boolean isAvailable;
     @Column(nullable = false)
     private Integer fuelConsumption;
     @Column(nullable = false)

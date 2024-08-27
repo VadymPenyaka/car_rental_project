@@ -27,8 +27,6 @@ public class CarRepositoryTest {
                 .id(Long.valueOf(1))
                 .carClass(CarClass.BUSINESS)
                 .brand("BMW")
-                .isAvailable(true)
-                .pricePerDay(100.0)
                 .fuelConsumption(10)
                 .location("Lviv")
                 .gearboxType(GearboxType.AUTOMATIC)
