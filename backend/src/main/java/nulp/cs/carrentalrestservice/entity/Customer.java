@@ -25,8 +25,8 @@ public class Customer {
     private String passportId;
     @Column(nullable = false)
     private LocalDate birthDate;
-    @Column(nullable = false)
-    private LocalDate expiryDate;
+    @Column(nullable = false, name = "passport_expiry_date")
+    private LocalDate passportExpiryDate;
     @Column(nullable = false)
     private String email;
 

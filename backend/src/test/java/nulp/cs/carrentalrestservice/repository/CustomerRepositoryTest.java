@@ -21,7 +21,7 @@ public class CustomerRepositoryTest {
     void saveUserTest() {
         Customer customer = Customer.builder()
                 .birthDate(LocalDate.now())
-                .expiryDate(LocalDate.now())
+                .passportExpiryDate(LocalDate.now())
                 .firstName("FirstName")
                 .sureName("SureName")
                 .email("email@gmail.com")

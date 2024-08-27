@@ -17,6 +17,6 @@ public class CustomerDTO {
     private String sureName;
     private String passportId;
     private LocalDate birthDate;
-    private LocalDate expiryDate;
+    private LocalDate passportExpiryDate;
     private String email;
 }

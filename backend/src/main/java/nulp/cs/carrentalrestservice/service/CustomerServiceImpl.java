@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerRepository.findById(id).ifPresentOrElse( foundCustomer -> {
                     foundCustomer.setBirthDate(customerDTO.getBirthDate());
-                    foundCustomer.setExpiryDate(customerDTO.getExpiryDate());
+                    foundCustomer.setPassportExpiryDate(customerDTO.getPassportExpiryDate());
                     foundCustomer.setFirstName(customerDTO.getFirstName());
                     foundCustomer.setPassportId(customerDTO.getPassportId());
                     foundCustomer.setSureName(customerDTO.getSureName());

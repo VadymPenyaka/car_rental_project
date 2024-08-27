@@ -120,7 +120,7 @@ public class Bootstrap implements CommandLineRunner {
             customerRepository.saveAndFlush(
                     Customer.builder()
                             .birthDate(LocalDate.now())
-                            .expiryDate(LocalDate.now())
+                            .passportExpiryDate(LocalDate.now())
                             .firstName("FirstName")
                             .sureName("SureName")
                             .passportId("12345678")

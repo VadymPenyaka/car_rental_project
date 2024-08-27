@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.entity.Customer;
-import nulp.cs.carrentalrestservice.mapper.CustomerMapper;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapperImpl;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
@@ -16,7 +15,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -39,7 +37,7 @@ class CustomerServiceImplTest {
     void setUp() {
         customer = Customer.builder()
                 .birthDate(LocalDate.now())
-                .expiryDate(LocalDate.now())
+                .passportExpiryDate(LocalDate.now())
                 .firstName("FirstName")
                 .sureName("SureName")
                 .passportId("12345678")
@@ -47,7 +45,7 @@ class CustomerServiceImplTest {
 
         customerDTO = CustomerDTO.builder()
                 .birthDate(LocalDate.now())
-                .expiryDate(LocalDate.now())
+                .passportExpiryDate(LocalDate.now())
                 .firstName("FirstName")
                 .sureName("SureName")
                 .passportId("12345678")
