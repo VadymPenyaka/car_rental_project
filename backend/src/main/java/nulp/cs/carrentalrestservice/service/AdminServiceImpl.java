@@ -36,6 +36,8 @@ public class AdminServiceImpl implements AdminService {
             foundAdmin.setPassword(admin.getPassword());
             foundAdmin.setFirstName(admin.getFirstName());
             foundAdmin.setLastName(admin.getLastName());
+            foundAdmin.setEmail(admin.getEmail());
+            foundAdmin.setPhoneNumber(admin.getPhoneNumber());
 
             atomicReference.set(Optional.of(adminMapper
                     .adminToAdminDto(adminRepository.save(foundAdmin))));

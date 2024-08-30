@@ -22,7 +22,11 @@ public class Admin implements Comparable<Admin>{
     @Column(nullable = false, length = 50)
     private String lastName;
     @Column(nullable = false, length = 50)
+    private String email;
+    @Column(nullable = false, length = 50)
     private String password;
+    @Column(nullable = false, length = 12, name = "phone_number")
+    private String phoneNumber;
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders=new HashSet<>();
 

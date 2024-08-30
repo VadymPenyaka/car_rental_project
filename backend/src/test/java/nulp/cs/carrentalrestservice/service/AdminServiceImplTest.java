@@ -42,12 +42,16 @@ class AdminServiceImplTest {
                 .password("password")
                 .firstName("FirstName")
                 .lastName("LastName")
+                .email("email@gmail.com")
+                .phoneNumber("380958915290")
                 .build();
 
         adminDTO = AdminDTO.builder()
                 .password("password")
                 .firstName("FirstName")
                 .lastName("LastName")
+                .email("email@gmail.com")
+                .phoneNumber("380958915290")
                 .build();
     }
 

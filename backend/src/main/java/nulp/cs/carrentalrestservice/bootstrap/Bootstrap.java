@@ -126,6 +126,8 @@ public class Bootstrap implements CommandLineRunner {
                             .password("password")
                             .firstName("FirstName")
                             .lastName("LastName")
+                            .email("email@gmail.com")
+                            .phoneNumber("380958915290")
                             .build()
             );
         }
