@@ -29,6 +29,9 @@ public class Customer {
     private LocalDate passportExpiryDate;
     @Column(nullable = false)
     private String email;
+    @Column(nullable = false, name = "phone_number", length = 12)
+    private String phoneNumber;
+
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();

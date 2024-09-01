@@ -26,6 +26,7 @@ public class CustomerRepositoryTest {
                 .sureName("SureName")
                 .email("email@gmail.com")
                 .passportId("12345678")
+                .phoneNumber("380958888222")
                 .build();
 
         Customer savedCustomer = customerRepository.saveAndFlush(customer);

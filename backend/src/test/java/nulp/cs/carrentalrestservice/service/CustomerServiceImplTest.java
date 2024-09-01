@@ -40,6 +40,7 @@ class CustomerServiceImplTest {
                 .passportExpiryDate(LocalDate.now())
                 .firstName("FirstName")
                 .sureName("SureName")
+                .phoneNumber("380958888222")
                 .passportId("12345678")
                 .build();
 
@@ -48,6 +49,7 @@ class CustomerServiceImplTest {
                 .passportExpiryDate(LocalDate.now())
                 .firstName("FirstName")
                 .sureName("SureName")
+                .phoneNumber("380958888222")
                 .passportId("12345678")
                 .build();
     }

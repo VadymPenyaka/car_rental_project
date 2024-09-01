@@ -37,11 +37,15 @@ class CarOrderServiceImplTest {
                 .password("password")
                 .firstName("FirstName")
                 .lastName("LastName")
+                .email("email@gmail.com")
+                .phoneNumber("123456789000")
                 .build();
         AdminDTO adminDTO = AdminDTO.builder()
                 .password("password")
                 .firstName("FirstName")
                 .lastName("LastName")
+                .email("email@gmail.com")
+                .phoneNumber("123456789000")
                 .build();
 
         carOrder = CarOrder.builder()

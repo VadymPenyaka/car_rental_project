@@ -38,6 +38,7 @@ public class OrderDetailRepositoryTest {
                 .firstName("FirstName")
                 .sureName("SureName")
                 .email("email@gmail.com")
+                .phoneNumber("123456789000")
                 .passportId("12345678")
                 .build();
         customerRepository.saveAndFlush(customer);
