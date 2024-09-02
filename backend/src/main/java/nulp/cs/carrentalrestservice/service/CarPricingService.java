@@ -11,5 +11,7 @@ public interface CarPricingService {
 
     Boolean deleteCarPricingById (Long id);
 
+    CarPricingDTO createCarPricing (CarPricingDTO carPricingDTO);
+
     Optional<CarPricingDTO> getCarPricingByCarId (Long carId);
 }

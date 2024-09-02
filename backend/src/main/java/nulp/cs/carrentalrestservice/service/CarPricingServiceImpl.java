@@ -60,6 +60,12 @@ public class CarPricingServiceImpl implements CarPricingService {
     }
 
     @Override
+    public CarPricingDTO createCarPricing(CarPricingDTO carPricingDTO) {
+        return carPricingMapper.carPricingToCarPricingDto(carPricingRepository
+                .save(carPricingMapper.carPricingDtoToCarPricing(carPricingDTO)));
+    }
+
+    @Override
     public Optional<CarPricingDTO> getCarPricingByCarId(Long carId) {
         Car car = carRepository.findById(carId).get();
         CarPricingDTO carPricingDTO = carPricingMapper.carPricingToCarPricingDto(car.getCarPricing());
