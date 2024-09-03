@@ -21,7 +21,7 @@ public class CarPricingController {
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping(CAR_PRICING_BASE_PATH)
+    @PostMapping(CAR_PRICING_BASE_PATH)
     public ResponseEntity createCarPricing (@RequestBody CarPricingDTO carPricing) {
         carPricingService.createCarPricing(carPricing);
         return new ResponseEntity<>(HttpStatus.CREATED);
