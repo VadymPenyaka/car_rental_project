@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
@@ -23,14 +24,14 @@ public class CustomerController {
     }
 
     @PostMapping(CUSTOMER_BASE_PATH)
-    public ResponseEntity createCustomer (@RequestBody CustomerDTO customer) {
+    public ResponseEntity createCustomer (@Valid @RequestBody CustomerDTO customer) {
         customerService.createCustomer(customer);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(CUSTOMER_BASE_PATH +"/{id}")
-    public ResponseEntity updateCustomerById (@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity updateCustomerById (@PathVariable Long id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
 
