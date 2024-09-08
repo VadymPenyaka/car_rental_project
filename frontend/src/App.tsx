@@ -1,13 +1,9 @@
-import './App.css'
+import { Header } from "./components/header/Header"
 
+// import SimpleComponent from "./components/SimpleComponent"
 function App() {
-  const name = 'Vadym'
-
   return (
-    <>
-      <h1>Hello frontend</h1>
-      <p>We are begging our jorney, {name}</p>
-    </>
+    <Header />
   )
 }
 
