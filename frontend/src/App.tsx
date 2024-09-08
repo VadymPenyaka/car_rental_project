@@ -1,22 +1,10 @@
-import './App.css'
-import { Header, Main, Footer, SearchSection } from './components/'
+import { Header } from "./components/header/Header"
 
+// import SimpleComponent from "./components/SimpleComponent"
 function App() {
-	return (
-		<>
-			<Header />
-			<Main>
-				<SearchSection>
-					<h1>Автопрокат, якому довіряють!</h1>
-					{/* <Rating stars={4.5} />
-					<SearchBar /> */}
-				</SearchSection>
-			</Main>
-			<Footer>
-
-			</Footer>
-		</>
-	)
+  return (
+    <Header />
+  )
 }
 
 export default App
