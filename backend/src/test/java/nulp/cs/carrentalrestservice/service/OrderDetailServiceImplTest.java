@@ -81,17 +81,21 @@ class OrderDetailServiceImplTest {
                 .totalPrice(123.2)
                 .car(null)
                 .build();
+
+
 // TODO
 
-//        when(orderDetailRepository.findById(any())).thenReturn(Optional.ofNullable(expectedOrderDetail));
-//        orderDetailDTO.setPickUpLocation(expectedOrderDetail.getPickUpLocation());
-//        when(orderDetailRepository.save(any())).thenReturn(expectedOrderDetail);
-//        when(orderDetailMapper.orderDetailToOrderDetailDto(any())).thenReturn(orderDetailDTO);
+        when(orderDetailRepository.findById(any())).thenReturn(Optional.ofNullable(expectedOrderDetail));
+
+
+        orderDetailDTO.setTotalPrice(expectedOrderDetail.getTotalPrice());
+        when(orderDetailRepository.save(any())).thenReturn(expectedOrderDetail);
+        when(orderDetailMapper.orderDetailToOrderDetailDto(any())).thenReturn(orderDetailDTO);
 //
-//        OrderDetailDTO updatedOrderDetail = orderDetailService.updateOrderDetail(orderDetailDTO, orderDetail.getId()).get();
+        OrderDetailDTO updatedOrderDetail = orderDetailService.updateOrderDetail(orderDetailDTO, orderDetail.getId()).get();
 //
-//        assertThat(updatedOrderDetail).isNotNull();
-//        assertThat(updatedOrderDetail.getPickUpLocation()).isEqualTo(expectedOrderDetail.getPickUpLocation());
-//        assertThat(updatedOrderDetail.getId()).isEqualTo(orderDetailDTO.getId());
+        assertThat(updatedOrderDetail).isNotNull();
+        assertThat(updatedOrderDetail.getTotalPrice()).isEqualTo(expectedOrderDetail.getTotalPrice());
+        assertThat(updatedOrderDetail.getId()).isEqualTo(orderDetailDTO.getId());
     }
 }

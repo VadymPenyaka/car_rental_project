@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import nulp.cs.carrentalrestservice.validation.ValidEmail;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ public class Customer {
     @Column(nullable = false, name = "passport_expiry_date")
 //    @NotBlank(message = "Passport expiry date is mandatory!")
     private LocalDate passportExpiryDate;
+    @ValidEmail
     @Column(nullable = false)
     @NotBlank(message = "Email is mandatory!")
     @Size(min = 3, max = 50, message = "Email is incorrect!")

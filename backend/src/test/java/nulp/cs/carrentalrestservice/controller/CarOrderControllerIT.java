@@ -109,17 +109,4 @@ class CarOrderControllerIT {
         assertThat(actual.size()).isEqualTo(1);
     }
 
-    @Test
-    @Transactional
-    void getCarsByAdminAndStatus () {
-        CarOrderDTO expected = carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-        AdminDTO adminDTO = adminMapper
-                .adminToAdminDto(adminRepository.findAll().get(0));
-
-        List<CarOrderDTO> actual = controller.getCarsByAdminAndStatus(adminDTO.getId(), expected.getStatus());
-
-        assertThat(actual.size()).isEqualTo(1);
-        assertThat(actual.get(0)).isEqualTo(expected);
-    }
 }

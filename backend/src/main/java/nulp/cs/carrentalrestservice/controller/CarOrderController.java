@@ -51,10 +51,4 @@ public class CarOrderController {
         return carOrderService.getAllCarOrdersByStatus(orderStatus);
     }
 
-    @GetMapping(CAR_ORDER_BASE_PATH +"/byAdminAndStatus" + "/{adminId}")
-    public List<CarOrderDTO> getCarsByAdminAndStatus (@PathVariable("adminId") Long adminId, @RequestParam OrderStatus orderStatus) {
-
-        return carOrderService.getCarOrdersByAdminAndStatus(adminId, orderStatus);
-    }
-
 }
