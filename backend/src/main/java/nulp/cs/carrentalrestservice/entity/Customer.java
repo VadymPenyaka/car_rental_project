@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import nulp.cs.carrentalrestservice.validation.ValidEmail;
+import nulp.cs.carrentalrestservice.validation.ValidPhoneNumber;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -41,8 +42,9 @@ public class Customer {
     @ValidEmail
     @Column(nullable = false)
     @NotBlank(message = "Email is mandatory!")
-    @Size(min = 3, max = 50, message = "Email is incorrect!")
+    @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
     private String email;
+    @ValidPhoneNumber
     @Column(nullable = false, name = "phone_number", length = 12)
     @NotBlank(message = "Phone number is mandatory!")
     @Size(min = 9, max = 11, message = "Must be 10 characters!")
