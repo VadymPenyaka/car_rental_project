@@ -110,11 +110,13 @@ public class Bootstrap implements CommandLineRunner {
                     Customer.builder()
                             .birthDate(LocalDate.now())
                             .passportExpiryDate(LocalDate.now())
-                            .firstName("FirstName")
-                            .sureName("SureName")
-                            .passportId("12345678")
+                            .firstName("Ivan")
+                            .sureName("Kovalenko")
+                            .passportId("123456789")
                             .email("vadym.penyaka@gmail.com")
-                            .phoneNumber("2195888822")
+                            .birthDate(LocalDate.of(2004, 10, 10))
+                            .passportExpiryDate(LocalDate.of(2025, 10, 10))
+                            .phoneNumber("0958915290")
                             .build()
             );
         }

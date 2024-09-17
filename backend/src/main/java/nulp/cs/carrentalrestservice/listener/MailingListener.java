@@ -22,7 +22,7 @@ public class MailingListener {
 
         String text = "Dear " + event.getCustomer().getFirstName()
                 + ". The status of your order has been changed to "
-                + event.getCarOrder().getStatus().toString().toLowerCase();
+                + event.getCarOrder().getStatus().toString().toLowerCase()+".";
 
         mailingService.sendEmail(event.getCustomer().getEmail(), subject, text);
     }

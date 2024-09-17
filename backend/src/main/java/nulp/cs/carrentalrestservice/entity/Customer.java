@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import nulp.cs.carrentalrestservice.validation.ValidEmail;
@@ -30,14 +31,14 @@ public class Customer {
     @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
     private String sureName;
     @Column(nullable = false, length = 9)
-    @NotBlank(message = "Password is mandatory!")
-    @Size(min = 8, max = 18, message = "Must be between 3 and 20!")
+    @NotBlank(message = "Password ID is mandatory!")
+    @Size(min = 9, max = 9, message = "Must be between 3 and 20!")
     private String passportId;
     @Column(nullable = false)
-//    @NotBlank(message = "Birth date is mandatory!")
+    @NotNull(message = "Birth date is mandatory!")
     private LocalDate birthDate;
     @Column(nullable = false, name = "passport_expiry_date")
-//    @NotBlank(message = "Passport expiry date is mandatory!")
+    @NotNull(message = "Passport expiry date is mandatory!")
     private LocalDate passportExpiryDate;
     @ValidEmail
     @Column(nullable = false)
