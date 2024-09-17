@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import nulp.cs.carrentalrestservice.validation.ValidBirthDate;
 import nulp.cs.carrentalrestservice.validation.ValidEmail;
+import nulp.cs.carrentalrestservice.validation.ValidExpiryDate;
 import nulp.cs.carrentalrestservice.validation.ValidPhoneNumber;
 
 import java.time.LocalDate;
@@ -35,8 +37,10 @@ public class Customer {
     @Size(min = 9, max = 9, message = "Must be between 3 and 20!")
     private String passportId;
     @Column(nullable = false)
+    @ValidBirthDate
     @NotNull(message = "Birth date is mandatory!")
     private LocalDate birthDate;
+    @ValidExpiryDate
     @Column(nullable = false, name = "passport_expiry_date")
     @NotNull(message = "Passport expiry date is mandatory!")
     private LocalDate passportExpiryDate;

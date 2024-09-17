@@ -114,8 +114,8 @@ public class Bootstrap implements CommandLineRunner {
                             .sureName("Kovalenko")
                             .passportId("123456789")
                             .email("vadym.penyaka@gmail.com")
-                            .birthDate(LocalDate.of(2004, 10, 10))
-                            .passportExpiryDate(LocalDate.of(2025, 10, 10))
+                            .birthDate(LocalDate.of(2000, 10, 10))
+                            .passportExpiryDate(LocalDate.of(2031, 10, 10))
                             .phoneNumber("0958915290")
                             .build()
             );
@@ -126,9 +126,9 @@ public class Bootstrap implements CommandLineRunner {
         if (adminRepository.count()==0) {
             adminRepository.saveAndFlush(
                     Admin.builder()
-                            .password("password")
-                            .firstName("FirstName")
-                            .lastName("LastName")
+                            .password("P@ssw0rd")
+                            .firstName("Ivan")
+                            .lastName("Pip")
                             .email("email@gmail.com")
                             .phoneNumber("0958888222")
                             .build()

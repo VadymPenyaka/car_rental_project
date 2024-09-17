@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
     public static final String CUSTOMER_BASE_PATH = "/api/v1/customers";
-//    public static final String CUSTOMER_BASE_PATH_V2 = "/api/v2/customers";
     private final CustomerService customerService;
 
     @GetMapping(CUSTOMER_BASE_PATH +"/{id}")
