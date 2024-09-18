@@ -12,7 +12,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordValidator.class)
 public @interface ValidPassword {
-    String message() default "Your password is invalid!\nIt must contain 8 to 18 characters\nOne digit, one special symbol, one small and one capital letter\n";
+    String message() default "Your password is invalid!" +
+            "It must contain 8 to 18 characters" +
+            "One digit, one special symbol, one small and one capital letter";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

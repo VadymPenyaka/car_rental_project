@@ -20,13 +20,13 @@ public class CustomerRepositoryTest {
     @Transactional
     void saveUserTest() {
         Customer customer = Customer.builder()
-                .birthDate(LocalDate.now())
-                .passportExpiryDate(LocalDate.now())
+                .birthDate(LocalDate.of(2000, 10, 10))
+                .passportExpiryDate(LocalDate.of(2030, 10, 10))
                 .firstName("FirstName")
                 .sureName("SureName")
                 .email("email@gmail.com")
-                .passportId("12345678")
-                .phoneNumber("380958888222")
+                .phoneNumber("0958925222")
+                .passportId("111111111")
                 .build();
 
         Customer savedCustomer = customerRepository.saveAndFlush(customer);
