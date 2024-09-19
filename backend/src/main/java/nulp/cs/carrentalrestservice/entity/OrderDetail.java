@@ -37,12 +37,4 @@ public class OrderDetail {
     @OneToOne(mappedBy = "orderDetail", cascade = CascadeType.REMOVE)
     private CarOrder carOrder;
 
-
-
-    public void setCar(Car car) {
-        this.car = car;
-        car.getOrderDetails().add(this);
-    }
-
-
 }
