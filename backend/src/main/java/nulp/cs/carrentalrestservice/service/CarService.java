@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.service;
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +19,7 @@ public interface CarService {
     Optional<CarDTO> updateCarByID(Long id, CarDTO carDTO);
 
     List<CarDTO> getCarsByCarClass (CarClass carClass);
+
+    List<CarDTO> findAllActiveCarsInPeriod(LocalDate startDate, LocalDate endDate);
 
 }

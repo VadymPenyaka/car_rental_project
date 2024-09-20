@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,20 +35,18 @@ class CarOrderControllerIT {
     private CarOrderRepository carOrderRepository;
 
     @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private AdminMapper adminMapper;
+    private CarRepository carRepository;
+
 
 
     @Test
     void createCarOrder() {
-        CarOrderDTO carOrderDTOToSave = carOrderMapper
+        CarOrderDTO carOrderDtoToSave = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-        System.out.println(carOrderDTOToSave.toString());
-        ResponseEntity responseEntity = controller.createCarOrder(carOrderDTOToSave);
+        ResponseEntity responseEntity = controller.createCarOrder(carOrderDtoToSave);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(carOrderRepository.findById(carOrderDTOToSave.getId())).isNotNull();
+        assertThat(carOrderRepository.findById(carOrderDtoToSave.getId())).isNotNull();
     }
 
     @Test

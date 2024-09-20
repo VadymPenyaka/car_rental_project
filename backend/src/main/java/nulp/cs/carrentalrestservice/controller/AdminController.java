@@ -13,27 +13,27 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class AdminController {
-    public static final String ADMIN_BASE_PATH = "/api/v1/admins";
+    public static final String BASE_PATH = "/api/v1/admins";
     private final AdminService adminService;
 
-    @GetMapping(ADMIN_BASE_PATH)
+    @GetMapping(BASE_PATH)
     public List<AdminDTO> getAllAdmins () {
        return adminService.getAllAdmins();
     }
 
-    @PutMapping(ADMIN_BASE_PATH)
+    @PutMapping(BASE_PATH)
     public ResponseEntity createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(ADMIN_BASE_PATH+"/{id}")
+    @GetMapping(BASE_PATH +"/{id}")
     public AdminDTO getAdminById (@PathVariable Long id) {
         return adminService.getAdminById(id).orElseThrow(NotFoundException::new);
     }
 
-    @DeleteMapping(ADMIN_BASE_PATH+"/{id}")
+    @DeleteMapping(BASE_PATH +"/{id}")
     public ResponseEntity deleteAdminById (@PathVariable Long id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
@@ -41,7 +41,7 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(ADMIN_BASE_PATH+"/{id}")
+    @PutMapping(BASE_PATH +"/{id}")
     public ResponseEntity updateAdminById (@PathVariable Long id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();

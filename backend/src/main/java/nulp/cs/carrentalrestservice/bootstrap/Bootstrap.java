@@ -20,7 +20,6 @@ public class Bootstrap implements CommandLineRunner {
     private final CustomerRepository customerRepository;
 
     private final AdminRepository adminRepository;
-    private final OrderDetailRepository orderDetailRepository;
     private final CarOrderRepository carOrderRepository;
 
     private final CarPricingRepository carPricingRepository;
@@ -33,17 +32,15 @@ public class Bootstrap implements CommandLineRunner {
         createCars();
         createAdmin();
         createCustomer();
-        createOrderDetail();
         createOrder();
     }
 
     private void deleteAllData () {
         carOrderRepository.deleteAll();
         customerRepository.deleteAll();
-        orderDetailRepository.deleteAll();
         adminRepository.deleteAll();
         carRepository.deleteAll();
-
+        carPricingRepository.deleteAll();
     }
 
     private void createCarPricing() {
@@ -65,24 +62,17 @@ public class Bootstrap implements CommandLineRunner {
             carOrderRepository.saveAndFlush(
                     CarOrder.builder()
                             .status(OrderStatus.IN_USE)
-                            .orderDetail(orderDetailRepository.findAll().get(0))
                             .admin(adminRepository.findAll().get(0))
                             .customer(customerRepository.findAll().get(0))
+                            .car(carRepository.findAll().get(0))
+                            .endDate(LocalDate.now().plusDays(1))
+                            .startDate(LocalDate.now())
+                            .serviceDuration(1)
                             .build()
             );
         }
     }
 
-    private void createOrderDetail() {
-        if (orderDetailRepository.count()==0) {
-            OrderDetail orderDetail = OrderDetail.builder()
-                    .id(Long.valueOf(123))
-                    .totalPrice(123.2)
-                    .car(carRepository.findAll().get(0))
-                    .build();
-            orderDetailRepository.saveAndFlush(orderDetail);
-        }
-    }
 
     private void createCars () {
         if (carRepository.count()==0) {

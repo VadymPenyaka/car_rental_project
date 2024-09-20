@@ -32,8 +32,6 @@ class CarServiceImplTest {
     @Mock
     private CarMapperImpl carMapper;
 
-    @Mock
-    OrderDetailServiceImpl orderDetailService;
 
     @InjectMocks
     private CarServiceImpl carService;
@@ -125,4 +123,6 @@ class CarServiceImplTest {
         assertThat(updatedCar.getId()).isEqualTo(carDTO.getId());
         assertThat(updatedCar.getBrand()).isEqualTo(expectedCar.getBrand());
     }
+
+
 }

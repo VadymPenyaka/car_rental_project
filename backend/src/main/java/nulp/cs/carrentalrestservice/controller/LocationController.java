@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class LocationController {
-    public static final String LOCATION_BASE_PATH = "api/v1/locations";
+    public static final String BASE_PATH = "api/v1/locations";
 
     private final LocationService locationService;
 
-    @PostMapping(LOCATION_BASE_PATH)
+    @PostMapping(BASE_PATH)
     public ResponseEntity createLocation (@RequestBody LocationDTO locationDTO) {
         locationService.createLocation(locationDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(LOCATION_BASE_PATH+"/{id}")
+    @GetMapping(BASE_PATH +"/{id}")
     public LocationDTO getLocationById (@PathVariable Long id) {
         return locationService.getLocationByID(id)
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping(LOCATION_BASE_PATH+"/{id}")
+    @PutMapping(BASE_PATH +"/{id}")
     public ResponseEntity updateLocationBuId (@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
         if (locationService.updateLocationById(id, locationDTO).isEmpty())
             throw new NotFoundException();
@@ -35,7 +35,7 @@ public class LocationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(LOCATION_BASE_PATH+"/{id}")
+    @DeleteMapping(BASE_PATH +"/{id}")
     public ResponseEntity deleteLocationById (@PathVariable Long id) {
         if (!locationService.deleteLocationById(id))
             throw new NotFoundException();

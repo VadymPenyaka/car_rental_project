@@ -2,7 +2,6 @@ package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.OrderDetail;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapperImpl;
 import nulp.cs.carrentalrestservice.model.*;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
@@ -13,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +40,7 @@ class CarOrderServiceImplTest {
                 .email("email@gmail.com")
                 .phoneNumber("123456789000")
                 .build();
+
         AdminDTO adminDTO = AdminDTO.builder()
                 .password("password")
                 .firstName("FirstName")
@@ -51,14 +52,22 @@ class CarOrderServiceImplTest {
         carOrder = CarOrder.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(admin)
-                .orderDetail(OrderDetail.builder().build())
+                .serviceDuration(1)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .totalPrice(1000.0)
                 .build();
 
         carOrderDTO = CarOrderDTO.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(adminDTO)
-                .orderDetail(OrderDetailDTO.builder().build())
+                .serviceDuration(1)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .totalPrice(1000.0)
                 .build();
+
+
     }
 
     @Test

@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.CarClass;
+import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.FuelType;
 import nulp.cs.carrentalrestservice.model.GearboxType;
 
@@ -20,7 +21,6 @@ public class Car {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    //separate into another entity
     @Column(nullable = false, columnDefinition = "varchar(50)", length = 50)
     private String brand;
     @Column(nullable = false, length = 50)
@@ -44,11 +44,5 @@ public class Car {
     @JoinColumn(name = "carPricingId", referencedColumnName = "id")
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
-    private Set<OrderDetail> orderDetails;
-
-
-    public void removeOrderDetail (OrderDetail orderDetail) {
-        this.getOrderDetails().remove(orderDetail);
-    }
-
+    private Set<CarOrder> carOrders;
 }

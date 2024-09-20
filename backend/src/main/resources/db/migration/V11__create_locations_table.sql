@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `car_rental_service`.`locations`;
 CREATE TABLE `car_rental_service`.`locations` (
     `id` BIGINT NOT NULL,
     `location_name` VARCHAR(50) NOT NULL,

@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.OrderDetailDTO;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,6 +71,11 @@ public class CarServiceImpl implements CarService {
 
         return carRepository.findAllByCarClass(carClass).stream()
                 .map(carMapper::carToCarDto).toList();
+    }
+
+    @Override
+    public List<CarDTO> findAllActiveCarsInPeriod(LocalDate startDate, LocalDate endDate) {
+        return carRepository.getAvailableCarsForPeriod(startDate, endDate).stream().map(carMapper::carToCarDto).toList();
     }
 
 

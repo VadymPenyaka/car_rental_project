@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,11 @@ public class CarController {
         return carService.getAllCars();
     }
 
+
+    @GetMapping(BASE_PATH+"/byDate")
+    public List<CarDTO> getCarsByDate(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        return carService.findAllActiveCarsInPeriod(startDate, endDate);
+    }
 
     @PostMapping(BASE_PATH)
     public ResponseEntity createCar (@RequestBody CarDTO car) {
