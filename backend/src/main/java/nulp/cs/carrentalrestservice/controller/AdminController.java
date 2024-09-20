@@ -49,9 +49,4 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping(ADMIN_BASE_PATH_V2+"/withFewestOrders")
-//    public AdminDTO getAdminWithFewestOrders () {
-//        return adminService.getAdminWithFewestOrders().orElseThrow(NotFoundException::new);
-//    }
-
 }
