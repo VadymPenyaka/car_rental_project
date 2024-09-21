@@ -16,7 +16,7 @@ public class CarDTO {
         private CarClass carClass;
         private int fuelConsumption;
         private int numberOfSeats;
-        private String location;
         private FuelType fuelType;
         private GearboxType gearboxType;
+        private LocationDTO location;
 }

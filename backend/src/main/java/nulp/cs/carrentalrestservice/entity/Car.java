@@ -33,16 +33,17 @@ public class Car {
     @Column(nullable = false)
     private Integer numberOfSeats;
     @Column(nullable = false)
-    private String location;
-    @Column(nullable = false)
     private FuelType fuelType;
     @Column(nullable = false, name = "gearbox_type")
     private GearboxType gearboxType;
-
 
     @OneToOne
     @JoinColumn(name = "carPricingId", referencedColumnName = "id")
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
     private Set<CarOrder> carOrders;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Location location;
+
 }

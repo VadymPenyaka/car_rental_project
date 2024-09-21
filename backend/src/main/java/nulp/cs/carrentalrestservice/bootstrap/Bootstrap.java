@@ -18,16 +18,16 @@ import java.time.LocalDate;
 public class Bootstrap implements CommandLineRunner {
     private final CarRepository carRepository;
     private final CustomerRepository customerRepository;
-
     private final AdminRepository adminRepository;
     private final CarOrderRepository carOrderRepository;
-
     private final CarPricingRepository carPricingRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         deleteAllData();
+        createLocation();
         createCarPricing();
         createCars();
         createAdmin();
@@ -41,6 +41,7 @@ public class Bootstrap implements CommandLineRunner {
         adminRepository.deleteAll();
         carRepository.deleteAll();
         carPricingRepository.deleteAll();
+        locationRepository.deleteAll();
     }
 
     private void createCarPricing() {
@@ -86,7 +87,7 @@ public class Bootstrap implements CommandLineRunner {
                             .numberOfSeats(5)
                             .fuelType(FuelType.DIESEL)
                             .gearboxType(GearboxType.AUTOMATIC)
-                            .location("Lviv, Gorodotska St. 12")
+                            .location(locationRepository.findAll().get(0))
                             .build()
             );
 
@@ -121,6 +122,21 @@ public class Bootstrap implements CommandLineRunner {
                             .lastName("Pip")
                             .email("email@gmail.com")
                             .phoneNumber("0958888222")
+                            .build()
+            );
+        }
+    }
+
+    private void createLocation () {
+        if (locationRepository.count()==0) {
+            locationRepository.saveAndFlush(
+                    Location.builder()
+                            .address("Gorodotska 21")
+                            .city("Lviv")
+                            .locationName("Location name")
+                            .region("Lviv")
+                            .latitude("11111")
+                            .longitude("11122")
                             .build()
             );
         }

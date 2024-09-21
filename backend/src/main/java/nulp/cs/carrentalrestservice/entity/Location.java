@@ -3,6 +3,8 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity(name = "locations")
 @Setter
 @Getter
@@ -25,4 +27,6 @@ public class Location {
     private String latitude;
     @Column(nullable = false, length = 50)
     private String longitude;
+    @OneToMany(mappedBy = "location")
+    private Set<Car> cars;
 }
