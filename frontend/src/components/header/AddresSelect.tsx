@@ -1,13 +1,13 @@
-import React from 'react'
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+
+import location from '../../assets/location.svg'
+import Logo from "../ui/Logo"
 
 export const AddresSelect = () => {
 
@@ -19,9 +19,10 @@ export const AddresSelect = () => {
 
     return (
         <div className='flex items-center'>
-            <p className='m-2'>
-                Location
-            </p>
+            <Logo
+                src={location}
+                width='14rem'
+            />
             <Select>
                 <SelectTrigger className='w-[180px]'>
                     <SelectValue placeholder="Location" onChange={(e) => console.log(e)} />
