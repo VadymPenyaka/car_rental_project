@@ -13,12 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CarControllerIT {
     @Autowired
     private CarController controller;
@@ -33,7 +35,7 @@ class CarControllerIT {
     void getAllCars() {
         List<CarDTO> carDTOS = controller.getAllCars();
         System.out.println(carDTOS);
-        assertThat(carDTOS.size()).isEqualTo(1);
+        assertThat(carDTOS.size()).isEqualTo(2);
     }
 
     @Test

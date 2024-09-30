@@ -66,17 +66,4 @@ public class CarServiceImpl implements CarService {
         return atomicReference.get();
     }
 
-    @Override
-    public List<CarDTO> getCarsByCarClass(CarClass carClass) {
-
-        return carRepository.findAllByCarClass(carClass).stream()
-                .map(carMapper::carToCarDto).toList();
-    }
-
-    @Override
-    public List<CarDTO> findAllActiveCarsInPeriod(LocalDate startDate, LocalDate endDate) {
-        return carRepository.getAvailableCarsForPeriod(startDate, endDate).stream().map(carMapper::carToCarDto).toList();
-    }
-
-
 }

@@ -67,7 +67,6 @@ class CarPricingServiceImplTest {
                 .numberOfSeats(5)
                 .fuelType(FuelType.DIESEL)
                 .gearboxType(GearboxType.AUTOMATIC)
-                .location("Lviv, Gorodotska St. 12")
                 .build();
     }
 

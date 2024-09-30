@@ -9,51 +9,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class CarRepositoryTest {
     @Autowired
     CarRepository carRepository;
 
-    private Car car;
-
-
-    @BeforeEach
-    void setUp() {
-        car = Car.builder()
-                .id(Long.valueOf(1))
-                .carClass(CarClass.BUSINESS)
-                .brand("BMW")
-                .fuelConsumption(10)
-                .location("Lviv")
-                .gearboxType(GearboxType.AUTOMATIC)
-                .fuelType(FuelType.DIESEL)
-                .fuelConsumption(10)
-                .numberOfSeats(5)
-                .model("X5")
-                .build();
-    }
-
     @Test
-    @Rollback
-    @Transactional
-    public void createCarTest_ReturnNotNull () {
-        Car savedCar = carRepository.save(car);
-
-        assertThat(savedCar).isNotNull();
-    }
-
-    @Test
-    @Rollback
-    @Transactional
     public void getCarTest_ReturnCar() {
-        Car savedCar = carRepository.save(car);
-        Car foundCar = carRepository
-                .findById(savedCar.getId()).get();
+        int size = carRepository.findAll().size();
 
-        assertThat(foundCar.getBrand()).isEqualTo(foundCar.getBrand());
+        assertThat(size).isEqualTo(2);
     }
 }

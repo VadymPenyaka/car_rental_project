@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CarOrderControllerIT {
     @Autowired
     private CarOrderController controller;
@@ -72,16 +74,6 @@ class CarOrderControllerIT {
     }
 
     @Test
-    void getOrdersByStatus () {
-        List<CarOrderDTO> expected = Arrays.asList(carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0)));
-
-        List<CarOrderDTO> actual = controller.getAllCarOrdersByStatus(OrderStatus.IN_USE);
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
     @Rollback
     @Transactional
     void updateCarOrderById () {
@@ -95,17 +87,6 @@ class CarOrderControllerIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    @Transactional
-    void getAllCarOrdersByStatus () {
-        CarOrderDTO expected = carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-
-        List<CarOrderDTO> actual = controller.getAllCarOrdersByStatus(expected.getStatus());
-
-        assertThat(actual.size()).isEqualTo(1);
     }
 
 }

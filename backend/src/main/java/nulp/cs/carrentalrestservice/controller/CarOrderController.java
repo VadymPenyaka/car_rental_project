@@ -46,9 +46,4 @@ public class CarOrderController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = BASE_PATH, method = RequestMethod.GET)//TODO refactor
-    public List<CarOrderDTO> getAllCarOrdersByStatus (@RequestParam("orderStatus") OrderStatus orderStatus) {
-        return carOrderService.getAllCarOrdersByStatus(orderStatus);
-    }
-
 }

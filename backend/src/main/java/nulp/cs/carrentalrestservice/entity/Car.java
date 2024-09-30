@@ -3,11 +3,9 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.CarClass;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.FuelType;
 import nulp.cs.carrentalrestservice.model.GearboxType;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "cars")
@@ -33,7 +31,9 @@ public class Car {
     @Column(nullable = false)
     private Integer numberOfSeats;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private FuelType fuelType;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "gearbox_type")
     private GearboxType gearboxType;
 
@@ -42,6 +42,8 @@ public class Car {
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
     private Set<CarOrder> carOrders;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
+    private Set<CarMaintenance> carMaintenances;
     @ManyToOne
     @JoinColumn(nullable = false)
     private Location location;

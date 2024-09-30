@@ -16,8 +16,6 @@ public interface AdminService {
 
     Boolean deleteAdminByID(Long id);
 
-//    Optional<AdminDTO> getAdminByLeastNumbErOfOrders ();
-
     Optional<AdminDTO> getAdminWithFewestOrders();
 
 }

@@ -52,18 +52,12 @@ class CarOrderServiceImplTest {
         carOrder = CarOrder.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(admin)
-                .serviceDuration(1)
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusDays(1))
                 .totalPrice(1000.0)
                 .build();
 
         carOrderDTO = CarOrderDTO.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(adminDTO)
-                .serviceDuration(1)
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusDays(1))
                 .totalPrice(1000.0)
                 .build();
 

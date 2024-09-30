@@ -18,8 +18,4 @@ public interface CarService {
 
     Optional<CarDTO> updateCarByID(Long id, CarDTO carDTO);
 
-    List<CarDTO> getCarsByCarClass (CarClass carClass);
-
-    List<CarDTO> findAllActiveCarsInPeriod(LocalDate startDate, LocalDate endDate);
-
 }

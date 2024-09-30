@@ -5,20 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarOrderDTO {
-    private long id;
-    private AdminDTO admin;
-    private OrderStatus status;
-    private CustomerDTO customer;
+public class CarScheduleDTO {
+    private Long id;
     private CarDTO car;
-    private double totalPrice;
-    private String comment;
-    private CarScheduleDTO schedule;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private ScheduleStatus status;
 }

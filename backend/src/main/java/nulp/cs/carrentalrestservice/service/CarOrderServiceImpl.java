@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.entity.Admin;
@@ -26,18 +25,10 @@ public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderRepository carOrderRepository;
     private final CarOrderMapper carOrderMapper;
 
-    private final AdminRepository adminRepository;
     private final ApplicationEventPublisher publisher;
 
     @Override
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        carOrderDTO.setEndDate(carOrderDTO.getEndDate().plusDays(carOrderDTO.getServiceDuration()));
-        boolean hasOverlap = carOrderRepository.existsByCarIdAndDatesOverlap(
-                carOrderDTO.getCar().getId(), carOrderDTO.getStartDate(), carOrderDTO.getEndDate());
-
-        if(hasOverlap)
-            throw new IllegalArgumentException("Car already overlap");
-
 
         return carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
@@ -70,47 +61,6 @@ public class CarOrderServiceImpl implements CarOrderService {
         }, ()-> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
-    }
-//
-//    @Override
-//    public CarOrderDTO updateOrderServiceDuration(CarOrderDTO carOrderDTO, Integer newServiceDuration) {
-//        if (Objects.equals(newServiceDuration, carOrderDTO.getServiceDuration()))
-//            return carOrderDTO;
-//        else if (newServiceDuration <= carOrderDTO.getServiceDuration()) {
-//            long durationDifference = carOrderDTO.getServiceDuration() - newServiceDuration;
-//            carOrderDTO.setEndDate(carOrderDTO.getEndDate().minusDays(durationDifference));
-//            return carOrderDTO;
-//        }
-//
-//        long serviceDurationExtension = newServiceDuration - carOrderDTO.getServiceDuration();
-//        LocalDate endDateOfServiceDuration = carOrderDTO.getEndDate().plusDays(serviceDurationExtension);
-//
-//        boolean hasOverlap = carOrderRepository.existsByCarIdAndDatesOverlap(
-//                carOrderDTO.getCar().getId(), carOrderDTO.getStartDate(), endDateOfServiceDuration);
-//
-//        if(hasOverlap)
-//            throw new IllegalArgumentException("The next order for this car must be cancelled!");
-//
-//        carOrderDTO.setEndDate(endDateOfServiceDuration);
-//        carOrderDTO.setServiceDuration(newServiceDuration);
-//
-//        return carOrderMapper.carOrderToCarOrderDto(carOrderRepository
-//                .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
-//    }
-
-    @Override
-    public List<CarOrderDTO> getAllCarOrdersByStatus(OrderStatus orderStatus) {
-        return carOrderRepository.getAllByStatus(orderStatus).stream()
-                .map(carOrderMapper::carOrderToCarOrderDto).toList();
-    }
-
-    @Override
-    public List<CarOrderDTO> getCarOrdersByAdminAndStatus(Long adminId, OrderStatus orderStatus) throws NumberFormatException{
-
-        Admin admin = adminRepository.findById(adminId).orElseThrow(NotFoundException::new);
-
-        return carOrderRepository.getCarOrdersByAdminAndStatus(admin, orderStatus).stream()
-                .map(carOrderMapper::carOrderToCarOrderDto).toList();
     }
 
 }

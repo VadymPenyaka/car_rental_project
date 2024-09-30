@@ -25,12 +25,6 @@ public class CarController {
         return carService.getAllCars();
     }
 
-
-    @GetMapping(BASE_PATH+"/byDate")
-    public List<CarDTO> getCarsByDate(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-        return carService.findAllActiveCarsInPeriod(startDate, endDate);
-    }
-
     @PostMapping(BASE_PATH)
     public ResponseEntity createCar (@RequestBody CarDTO car) {
         carService.createCar(car);
@@ -59,11 +53,6 @@ public class CarController {
             throw new NotFoundException();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping(BASE_PATH+"/byClass")
-    public List<CarDTO> getAllCarsByClass (@RequestParam CarClass carClass) {
-        return carService.getCarsByCarClass(carClass);
     }
 
 }

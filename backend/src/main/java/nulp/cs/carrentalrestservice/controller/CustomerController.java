@@ -37,9 +37,4 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(BASE_PATH +"/findByName")
-    public List<CustomerDTO> getCustomersBySureName(@RequestParam String lastName) {
-        return customerService.getCustomersBySureName(lastName);
-    }
-
 }

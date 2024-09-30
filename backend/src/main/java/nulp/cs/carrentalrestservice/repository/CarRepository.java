@@ -10,12 +10,4 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
-    List<Car> findAllByCarClass (CarClass carClass);
-
-    @Query("SELECT c FROM cars c WHERE NOT EXISTS (" +
-            "SELECT o FROM car_orders o WHERE o.car = c AND (" +
-            "o.startDate <= :endDate AND o.endDate >= :startDate))")
-    List<Car> getAvailableCarsForPeriod(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
 }
