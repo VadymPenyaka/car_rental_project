@@ -1,0 +1,73 @@
+package nulp.cs.carrentalrestservice.service;
+
+import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.CarMaintenance;
+import nulp.cs.carrentalrestservice.mapper.CarMaintenanceMapper;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
+import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
+import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+@Service
+@RequiredArgsConstructor
+public class CarMaintenanceServiceImpl implements CarMaintenanceService {
+    private final CarMaintenanceRepository carMaintenanceRepository;
+    private final CarMaintenanceMapper carMaintenanceMapper;
+    private final CarScheduleService carScheduleService;
+    private final CarScheduleMapper carScheduleMapper;
+
+    @Override
+    public Optional<CarMaintenanceDTO> getCarMaintenanceById(Long id) {
+        return Optional.ofNullable(carMaintenanceMapper
+                .carMaintenanceToCarMaintenanceDTO(carMaintenanceRepository.findById(id).get()));
+    }
+
+    @Override
+    public List<CarMaintenanceDTO> getAllCarMaintenanceByCarId(Long carId) {
+        return carMaintenanceRepository.getCarMaintenanceByCarId(carId).stream()
+                .map(carMaintenanceMapper::carMaintenanceToCarMaintenanceDTO).toList();
+    }
+
+    @Override
+    public CarMaintenanceDTO createCarMaintenance(CarMaintenanceDTO carMaintenanceDTO) {
+        carMaintenanceDTO.setSchedule(carScheduleService
+                .createCarSchedule(carMaintenanceDTO.getSchedule()));
+
+        return carMaintenanceMapper.carMaintenanceToCarMaintenanceDTO(carMaintenanceRepository
+                .save(carMaintenanceMapper.carMaintenanceDTOToCarMaintenance(carMaintenanceDTO)));
+    }
+
+    @Override
+    public Optional<CarMaintenance> updateCarMaintenanceById(Long id, CarMaintenanceDTO carMaintenanceDTO) {
+        AtomicReference<Optional<CarMaintenance>> carMaintenanceRef = new AtomicReference<>();
+
+        carMaintenanceRepository.findById(id).ifPresentOrElse( foundMaintenance -> {
+                    CarScheduleDTO updatedScheduleDTO = carMaintenanceDTO.getSchedule();
+                    foundMaintenance.setSchedule(carScheduleMapper.carScheduleDtoToCarSchedule(carScheduleService
+                            .updateCarScheduleById(updatedScheduleDTO, updatedScheduleDTO.getId()).get()));
+
+                    foundMaintenance.setDescription(carMaintenanceDTO.getDescription());
+                    foundMaintenance.setPrice(carMaintenanceDTO.getPrice());
+
+                }, () -> carMaintenanceRef.set(Optional.empty())
+        );
+
+        return carMaintenanceRef.get();
+    }
+
+    @Override
+    public boolean deleteCarMaintenanceById(Long id) {
+        if(carMaintenanceRepository.existsById(id)) {
+            carMaintenanceRepository.deleteById(id);
+            carScheduleService.deleteCarScheduleById(id);
+            return true;
+        }
+
+        return false;
+    }
+}

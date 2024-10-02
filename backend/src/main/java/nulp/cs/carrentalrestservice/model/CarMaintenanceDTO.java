@@ -14,4 +14,5 @@ public class CarMaintenanceDTO {
     private String description;
     private Double price;
     private CarDTO car;
+    private CarScheduleDTO schedule;
 }

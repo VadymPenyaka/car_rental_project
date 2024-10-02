@@ -1,10 +1,11 @@
 package nulp.cs.carrentalrestservice.service;
 
-import nulp.cs.carrentalrestservice.entity.Admin;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
+import nulp.cs.carrentalrestservice.entity.*;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapperImpl;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.*;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,10 @@ import static org.mockito.Mockito.when;
 class CarOrderServiceImplTest {
     @Mock
     private CarOrderRepository carOrderRepository;
+    @Mock
+    private CarScheduleRepository carScheduleRepository;
+    @Mock
+    private CarScheduleMapper carScheduleMapper;
     @Mock
     private CarOrderMapperImpl carOrderMapper;
     @InjectMocks
@@ -49,16 +54,40 @@ class CarOrderServiceImplTest {
                 .phoneNumber("123456789000")
                 .build();
 
+        Car car = Car.builder().build();
+        CarDTO carDTO = CarDTO.builder().build();
+
+        Customer customer =  Customer.builder().email("email@gmail.com").firstName("FirstName").build();
+        CustomerDTO customerDTO = CustomerDTO.builder().build();
+
+        CarScheduleDTO carScheduleDTO = CarScheduleDTO.builder()
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
+        CarSchedule carSchedule = CarSchedule.builder()
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
         carOrder = CarOrder.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(admin)
+                .car(car)
+                .customer(customer)
+                .schedule(carSchedule)
                 .totalPrice(1000.0)
                 .build();
 
         carOrderDTO = CarOrderDTO.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(adminDTO)
+                .car(carDTO)
+                .customer(customerDTO)
                 .totalPrice(1000.0)
+                .schedule(carScheduleDTO)
                 .build();
 
 
@@ -68,6 +97,7 @@ class CarOrderServiceImplTest {
     void createCarOrder() {
         when(carOrderRepository.save(any())).thenReturn(carOrder);
         when(carOrderMapper.carOrderToCarOrderDto(any())).thenReturn(carOrderDTO);
+        when(carScheduleRepository.isCarBooked(any(), any(), any())).thenReturn(false);
 
         CarOrderDTO createdCarOrder = carOrderService.createCarOrder(carOrderDTO);
 

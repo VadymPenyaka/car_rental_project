@@ -66,7 +66,7 @@ class CarPricingServiceImplTest {
                 .fuelConsumption(10)
                 .numberOfSeats(5)
                 .fuelType(FuelType.DIESEL)
-                .gearboxType(GearboxType.AUTOMATIC)
+                .gearboxType(GearboxType.AUTO)
                 .build();
     }
 

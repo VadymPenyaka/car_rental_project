@@ -6,7 +6,8 @@ import nulp.cs.carrentalrestservice.model.OrderStatus;
 
 import java.time.LocalDate;
 
-@Entity(name = "car_orders")
+@Entity
+@Table(name = "car_orders")
 @Getter
 @Setter
 @Builder

@@ -34,7 +34,7 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private FuelType fuelType;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "gearbox_type")
+    @Column(nullable = false)
     private GearboxType gearboxType;
 
     @OneToOne
@@ -42,6 +42,8 @@ public class Car {
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
     private Set<CarOrder> carOrders;
+    @OneToMany(mappedBy = "car")
+    private Set<CarSchedule> carSchedules;
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
     private Set<CarMaintenance> carMaintenances;
     @ManyToOne

@@ -18,8 +18,6 @@ public class CarPricingServiceImpl implements CarPricingService {
     private final CarPricingRepository carPricingRepository;
     private final CarRepository carRepository;
 
-    private final CarMapper carMapper;
-
     private final CarPricingMapper carPricingMapper;
 
     @Override

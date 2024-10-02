@@ -2,14 +2,15 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
+import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
-import nulp.cs.carrentalrestservice.model.AdminDTO;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.OrderStatus;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
+import nulp.cs.carrentalrestservice.model.*;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +39,25 @@ class CarOrderControllerIT {
     private CarOrderRepository carOrderRepository;
 
     @Autowired
-    private CarRepository carRepository;
+    private CarScheduleRepository carScheduleRepository;
+
+    @Autowired
+    private CarScheduleMapper carScheduleMapper;
 
 
 
     @Test
+    @Transactional
+    @Rollback
     void createCarOrder() {
         CarOrderDTO carOrderDtoToSave = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
+
+        CarScheduleDTO carSchedule = carOrderDtoToSave.getSchedule();
+        carSchedule.setStartDate(LocalDate.now().minusDays(1));
+        carSchedule.setEndDate(LocalDate.now().plusDays(1));
+        carOrderDtoToSave.setSchedule(carSchedule);
+
         ResponseEntity responseEntity = controller.createCarOrder(carOrderDtoToSave);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);

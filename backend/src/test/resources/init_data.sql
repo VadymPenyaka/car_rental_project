@@ -19,9 +19,9 @@ INSERT INTO `locations` (`id`, `location_name`, `region`, `city`, `address`, `la
 VALUES (2, 'Boryspil Airport', 'Kyiv', 'Kyiv', 'Airport (KBP)', '3242324', '0989809');
 
 INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pricing_id`, `id`, `brand`, `model`, `car_class`, `gearbox_type`, `location_id`)
-VALUES (10, 'DIESEL', 5, 1, 1, 'BMW', 'X5', 'BUSINESS', 'AUTOMATIC', 1);
+VALUES (10, 'DIESEL', 5, 1, 1, 'BMW', 'X5', 'BUSINESS', 'AUTO', 1);
 INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pricing_id`, `id`, `brand`, `model`, `car_class`, `gearbox_type`, `location_id`)
-VALUES (9, 'DIESEL', 5, 2, 2, 'BMW', 'X6', 'BUSINESS', 'AUTOMATIC', 2);
+VALUES (9, 'DIESEL', 5, 2, 2, 'BMW', 'X6', 'BUSINESS', 'AUTO', 2);
 
 INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_id`, `first_name`, `sure_name`, `email`, `phone_number`)
 VALUES ('2001-05-20', '2026-12-01', 2, '999999999', 'Pip', 'Ivan', 'ivan@gmail.com', '0955915122');
