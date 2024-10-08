@@ -1,22 +1,16 @@
 package nulp.cs.carrentalrestservice.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.Customer;
+import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
-import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.CustomerDTO;
-import nulp.cs.carrentalrestservice.model.OrderStatus;
-import nulp.cs.carrentalrestservice.repository.AdminRepository;
+import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,12 +19,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderRepository carOrderRepository;
     private final CarOrderMapper carOrderMapper;
+    private final CarScheduleService carScheduleService;
+    private final CarScheduleMapper carScheduleMapper;
 
-    private final AdminRepository adminRepository;
     private final ApplicationEventPublisher publisher;
 
     @Override
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
+        validateOrder(carOrderDTO);
+        carOrderDTO.setSchedule(carScheduleService.createCarSchedule(carOrderDTO.getSchedule()));
+
+        publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         return carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
     }
@@ -45,6 +44,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     public boolean deleteCarOrderById(Long id) {
         if (carOrderRepository.existsById(id)) {
             carOrderRepository.deleteById(id);
+            carScheduleService.deleteCarScheduleById(id);
             return true;
         }
         return false;
@@ -56,27 +56,23 @@ public class CarOrderServiceImpl implements CarOrderService {
 
         carOrderRepository.findById(id).ifPresentOrElse(foundOrder -> {
             foundOrder.setStatus(carOrderDTO.getStatus());
-            CustomerDTO customer = carOrderDTO.getCustomer();
-            publisher.publishEvent(new EmailEvent(this, carOrderDTO, customer));
+            publisher.publishEvent(new EmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
+
+            CarScheduleDTO scheduleDTO = carOrderDTO.getSchedule();
+            foundOrder.setSchedule(carScheduleMapper.carScheduleDtoToCarSchedule(carScheduleService//update car schedule
+                    .updateCarScheduleById(scheduleDTO, scheduleDTO.getId()).get()));
             atomicReference.set(Optional.of(carOrderMapper.carOrderToCarOrderDto(carOrderRepository.save(foundOrder))));
         }, ()-> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
     }
 
-    @Override
-    public List<CarOrderDTO> getAllCarOrdersByStatus(OrderStatus orderStatus) {
-        return carOrderRepository.getAllByStatus(orderStatus).stream()
-                .map(carOrderMapper::carOrderToCarOrderDto).toList();
-    }
+    public void validateOrder(CarOrderDTO carOrderDTO) {
 
-    @Override
-    public List<CarOrderDTO> getCarOrdersByAdminAndStatus(Long adminId, OrderStatus orderStatus) throws NumberFormatException{
-
-        Admin admin = adminRepository.findById(adminId).orElseThrow(NotFoundException::new);
-
-        return carOrderRepository.getCarOrdersByAdminAndStatus(admin, orderStatus).stream()
-                .map(carOrderMapper::carOrderToCarOrderDto).toList();
+        if (carOrderRepository.isCustomerHasOverlapOrder(carOrderDTO.getCustomer().getId(),
+                carOrderDTO.getSchedule().getStartDate(),
+                carOrderDTO.getSchedule().getEndDate()))
+            throw new IllegalArgumentException("You have another order for this period.");
     }
 
 }

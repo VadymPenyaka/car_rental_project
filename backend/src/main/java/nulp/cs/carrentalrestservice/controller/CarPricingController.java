@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CarPricingController {
     private final CarPricingService carPricingService;
-    private final static String CAR_PRICING_BASE_PATH = "api/v1/carPricing";
+    private final static String BASE_PATH = "api/v1/carPricing";
 
-    @GetMapping(CAR_PRICING_BASE_PATH+"/{id}")
+    @GetMapping(BASE_PATH +"/{id}")
     public CarPricingDTO getCarPricingById (@PathVariable Long id) {
         return carPricingService.getCarPricingById(id)
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping(CAR_PRICING_BASE_PATH)
+    @PostMapping(BASE_PATH)
     public ResponseEntity createCarPricing (@RequestBody CarPricingDTO carPricing) {
         carPricingService.createCarPricing(carPricing);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping(CAR_PRICING_BASE_PATH+"/{id}")
+    @PutMapping(BASE_PATH +"/{id}")
     public ResponseEntity updateCarPricingById (@PathVariable Long id, @RequestBody CarPricingDTO carPricing) {
         if(carPricingService.updateCarPricingByID(id, carPricing).isEmpty())
             throw new NotFoundException();
@@ -35,7 +35,7 @@ public class CarPricingController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(CAR_PRICING_BASE_PATH+"/{id}")
+    @DeleteMapping(BASE_PATH +"/{id}")
     public ResponseEntity deleteCarPricingById (@PathVariable Long id) {
         if(!carPricingService.deleteCarPricingById(id))
             throw new NotFoundException();
@@ -43,7 +43,7 @@ public class CarPricingController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(CAR_PRICING_BASE_PATH +"/getByCarId" +"/{carId}")
+    @GetMapping(BASE_PATH +"/getByCarId" +"/{carId}")
     public CarPricingDTO getCarPricingByCarId (@PathVariable Long carId) {
         return carPricingService.getCarPricingByCarId(carId)
                 .orElseThrow(NotFoundException::new);

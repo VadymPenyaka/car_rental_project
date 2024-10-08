@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.exception;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,17 @@ public class GlobalControllerExceptionHandler {
                 .collect(
                         Collectors.toMap(
                                 violation -> violation.getPropertyPath().toString(),
-                                violation -> violation.getMessage(),
+                                ConstraintViolation::getMessage,
                                 (existing, replacement) -> existing
                         )
                 );
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleArgumentException (RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

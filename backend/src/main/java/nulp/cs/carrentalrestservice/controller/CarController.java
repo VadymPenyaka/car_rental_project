@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.FuelType;
+import nulp.cs.carrentalrestservice.model.GearboxType;
 import nulp.cs.carrentalrestservice.service.CarService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,10 +24,15 @@ public class CarController {
 
 
     @GetMapping(BASE_PATH)
-    public List<CarDTO> getAllCars() {
-        return carService.getAllCars();
+    public List<CarDTO> getAllCarsByCriteria(@RequestParam(required = false) Long locationId,
+                                             @RequestParam(required = false) CarClass carClass,
+                                             @RequestParam(required = false) String brand,
+                                             @RequestParam(required = false) GearboxType gearboxType,
+                                             @RequestParam(required = false) FuelType fuelType,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return carService.getAllCarsByCriteria(locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
     }
-
 
     @PostMapping(BASE_PATH)
     public ResponseEntity createCar (@RequestBody CarDTO car) {
@@ -53,11 +62,6 @@ public class CarController {
             throw new NotFoundException();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping(BASE_PATH+"/byClass")
-    public List<CarDTO> getAllCarsByClass (@RequestParam CarClass carClass) {
-        return carService.getCarsByCarClass(carClass);
     }
 
 }

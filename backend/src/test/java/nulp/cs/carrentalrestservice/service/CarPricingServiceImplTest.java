@@ -66,8 +66,7 @@ class CarPricingServiceImplTest {
                 .fuelConsumption(10)
                 .numberOfSeats(5)
                 .fuelType(FuelType.DIESEL)
-                .gearboxType(GearboxType.AUTOMATIC)
-                .location("Lviv, Gorodotska St. 12")
+                .gearboxType(GearboxType.AUTO)
                 .build();
     }
 
@@ -128,6 +127,16 @@ class CarPricingServiceImplTest {
         CarPricingDTO actual = carPricingService.getCarPricingByCarId(car.getId()).get();
 
         assertThat(actual).isNotNull();
+    }
+
+    @Test
+    void createCarPricing() {
+        when(carPricingRepository.save(any())).thenReturn(carPricing);
+        when(carPricingMapper.carPricingToCarPricingDto(any())).thenReturn(carPricingDTO);
+
+        CarPricingDTO actual = carPricingService.createCarPricing(carPricingDTO);
+        assertThat(actual).isNotNull();
+        assertThat(actual).isEqualTo(carPricingDTO);
     }
 
 }

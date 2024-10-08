@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.Car;
+import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.mapper.CarMapperImpl;
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,8 +32,6 @@ class CarServiceImplTest {
     @Mock
     private CarMapperImpl carMapper;
 
-    @Mock
-    OrderDetailServiceImpl orderDetailService;
 
     @InjectMocks
     private CarServiceImpl carService;
@@ -79,10 +77,10 @@ class CarServiceImplTest {
     }
 
     @Test
-    void getAllCars() {
+    void getAllCarsByCriteria() {
         when(carRepository.findAll()).thenReturn(Arrays.asList(car));
 
-        List<CarDTO> foundCars = carService.getAllCars();
+        List<CarDTO> foundCars = carService.getAllCarsByCriteria(null, null, null, null, null, null, null);
 
         assertThat(foundCars.size()).isEqualTo(1);
     }
@@ -125,4 +123,6 @@ class CarServiceImplTest {
         assertThat(updatedCar.getId()).isEqualTo(carDTO.getId());
         assertThat(updatedCar.getBrand()).isEqualTo(expectedCar.getBrand());
     }
+
+
 }

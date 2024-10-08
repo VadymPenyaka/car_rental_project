@@ -49,9 +49,4 @@ public class CustomerServiceImpl implements CustomerService {
         return atomicReference.get();
     }
 
-    @Override
-    public List<CustomerDTO> getCustomersBySureName(String sureName) {
-        return customerRepository.findAllBySureName(sureName).stream()
-                .map(customerMapper::customerToCustomerDto).toList();
-    }
 }

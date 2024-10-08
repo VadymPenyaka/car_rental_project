@@ -3,6 +3,8 @@ USE `car_rental_service`;
 
 DROP TABLE IF EXISTS `car_orders`;
 DROP TABLE IF EXISTS `orders_details`;
+DROP TABLE IF EXISTS `cars_maintenance`;
+DROP TABLE IF EXISTS `car_schedule`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `admins`;
 DROP TABLE IF EXISTS `cars`;

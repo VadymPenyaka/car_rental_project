@@ -5,12 +5,15 @@ import nulp.cs.carrentalrestservice.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class CustomerRepositoryTest {
 
     @Autowired
@@ -18,19 +21,8 @@ public class CustomerRepositoryTest {
 
     @Test
     @Transactional
-    void saveUserTest() {
-        Customer customer = Customer.builder()
-                .birthDate(LocalDate.now())
-                .passportExpiryDate(LocalDate.now())
-                .firstName("FirstName")
-                .sureName("SureName")
-                .email("email@gmail.com")
-                .passportId("12345678")
-                .phoneNumber("380958888222")
-                .build();
-
-        Customer savedCustomer = customerRepository.saveAndFlush(customer);
-
-        assertThat(savedCustomer).isNotNull();
+    void getAllUsersTest() {
+        int size = customerRepository.findAll().size();
+        assertThat(size).isEqualTo(2);
     }
 }

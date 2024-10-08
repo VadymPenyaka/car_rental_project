@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetailDTO {
-    private  long id;
-    private CarDTO car;
-    private double totalPrice;
-    private String comment;
+public class CarMaintenanceDTO {
+    private Long id;
+    private String description;
+    private Double price;
+    private CarScheduleDTO schedule;
 }

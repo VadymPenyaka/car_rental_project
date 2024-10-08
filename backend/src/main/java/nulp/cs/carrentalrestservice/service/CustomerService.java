@@ -11,6 +11,4 @@ public interface CustomerService {
     Optional<CustomerDTO> getCustomerByID (Long id);
 
     Optional<CustomerDTO> updateCustomerById(Long id, CustomerDTO customerDTO);
-
-    List<CustomerDTO> getCustomersBySureName(String lastName);
 }

@@ -11,12 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CustomerControllerIT {
     @Autowired
     private CustomerController controller;
@@ -69,16 +71,5 @@ class CustomerControllerIT {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(actual).isEqualTo(expected);
     }
-
-    @Test
-    void getCustomersByFirstName () {
-        List<CustomerDTO> expected = customerRepository.findAll().stream()
-                .map(customerMapper::customerToCustomerDto).toList();
-
-        List<CustomerDTO> actual = controller.getCustomersBySureName(expected.get(0).getSureName());
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
 
 }

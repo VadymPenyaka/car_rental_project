@@ -1,15 +1,17 @@
 package nulp.cs.carrentalrestservice.event;
 
+import lombok.Getter;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import org.springframework.context.ApplicationEvent;
 
+@Getter
 public class EmailEvent extends ApplicationEvent {
 
-    private CarOrderDTO carOrder;
-    private CustomerDTO customer;
+    private final CarOrderDTO carOrder;
+    private final CustomerDTO customer;
 
     public EmailEvent(Object source, CarOrderDTO carOrder, CustomerDTO customer) {
         super(source);
@@ -17,11 +19,4 @@ public class EmailEvent extends ApplicationEvent {
         this.customer = customer;
     }
 
-    public CarOrderDTO getCarOrder() {
-        return carOrder;
-    }
-
-    public CustomerDTO getCustomer() {
-        return customer;
-    }
 }

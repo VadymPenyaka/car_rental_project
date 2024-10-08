@@ -15,8 +15,4 @@ public interface CarOrderService {
 
     Optional<CarOrderDTO> updateCarOrderById(Long id, CarOrderDTO carOrderDTO);
 
-    List<CarOrderDTO> getAllCarOrdersByStatus(OrderStatus orderStatus);
-
-    List<CarOrderDTO> getCarOrdersByAdminAndStatus (Long adminId, OrderStatus orderStatus);
-
 }

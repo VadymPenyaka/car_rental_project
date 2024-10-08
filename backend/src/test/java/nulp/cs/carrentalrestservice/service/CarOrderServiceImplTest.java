@@ -1,11 +1,11 @@
 package nulp.cs.carrentalrestservice.service;
 
-import nulp.cs.carrentalrestservice.entity.Admin;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.OrderDetail;
+import nulp.cs.carrentalrestservice.entity.*;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapperImpl;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.*;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,13 @@ class CarOrderServiceImplTest {
     @Mock
     private CarOrderRepository carOrderRepository;
     @Mock
+    private CarScheduleRepository carScheduleRepository;
+    @Mock
+    private CarScheduleMapper carScheduleMapper;
+    @Mock
     private CarOrderMapperImpl carOrderMapper;
+    @Mock
+    private CarScheduleService carScheduleService;
     @InjectMocks
     private CarOrderServiceImpl carOrderService;
 
@@ -40,6 +47,7 @@ class CarOrderServiceImplTest {
                 .email("email@gmail.com")
                 .phoneNumber("123456789000")
                 .build();
+
         AdminDTO adminDTO = AdminDTO.builder()
                 .password("password")
                 .firstName("FirstName")
@@ -48,17 +56,38 @@ class CarOrderServiceImplTest {
                 .phoneNumber("123456789000")
                 .build();
 
+        Customer customer =  Customer.builder().email("email@gmail.com").firstName("FirstName").build();
+        CustomerDTO customerDTO = CustomerDTO.builder().build();
+
+        CarScheduleDTO carScheduleDTO = CarScheduleDTO.builder()
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
+        CarSchedule carSchedule = CarSchedule.builder()
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
         carOrder = CarOrder.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(admin)
-                .orderDetail(OrderDetail.builder().build())
+                .customer(customer)
+                .schedule(carSchedule)
+                .totalPrice(1000.0)
                 .build();
 
         carOrderDTO = CarOrderDTO.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(adminDTO)
-                .orderDetail(OrderDetailDTO.builder().build())
+                .customer(customerDTO)
+                .totalPrice(1000.0)
+                .schedule(carScheduleDTO)
                 .build();
+
+
     }
 
     @Test

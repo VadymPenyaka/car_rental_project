@@ -5,7 +5,6 @@ import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,12 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CarControllerIT {
     @Autowired
     private CarController controller;
@@ -30,10 +31,10 @@ class CarControllerIT {
     private CarRepository carRepository;
 
     @Test
-    void getAllCars() {
-        List<CarDTO> carDTOS = controller.getAllCars();
+    void getAllCarsByCriteria() {
+        List<CarDTO> carDTOS = controller.getAllCarsByCriteria(null, null, null, null, null, null, null);
         System.out.println(carDTOS);
-        assertThat(carDTOS.size()).isEqualTo(1);
+        assertThat(carDTOS.size()).isEqualTo(2);
     }
 
     @Test

@@ -2,20 +2,24 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
+import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
-import nulp.cs.carrentalrestservice.model.AdminDTO;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.OrderStatus;
+import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
+import nulp.cs.carrentalrestservice.model.*;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CarOrderControllerIT {
     @Autowired
     private CarOrderController controller;
@@ -34,20 +39,29 @@ class CarOrderControllerIT {
     private CarOrderRepository carOrderRepository;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private CarScheduleRepository carScheduleRepository;
+
     @Autowired
-    private AdminMapper adminMapper;
+    private CarScheduleMapper carScheduleMapper;
+
 
 
     @Test
+    @Transactional
+    @Rollback
     void createCarOrder() {
-        CarOrderDTO carOrderDTOToSave = carOrderMapper
+        CarOrderDTO carOrderDtoToSave = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-        System.out.println(carOrderDTOToSave.toString());
-        ResponseEntity responseEntity = controller.createCarOrder(carOrderDTOToSave);
+
+        CarScheduleDTO carSchedule = carOrderDtoToSave.getSchedule();
+        carSchedule.setStartDate(LocalDate.now().minusDays(1));
+        carSchedule.setEndDate(LocalDate.now().plusDays(1));
+        carOrderDtoToSave.setSchedule(carSchedule);
+
+        ResponseEntity responseEntity = controller.createCarOrder(carOrderDtoToSave);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(carOrderRepository.findById(carOrderDTOToSave.getId())).isNotNull();
+        assertThat(carOrderRepository.findById(carOrderDtoToSave.getId())).isNotNull();
     }
 
     @Test
@@ -73,16 +87,6 @@ class CarOrderControllerIT {
     }
 
     @Test
-    void getOrdersByStatus () {
-        List<CarOrderDTO> expected = Arrays.asList(carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0)));
-
-        List<CarOrderDTO> actual = controller.getAllCarOrdersByStatus(OrderStatus.IN_USE);
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
     @Rollback
     @Transactional
     void updateCarOrderById () {
@@ -96,17 +100,6 @@ class CarOrderControllerIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    @Transactional
-    void getAllCarOrdersByStatus () {
-        CarOrderDTO expected = carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-
-        List<CarOrderDTO> actual = controller.getAllCarOrdersByStatus(expected.getStatus());
-
-        assertThat(actual.size()).isEqualTo(1);
     }
 
 }
