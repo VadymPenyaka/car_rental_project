@@ -17,7 +17,6 @@ public class CarOrderDTO {
     private AdminDTO admin;
     private OrderStatus status;
     private CustomerDTO customer;
-    private CarDTO car;
     private double totalPrice;
     private String comment;
     private CarScheduleDTO schedule;

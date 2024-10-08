@@ -30,7 +30,7 @@ public class CarOrderController {
     }
 
     @DeleteMapping (BASE_PATH +"/{id}")
-    public ResponseEntity deleteCarOrderById (@PathVariable Long id) {
+    public ResponseEntity deleteCarOrderById (@PathVariable("id") Long id) {
         if (!carOrderService.deleteCarOrderById(id))
             throw new NotFoundException();
 
@@ -38,7 +38,7 @@ public class CarOrderController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateCarOrderByID (@PathVariable Long id, @RequestBody CarOrderDTO carOrderDTO) {
+    public ResponseEntity updateCarOrderByID (@PathVariable("id") Long id, @RequestBody CarOrderDTO carOrderDTO) {
         if (carOrderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
             throw new NotFoundException();
         }

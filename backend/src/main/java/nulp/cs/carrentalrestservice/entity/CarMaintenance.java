@@ -17,9 +17,7 @@ public class CarMaintenance {
     private String description;
     @Column(nullable = false)
     private Double price;
-    @ManyToOne
-    private Car car;
     @OneToOne
-    @JoinColumn(nullable = false, name = "schedule_id", referencedColumnName = "id")
+    @JoinColumn(nullable = false, name = "schedule_id")
     private CarSchedule schedule;
 }

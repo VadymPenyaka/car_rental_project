@@ -5,7 +5,6 @@ import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,8 +31,8 @@ class CarControllerIT {
     private CarRepository carRepository;
 
     @Test
-    void getAllCars() {
-        List<CarDTO> carDTOS = controller.getAllCars();
+    void getAllCarsByCriteria() {
+        List<CarDTO> carDTOS = controller.getAllCarsByCriteria(null, null, null, null, null, null, null);
         System.out.println(carDTOS);
         assertThat(carDTOS.size()).isEqualTo(2);
     }

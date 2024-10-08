@@ -7,7 +7,6 @@ import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,7 +24,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
 
     @Override
     public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, Long id) {
-        checkIfCarBooked(carScheduleDTO);
+        checkIfCarBooked(id, carScheduleDTO);
 
         AtomicReference<Optional<CarScheduleDTO>> atomicReference= new AtomicReference<>();
 
@@ -42,12 +41,12 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         }, () -> atomicReference.set(Optional.empty()));
 
 
-        return Optional.empty();
+        return atomicReference.get();
     }
 
     @Override
     public CarScheduleDTO createCarSchedule(CarScheduleDTO carSchedule) {
-        checkIfCarBooked(carSchedule);
+        checkIfCarBooked(null, carSchedule);
 
         return carScheduleMapper.carScheduleToCarScheduleDTO(carScheduleRepository
                 .save(carScheduleMapper.carScheduleDtoToCarSchedule(carSchedule)));
@@ -62,11 +61,12 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-    public void checkIfCarBooked(CarScheduleDTO carSchedule) {
+    public void checkIfCarBooked(Long excludeScheduleId, CarScheduleDTO carSchedule) {
         boolean isCarBooked = carScheduleRepository.isCarBooked(
                 carSchedule.getCar().getId(),
                 carSchedule.getStartDate(),
-                carSchedule.getEndDate());
+                carSchedule.getEndDate(),
+                excludeScheduleId);
 
         if (isCarBooked) {
             throw new IllegalArgumentException("Car already booked for this period!");

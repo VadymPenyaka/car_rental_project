@@ -38,8 +38,8 @@ VALUES (1, 1, '2024-09-20', '2024-09-22', 'BOOKED');
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
 VALUES (2, 1, '2024-09-23', '2024-09-24', 'UNDER_SERVICE');
 
-INSERT INTO `cars_maintenance` (`id`, `schedule_id`, `car_id`, `description`, `price`)
-VALUES (1, 2, 1, 'Cleaning', 100);
+INSERT INTO `cars_maintenance` (`id`, `schedule_id`, `description`, `price`)
+VALUES (1, 2, 'Cleaning', 100);
 
-INSERT INTO `car_orders` (`admin_id`, `id`, `status`, `car_id`, `customer_id`, `total_price`, `comment`, `schedule_id`)
-VALUES (1, 1, 'APPROVED', 1, 1, 300.0, 'none', 1);
+INSERT INTO `car_orders` (`admin_id`, `id`, `status`, `customer_id`, `total_price`, `comment`, `schedule_id`)
+VALUES (1, 1, 'APPROVED', 1, 300.0, 'none', 1);

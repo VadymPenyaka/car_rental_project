@@ -129,4 +129,14 @@ class CarPricingServiceImplTest {
         assertThat(actual).isNotNull();
     }
 
+    @Test
+    void createCarPricing() {
+        when(carPricingRepository.save(any())).thenReturn(carPricing);
+        when(carPricingMapper.carPricingToCarPricingDto(any())).thenReturn(carPricingDTO);
+
+        CarPricingDTO actual = carPricingService.createCarPricing(carPricingDTO);
+        assertThat(actual).isNotNull();
+        assertThat(actual).isEqualTo(carPricingDTO);
+    }
+
 }

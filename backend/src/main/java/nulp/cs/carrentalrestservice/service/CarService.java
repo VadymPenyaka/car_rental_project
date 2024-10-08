@@ -2,6 +2,8 @@ package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.FuelType;
+import nulp.cs.carrentalrestservice.model.GearboxType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +14,13 @@ public interface CarService {
 
     Optional<CarDTO> getCarByID (Long id);
 
-    List<CarDTO> getAllCars ();
+    List<CarDTO> getAllCarsByCriteria(Long locationId,
+                                      CarClass carClass,
+                                      String brand,
+                                      GearboxType gearboxType,
+                                      FuelType fuelType,
+                                      LocalDate startDate,
+                                      LocalDate endDate);
 
     Boolean deleteCarById (Long id);
 

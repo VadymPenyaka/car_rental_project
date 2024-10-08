@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
@@ -10,9 +11,6 @@ import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,6 +28,8 @@ public class CarOrderServiceImpl implements CarOrderService {
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
         validateOrder(carOrderDTO);
         carOrderDTO.setSchedule(carScheduleService.createCarSchedule(carOrderDTO.getSchedule()));
+
+        publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         return carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
     }
@@ -73,7 +73,6 @@ public class CarOrderServiceImpl implements CarOrderService {
                 carOrderDTO.getSchedule().getStartDate(),
                 carOrderDTO.getSchedule().getEndDate()))
             throw new IllegalArgumentException("You have another order for this period.");
-
     }
 
 }

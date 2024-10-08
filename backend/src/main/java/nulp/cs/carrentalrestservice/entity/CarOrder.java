@@ -26,9 +26,6 @@ public class CarOrder {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
     private OrderStatus status;
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Car car;
     @Column(nullable = false)
     private double totalPrice;
     @Column(columnDefinition = "varchar(100)")

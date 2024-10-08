@@ -30,6 +30,8 @@ class CarOrderServiceImplTest {
     private CarScheduleMapper carScheduleMapper;
     @Mock
     private CarOrderMapperImpl carOrderMapper;
+    @Mock
+    private CarScheduleService carScheduleService;
     @InjectMocks
     private CarOrderServiceImpl carOrderService;
 
@@ -54,9 +56,6 @@ class CarOrderServiceImplTest {
                 .phoneNumber("123456789000")
                 .build();
 
-        Car car = Car.builder().build();
-        CarDTO carDTO = CarDTO.builder().build();
-
         Customer customer =  Customer.builder().email("email@gmail.com").firstName("FirstName").build();
         CustomerDTO customerDTO = CustomerDTO.builder().build();
 
@@ -75,7 +74,6 @@ class CarOrderServiceImplTest {
         carOrder = CarOrder.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(admin)
-                .car(car)
                 .customer(customer)
                 .schedule(carSchedule)
                 .totalPrice(1000.0)
@@ -84,7 +82,6 @@ class CarOrderServiceImplTest {
         carOrderDTO = CarOrderDTO.builder()
                 .status(OrderStatus.IN_USE)
                 .admin(adminDTO)
-                .car(carDTO)
                 .customer(customerDTO)
                 .totalPrice(1000.0)
                 .schedule(carScheduleDTO)
@@ -97,7 +94,6 @@ class CarOrderServiceImplTest {
     void createCarOrder() {
         when(carOrderRepository.save(any())).thenReturn(carOrder);
         when(carOrderMapper.carOrderToCarOrderDto(any())).thenReturn(carOrderDTO);
-        when(carScheduleRepository.isCarBooked(any(), any(), any())).thenReturn(false);
 
         CarOrderDTO createdCarOrder = carOrderService.createCarOrder(carOrderDTO);
 

@@ -19,4 +19,6 @@ public class CarDTO {
         private FuelType fuelType;
         private GearboxType gearboxType;
         private LocationDTO location;
+        private DriveType driveType;
+        private Double engineCapacity;
 }

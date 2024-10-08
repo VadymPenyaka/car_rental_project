@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.FuelType;
+import nulp.cs.carrentalrestservice.model.GearboxType;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +35,14 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> getAllCars() {
-        return carRepository.findAll().stream()
+    public List<CarDTO> getAllCarsByCriteria(Long locationId,
+                                             CarClass carClass,
+                                             String brand,
+                                             GearboxType gearboxType,
+                                             FuelType fuelType,
+                                             LocalDate startDate,
+                                             LocalDate endDate) {
+        return carRepository.findAllCarsByCriteria(locationId, carClass, brand, gearboxType, fuelType, startDate, endDate).stream()
                 .map(carMapper::carToCarDto).toList();
     }
 
