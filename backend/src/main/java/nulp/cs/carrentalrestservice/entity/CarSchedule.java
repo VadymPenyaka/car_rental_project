@@ -5,6 +5,7 @@ import lombok.*;
 import nulp.cs.carrentalrestservice.model.ScheduleStatus;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,8 +15,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CarSchedule {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @ManyToOne
     private Car car;
     @Column(nullable = false)

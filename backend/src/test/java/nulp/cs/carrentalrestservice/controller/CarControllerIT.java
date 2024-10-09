@@ -33,7 +33,6 @@ class CarControllerIT {
     @Test
     void getAllCarsByCriteria() {
         List<CarDTO> carDTOS = controller.getAllCarsByCriteria(null, null, null, null, null, null, null);
-        System.out.println(carDTOS);
         assertThat(carDTOS.size()).isEqualTo(2);
     }
 

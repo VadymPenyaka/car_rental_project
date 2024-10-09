@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarOrderDTO {
-    private long id;
+    private UUID id;
     private AdminDTO admin;
     private OrderStatus status;
     private CustomerDTO customer;

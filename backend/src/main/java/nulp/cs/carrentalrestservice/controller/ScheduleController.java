@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
@@ -16,7 +18,7 @@ public class ScheduleController {
     private final String BASE_PATH = "api/v1/schedules";
 
     @GetMapping(BASE_PATH+"/{id}")
-    public CarScheduleDTO getScheduleId(@PathVariable("id") Long id) {
+    public CarScheduleDTO getScheduleId(@PathVariable("id") UUID id) {
         return carScheduleService.getCarScheduleById(id)
                 .orElseThrow(NotFoundException::new);
     }
@@ -28,7 +30,7 @@ public class ScheduleController {
     }
 
     @PutMapping(BASE_PATH+"/{id}")
-    public ResponseEntity updateSchedule(@PathVariable("id") Long id, @RequestBody CarScheduleDTO carScheduleDTO) {
+    public ResponseEntity updateSchedule(@PathVariable("id") UUID id, @RequestBody CarScheduleDTO carScheduleDTO) {
         if (carScheduleService.updateCarScheduleById(carScheduleDTO, id).isEmpty())
             throw new NotFoundException();
 
@@ -36,7 +38,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping(BASE_PATH+"/{id}")
-    public ResponseEntity deleteSchedule(@PathVariable("id") Long id) {
+    public ResponseEntity deleteSchedule(@PathVariable("id") UUID id) {
         if(!carScheduleService.deleteCarScheduleById(id))
             throw new NotFoundException();
 

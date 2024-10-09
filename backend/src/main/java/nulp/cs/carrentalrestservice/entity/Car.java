@@ -45,7 +45,7 @@ public class Car {
     private Double engineCapacity;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "car_pricing_id", referencedColumnName = "id")
+    @JoinColumn(name = "car_pricing_id")
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car")
     private Set<CarSchedule> carSchedules;

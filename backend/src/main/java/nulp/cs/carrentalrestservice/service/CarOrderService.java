@@ -1,18 +1,17 @@
 package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.OrderStatus;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CarOrderService {
     CarOrderDTO createCarOrder (CarOrderDTO carOrderDTO);
 
-    Optional<CarOrderDTO> getCarOrderByID (Long id);
+    Optional<CarOrderDTO> getCarOrderByID (UUID id);
 
-    boolean deleteCarOrderById (Long id);
+    boolean deleteCarOrderById (UUID id);
 
-    Optional<CarOrderDTO> updateCarOrderById(Long id, CarOrderDTO carOrderDTO);
+    Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO);
 
 }

@@ -3,8 +3,10 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.OrderStatus;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "car_orders")
@@ -15,8 +17,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CarOrder {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    @GeneratedValue
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @ManyToOne
     @JoinColumn(nullable = false)
     private Admin admin;
@@ -31,7 +34,7 @@ public class CarOrder {
     @Column(columnDefinition = "varchar(100)")
     private String comment;
     @OneToOne
-    @JoinColumn(nullable = false, name = "schedule_id", referencedColumnName = "id")
+    @JoinColumn(nullable = false, name = "schedule_id")
     private CarSchedule schedule;
 
 }

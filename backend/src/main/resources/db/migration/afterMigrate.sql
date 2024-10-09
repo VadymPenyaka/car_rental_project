@@ -33,12 +33,12 @@ INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
 VALUES (2, 'Ivan', 'Melnyk', 'P@ssw0rd', 'ivan@gmail.com', '09912374621');
 
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
-VALUES (1, 1, '2024-09-20', '2024-09-22', 'BOOKED');
+VALUES ('526ea4c7-afa7-4a58-8c6d-967fabbcb180', 1, '2024-09-20', '2024-09-22', 'BOOKED');
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
-VALUES (2, 1, '2024-09-23', '2024-09-24', 'UNDER_SERVICE');
+VALUES ('245deb7c-5e36-49df-8e9c-78a1bab2d373', 1, '2024-09-23', '2024-09-24', 'UNDER_SERVICE');
 
 INSERT INTO `cars_maintenance` (`id`, `schedule_id`, `description`, `price`)
-VALUES (1, 2, 'Cleaning', 100);
+VALUES ('ecb05a9b-0541-49f6-8d31-36acfb37ef09', '245deb7c-5e36-49df-8e9c-78a1bab2d373', 'Cleaning', 100);
 
 INSERT INTO `car_orders` (`admin_id`, `id`, `status`, `customer_id`, `total_price`, `comment`, `schedule_id`)
-VALUES (1, 1, 'APPROVED', 1, 300.0, 'none', 1);
+VALUES (1, '78e43d66-4c9c-4086-9e6c-8f9e5eb91d55', 'APPROVED', 1, 300.0, 'none', '526ea4c7-afa7-4a58-8c6d-967fabbcb180');

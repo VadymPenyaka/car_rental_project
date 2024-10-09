@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarScheduleDTO {
-    private Long id;
+    private UUID id;
     private CarDTO car;
     private LocalDate startDate;
     private LocalDate endDate;

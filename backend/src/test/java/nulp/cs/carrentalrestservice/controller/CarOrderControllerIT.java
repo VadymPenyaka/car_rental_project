@@ -3,14 +3,9 @@ package nulp.cs.carrentalrestservice.controller;
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
-import nulp.cs.carrentalrestservice.mapper.AdminMapper;
-import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
-import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
+import nulp.cs.carrentalrestservice.mapper.*;
 import nulp.cs.carrentalrestservice.model.*;
-import nulp.cs.carrentalrestservice.repository.AdminRepository;
-import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
-import nulp.cs.carrentalrestservice.repository.CarRepository;
-import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
+import nulp.cs.carrentalrestservice.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +18,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,19 +40,39 @@ class CarOrderControllerIT {
     @Autowired
     private CarScheduleMapper carScheduleMapper;
 
-
+    @Autowired
+    private CarRepository carRepository;
+    @Autowired
+    private CarMapper carMapper;
+    @Autowired
+    private AdminRepository adminRepository;
+    @Autowired
+    private AdminMapper adminMapper;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Test
     @Transactional
     @Rollback
     void createCarOrder() {
-        CarOrderDTO carOrderDtoToSave = carOrderMapper
-                .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
+        CarScheduleDTO carScheduleDTO = CarScheduleDTO.builder()
+                .id(UUID.randomUUID())
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(1))
+                .status(ScheduleStatus.BOOKED)
+                .car(carMapper.carToCarDto(carRepository.findAll().get(0)))
+                .build();
 
-        CarScheduleDTO carSchedule = carOrderDtoToSave.getSchedule();
-        carSchedule.setStartDate(LocalDate.now().minusDays(1));
-        carSchedule.setEndDate(LocalDate.now().plusDays(1));
-        carOrderDtoToSave.setSchedule(carSchedule);
+        CarOrderDTO carOrderDtoToSave = CarOrderDTO.builder()
+                .id(UUID.randomUUID())
+                .status(OrderStatus.APPROVED)
+                .admin(adminMapper.adminToAdminDto(adminRepository.findAll().get(0)))
+                .totalPrice(110.0)
+                .customer(customerMapper.customerToCustomerDto(customerRepository.findAll().get(0)))
+                .schedule(carScheduleDTO)
+                .build();
 
         ResponseEntity responseEntity = controller.createCarOrder(carOrderDtoToSave);
 

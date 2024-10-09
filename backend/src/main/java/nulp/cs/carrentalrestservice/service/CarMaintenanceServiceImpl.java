@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -20,7 +21,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     private final CarScheduleMapper carScheduleMapper;
 
     @Override
-    public Optional<CarMaintenanceDTO> getCarMaintenanceById(Long id) {
+    public Optional<CarMaintenanceDTO> getCarMaintenanceById(UUID id) {
         return Optional.ofNullable(carMaintenanceMapper
                 .carMaintenanceToCarMaintenanceDTO(carMaintenanceRepository.findById(id).get()));
     }
@@ -35,7 +36,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Optional<CarMaintenanceDTO> updateCarMaintenanceById(Long id, CarMaintenanceDTO carMaintenanceDTO) {
+    public Optional<CarMaintenanceDTO> updateCarMaintenanceById(UUID id, CarMaintenanceDTO carMaintenanceDTO) {
         AtomicReference<Optional<CarMaintenanceDTO>> carMaintenanceRef = new AtomicReference<>();
 
         carMaintenanceRepository.findById(id).ifPresentOrElse( foundMaintenance -> {
@@ -55,10 +56,11 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public boolean deleteCarMaintenanceById(Long id) {
+    public boolean deleteCarMaintenanceById(UUID id) {
         if(carMaintenanceRepository.existsById(id)) {
             carMaintenanceRepository.deleteById(id);
-            carScheduleService.deleteCarScheduleById(id);
+            // TODO
+//            carScheduleService.deleteCarScheduleById(id);
             return true;
         }
 

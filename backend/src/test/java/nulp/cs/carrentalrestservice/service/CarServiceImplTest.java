@@ -78,7 +78,8 @@ class CarServiceImplTest {
 
     @Test
     void getAllCarsByCriteria() {
-        when(carRepository.findAll()).thenReturn(Arrays.asList(car));
+        when(carRepository.findAllCarsByCriteria(any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(Arrays.asList(car));
 
         List<CarDTO> foundCars = carService.getAllCarsByCriteria(null, null, null, null, null, null, null);
 

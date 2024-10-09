@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -35,23 +36,24 @@ public class CarOrderServiceImpl implements CarOrderService {
     }
 
     @Override
-    public Optional<CarOrderDTO> getCarOrderByID(Long id) {
+    public Optional<CarOrderDTO> getCarOrderByID(UUID id) {
         return Optional.ofNullable(carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .findById(id).orElse(null)));
     }
 
     @Override
-    public boolean deleteCarOrderById(Long id) {
+    public boolean deleteCarOrderById(UUID id) {
         if (carOrderRepository.existsById(id)) {
             carOrderRepository.deleteById(id);
-            carScheduleService.deleteCarScheduleById(id);
+//            carScheduleService.deleteCarScheduleById(id);
+            //TODO
             return true;
         }
         return false;
     }
 
     @Override
-    public Optional<CarOrderDTO> updateCarOrderById(Long id, CarOrderDTO carOrderDTO) {
+    public Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO) {
         AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
 
         carOrderRepository.findById(id).ifPresentOrElse(foundOrder -> {

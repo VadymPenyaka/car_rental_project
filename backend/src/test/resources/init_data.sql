@@ -18,10 +18,10 @@ VALUES (1, 'Lviv Metro', 'Lviv', 'Lviv', 'Gorodotska 300', '32423434', '0989809'
 INSERT INTO `locations` (`id`, `location_name`, `region`, `city`, `address`, `latitude`, `longitude`)
 VALUES (2, 'Boryspil Airport', 'Kyiv', 'Kyiv', 'Airport (KBP)', '3242324', '0989809');
 
-INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pricing_id`, `id`, `brand`, `model`, `car_class`, `gearbox_type`, `location_id`)
-VALUES (10, 'DIESEL', 5, 1, 1, 'BMW', 'X5', 'BUSINESS', 'AUTO', 1);
-INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pricing_id`, `id`, `brand`, `model`, `car_class`, `gearbox_type`, `location_id`)
-VALUES (9, 'DIESEL', 5, 2, 2, 'BMW', 'X6', 'BUSINESS', 'AUTO', 2);
+INSERT INTO `cars` (fuel_consumption, fuel_type, number_of_seats, car_pricing_id, id, brand, model, car_class, gearbox_type, location_id, `engine_capacity`, `drive_type`)
+VALUES (13, 'DIESEL', 5, 1, 1, 'BMW', 'X5', 'BUSINESS', 'AUTO', 1, 3.0, 'FRONT_WD');
+INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pricing_id`, `id`, `brand`, `model`, `car_class`, `gearbox_type`, `location_id`, `engine_capacity`, `drive_type`)
+VALUES (9, 'GASOLINE', 5, 2, 2, 'BMW', 'X6', 'BUSINESS', 'AUTO', 1, 2.0, 'FRONT_WD');
 
 INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_id`, `first_name`, `sure_name`, `email`, `phone_number`)
 VALUES ('2001-05-20', '2026-12-01', 2, '999999999', 'Pip', 'Ivan', 'ivan@gmail.com', '0955915122');
@@ -34,12 +34,12 @@ INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
 VALUES (2, 'Ivan', 'Melnyk', 'P@ssw0rd', 'ivan@gmail.com', '09912374621');
 
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
-VALUES (1, 1, '2024-09-20', '2024-09-22', 'BOOKED');
+VALUES ('526ea4c7-afa7-4a58-8c6d-967fabbcb180', 1, '2024-09-20', '2024-09-22', 'BOOKED');
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
-VALUES (2, 1, '2024-09-23', '2024-09-24', 'UNDER_SERVICE');
+VALUES ('245deb7c-5e36-49df-8e9c-78a1bab2d373', 1, '2024-09-23', '2024-09-24', 'UNDER_SERVICE');
 
 INSERT INTO `cars_maintenance` (`id`, `schedule_id`, `description`, `price`)
-VALUES (1, 2, 'Cleaning', 100);
+VALUES ('ecb05a9b-0541-49f6-8d31-36acfb37ef09', '245deb7c-5e36-49df-8e9c-78a1bab2d373', 'Cleaning', 100);
 
 INSERT INTO `car_orders` (`admin_id`, `id`, `status`, `customer_id`, `total_price`, `comment`, `schedule_id`)
-VALUES (1, 1, 'APPROVED', 1, 300.0, 'none', 1);
+VALUES (1, '9a49ebae-5abd-41ed-95ab-f9297de73dc5', 'APPROVED', 1, 300.0, 'none', '526ea4c7-afa7-4a58-8c6d-967fabbcb180');

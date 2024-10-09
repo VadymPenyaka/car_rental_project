@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-public interface CarScheduleRepository extends JpaRepository<CarSchedule, Long> {
+public interface CarScheduleRepository extends JpaRepository<CarSchedule, UUID> {
     @Query("SELECT COUNT(s) > 0 FROM CarSchedule s " +
             "WHERE s.car.id =:carId AND s.startDate <= :endDate " +
             "AND s.endDate >= :startDate AND (:scheduleId IS NULL OR s.id <> :scheduleId)")
-    boolean isCarBooked (@Param("carId") Long carId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("scheduleId") Long scheduleId);
+    boolean isCarBooked (@Param("carId") Long carId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("scheduleId") UUID scheduleId);
 }

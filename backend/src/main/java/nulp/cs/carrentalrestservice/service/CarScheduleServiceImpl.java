@@ -8,6 +8,7 @@ import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -17,13 +18,13 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     private final CarScheduleMapper carScheduleMapper;
 
     @Override
-    public Optional<CarScheduleDTO> getCarScheduleById(Long id) {
+    public Optional<CarScheduleDTO> getCarScheduleById(UUID id) {
         return Optional.ofNullable(carScheduleMapper
                 .carScheduleToCarScheduleDTO(carScheduleRepository.findById(id).get()));
     }
 
     @Override
-    public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, Long id) {
+    public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, UUID id) {
         checkIfCarBooked(id, carScheduleDTO);
 
         AtomicReference<Optional<CarScheduleDTO>> atomicReference= new AtomicReference<>();
@@ -53,7 +54,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     }
 
     @Override
-    public boolean deleteCarScheduleById(Long id) {
+    public boolean deleteCarScheduleById(UUID id) {
         if (carScheduleRepository.existsById(id)) {
             carScheduleRepository.deleteById(id);
             return true;
@@ -61,12 +62,24 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-    public void checkIfCarBooked(Long excludeScheduleId, CarScheduleDTO carSchedule) {
-        boolean isCarBooked = carScheduleRepository.isCarBooked(
-                carSchedule.getCar().getId(),
-                carSchedule.getStartDate(),
-                carSchedule.getEndDate(),
-                excludeScheduleId);
+    public void checkIfCarBooked(UUID excludeScheduleId, CarScheduleDTO carSchedule) {
+        boolean isCarBooked;
+        // TODO
+        if(carSchedule!=null) {
+            isCarBooked = carScheduleRepository.isCarBooked(
+                    carSchedule.getCar().getId(),
+                    carSchedule.getStartDate(),
+                    carSchedule.getEndDate(),
+                    excludeScheduleId);
+        } else {
+            isCarBooked = carScheduleRepository.isCarBooked(
+                    carSchedule.getCar().getId(),
+                    carSchedule.getStartDate(),
+                    carSchedule.getEndDate(),
+                    null);
+        }
+
+
 
         if (isCarBooked) {
             throw new IllegalArgumentException("Car already booked for this period!");

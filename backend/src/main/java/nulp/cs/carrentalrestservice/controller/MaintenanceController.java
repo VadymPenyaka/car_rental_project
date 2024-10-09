@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 public class MaintenanceController {
@@ -15,7 +17,7 @@ public class MaintenanceController {
     private final String BASE_PATH = "api/v1/maintenance";
 
     @GetMapping(BASE_PATH+"/{id}")
-    public CarMaintenanceDTO getMaintenanceById(@PathVariable("id") Long id) {
+    public CarMaintenanceDTO getMaintenanceById(@PathVariable("id") UUID id) {
         return carMaintenanceService.getCarMaintenanceById(id)
                 .orElseThrow(NotFoundException::new);
     }
@@ -27,7 +29,7 @@ public class MaintenanceController {
     }
 
     @PutMapping(BASE_PATH+"/{id}")
-    public ResponseEntity updateMaintenanceById(@PathVariable("id") Long id, @RequestBody CarMaintenanceDTO carMaintenanceDTO) {
+    public ResponseEntity updateMaintenanceById(@PathVariable("id") UUID id, @RequestBody CarMaintenanceDTO carMaintenanceDTO) {
         if(carMaintenanceService.updateCarMaintenanceById(id, carMaintenanceDTO).isEmpty())
             throw new NotFoundException();
 
@@ -35,7 +37,7 @@ public class MaintenanceController {
     }
 
     @DeleteMapping(BASE_PATH+"/{id}")
-    public ResponseEntity deleteMaintenanceById(@PathVariable("id") Long id) {
+    public ResponseEntity deleteMaintenanceById(@PathVariable("id") UUID id) {
         if(!carMaintenanceService.deleteCarMaintenanceById(id))
             throw new NotFoundException();
 

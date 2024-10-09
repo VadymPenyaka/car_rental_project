@@ -32,7 +32,6 @@ public class MaintenanceListener {
                 .description("Cleaning")
                 .build();
 
-        System.out.println(carOrderDTO.getSchedule().getEndDate().plusDays(1)+"!!!!!!!!\n\n\n\n\n\n");
         carMaintenanceService.createCarMaintenance(carMaintenanceDTO);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,12 +26,12 @@ public class CarOrderController {
     }
 
     @GetMapping(BASE_PATH +"/{id}")
-    public CarOrderDTO getCarOrderById (@PathVariable("id") Long id) {
+    public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }
 
     @DeleteMapping (BASE_PATH +"/{id}")
-    public ResponseEntity deleteCarOrderById (@PathVariable("id") Long id) {
+    public ResponseEntity deleteCarOrderById (@PathVariable("id") UUID id) {
         if (!carOrderService.deleteCarOrderById(id))
             throw new NotFoundException();
 
@@ -38,7 +39,7 @@ public class CarOrderController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateCarOrderByID (@PathVariable("id") Long id, @RequestBody CarOrderDTO carOrderDTO) {
+    public ResponseEntity updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {
         if (carOrderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
             throw new NotFoundException();
         }
