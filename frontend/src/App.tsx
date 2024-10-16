@@ -1,9 +1,12 @@
 import { Header } from "./components/header/Header"
+import Hero from "./components/Hero/Hero"
 
-// import SimpleComponent from "./components/SimpleComponent"
 function App() {
   return (
-    <Header />
+    <>
+      <Header />
+      <Hero />
+    </>
   )
 }
 
