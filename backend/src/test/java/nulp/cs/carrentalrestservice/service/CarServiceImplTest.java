@@ -2,9 +2,8 @@ package nulp.cs.carrentalrestservice.service;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.Car;
-import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.mapper.CarMapperImpl;
-import nulp.cs.carrentalrestservice.model.CarClass;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.junit.jupiter.api.BeforeEach;

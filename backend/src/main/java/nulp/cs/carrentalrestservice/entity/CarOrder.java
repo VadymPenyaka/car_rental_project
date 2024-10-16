@@ -2,10 +2,8 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nulp.cs.carrentalrestservice.model.OrderStatus;
-import org.hibernate.annotations.GenericGenerator;
+import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +31,7 @@ public class CarOrder {
     private double totalPrice;
     @Column(columnDefinition = "varchar(100)")
     private String comment;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(nullable = false, name = "schedule_id")
     private CarSchedule schedule;
 

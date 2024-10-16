@@ -7,6 +7,7 @@ import nulp.cs.carrentalrestservice.repository.LocationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -22,13 +23,13 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Optional<LocationDTO> getLocationByID(Long id) {
+    public Optional<LocationDTO> getLocationByID(UUID id) {
         return Optional.ofNullable(mapper.locationToLocationDto(repository
                 .findById(id).orElse(null)));
     }
 
     @Override
-    public boolean deleteLocationById(Long id) {
+    public boolean deleteLocationById(UUID id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;
@@ -37,7 +38,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Optional<LocationDTO> updateLocationById(Long id, LocationDTO locationDTO) {
+    public Optional<LocationDTO> updateLocationById(UUID id, LocationDTO locationDTO) {
         AtomicReference<Optional<LocationDTO>> atomicReference = new AtomicReference<>();
 
         repository.findById(id).ifPresentOrElse(foundLocation -> {

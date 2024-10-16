@@ -4,6 +4,8 @@ import nulp.cs.carrentalrestservice.entity.*;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapperImpl;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.*;
+import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;

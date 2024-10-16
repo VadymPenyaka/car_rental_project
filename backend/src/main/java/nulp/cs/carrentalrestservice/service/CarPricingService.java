@@ -3,15 +3,16 @@ package nulp.cs.carrentalrestservice.service;
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CarPricingService {
-    Optional<CarPricingDTO> getCarPricingById (Long id);
+    Optional<CarPricingDTO> getCarPricingById (UUID id);
 
-    Optional<CarPricingDTO> updateCarPricingByID (Long id, CarPricingDTO carPricing);
+    Optional<CarPricingDTO> updateCarPricingByID (UUID id, CarPricingDTO carPricing);
 
-    Boolean deleteCarPricingById (Long id);
+    Boolean deleteCarPricingById (UUID id);
 
     CarPricingDTO createCarPricing (CarPricingDTO carPricingDTO);
 
-    Optional<CarPricingDTO> getCarPricingByCarId (Long carId);
+    Optional<CarPricingDTO> getCarPricingByCarId (UUID carId);
 }

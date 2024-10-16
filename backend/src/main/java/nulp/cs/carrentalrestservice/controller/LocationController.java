@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 public class LocationController {
@@ -22,13 +24,13 @@ public class LocationController {
     }
 
     @GetMapping(BASE_PATH +"/{id}")
-    public LocationDTO getLocationById (@PathVariable Long id) {
+    public LocationDTO getLocationById (@PathVariable UUID id) {
         return locationService.getLocationByID(id)
                 .orElseThrow(NotFoundException::new);
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateLocationBuId (@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
+    public ResponseEntity updateLocationBuId (@PathVariable UUID id, @RequestBody LocationDTO locationDTO) {
         if (locationService.updateLocationById(id, locationDTO).isEmpty())
             throw new NotFoundException();
 
@@ -36,7 +38,7 @@ public class LocationController {
     }
 
     @DeleteMapping(BASE_PATH +"/{id}")
-    public ResponseEntity deleteLocationById (@PathVariable Long id) {
+    public ResponseEntity deleteLocationById (@PathVariable UUID id) {
         if (!locationService.deleteLocationById(id))
             throw new NotFoundException();
 

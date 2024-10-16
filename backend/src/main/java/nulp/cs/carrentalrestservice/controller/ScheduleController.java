@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import netscape.javascript.JSObject;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.service.CarScheduleService;
@@ -18,7 +17,7 @@ public class ScheduleController {
     private final String BASE_PATH = "api/v1/schedules";
 
     @GetMapping(BASE_PATH+"/{id}")
-    public CarScheduleDTO getScheduleId(@PathVariable("id") UUID id) {
+    public CarScheduleDTO getScheduleById(@PathVariable("id") UUID id) {
         return carScheduleService.getCarScheduleById(id)
                 .orElseThrow(NotFoundException::new);
     }
@@ -30,7 +29,7 @@ public class ScheduleController {
     }
 
     @PutMapping(BASE_PATH+"/{id}")
-    public ResponseEntity updateSchedule(@PathVariable("id") UUID id, @RequestBody CarScheduleDTO carScheduleDTO) {
+    public ResponseEntity updateScheduleById(@PathVariable("id") UUID id, @RequestBody CarScheduleDTO carScheduleDTO) {
         if (carScheduleService.updateCarScheduleById(carScheduleDTO, id).isEmpty())
             throw new NotFoundException();
 
@@ -38,7 +37,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping(BASE_PATH+"/{id}")
-    public ResponseEntity deleteSchedule(@PathVariable("id") UUID id) {
+    public ResponseEntity deleteScheduleById(@PathVariable("id") UUID id) {
         if(!carScheduleService.deleteCarScheduleById(id))
             throw new NotFoundException();
 

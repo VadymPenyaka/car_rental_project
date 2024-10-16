@@ -10,6 +10,7 @@ import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -21,13 +22,13 @@ public class CarPricingServiceImpl implements CarPricingService {
     private final CarPricingMapper carPricingMapper;
 
     @Override
-    public Optional<CarPricingDTO> getCarPricingById(Long id) {
+    public Optional<CarPricingDTO> getCarPricingById(UUID id) {
         return Optional.ofNullable(carPricingMapper
                 .carPricingToCarPricingDto(carPricingRepository.findById(id).get()));
     }
 
     @Override
-    public Optional<CarPricingDTO> updateCarPricingByID(Long id, CarPricingDTO carPricing) {
+    public Optional<CarPricingDTO> updateCarPricingByID(UUID id, CarPricingDTO carPricing) {
         AtomicReference<Optional<CarPricingDTO>> atomicReference = new AtomicReference<>();
 
         carPricingRepository.findById(id).ifPresentOrElse( foundPricing -> {
@@ -48,7 +49,7 @@ public class CarPricingServiceImpl implements CarPricingService {
     }
 
     @Override
-    public Boolean deleteCarPricingById(Long id) {
+    public Boolean deleteCarPricingById(UUID id) {
         if(carPricingRepository.existsById(id)) {
             carPricingRepository.deleteById(id);
             return true;
@@ -64,7 +65,7 @@ public class CarPricingServiceImpl implements CarPricingService {
     }
 
     @Override
-    public Optional<CarPricingDTO> getCarPricingByCarId(Long carId) {
+    public Optional<CarPricingDTO> getCarPricingByCarId(UUID carId) {
         Car car = carRepository.findById(carId).get();
         CarPricingDTO carPricingDTO = carPricingMapper.carPricingToCarPricingDto(car.getCarPricing());
         return Optional.ofNullable(carPricingDTO);

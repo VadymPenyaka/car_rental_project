@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.transaction.Transactional;
-import nulp.cs.carrentalrestservice.entity.CarPricing;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
@@ -12,17 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-class CarPricingControllerTest {
+class CarPricingControllerIT {
     @Autowired
     private CarPricingRepository carPricingRepository;
     @Autowired

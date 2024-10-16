@@ -2,10 +2,10 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.CarClass;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.FuelType;
-import nulp.cs.carrentalrestservice.model.GearboxType;
+import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
+import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 import nulp.cs.carrentalrestservice.service.CarService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class CarController {
 
 
     @GetMapping(BASE_PATH)
-    public List<CarDTO> getAllCarsByCriteria(@RequestParam(required = false) Long locationId,
+    public List<CarDTO> getAllCarsByCriteria(@RequestParam(required = false) UUID locationId,
                                              @RequestParam(required = false) CarClass carClass,
                                              @RequestParam(required = false) String brand,
                                              @RequestParam(required = false) GearboxType gearboxType,
@@ -42,14 +43,14 @@ public class CarController {
     }
 
     @GetMapping(BASE_PATH +"/{id}")
-    public CarDTO getCarByID (@PathVariable("id") Long id) {
+    public CarDTO getCarByID (@PathVariable("id") UUID id) {
 
         return carService.getCarByID(id).orElseThrow(NotFoundException::new);
     }
 
 
     @PutMapping(BASE_PATH+"/{id}")
-    public ResponseEntity updateCarById (@PathVariable Long id, @RequestBody CarDTO car) {
+    public ResponseEntity updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
         if(carService.updateCarByID(id, car).isEmpty())
             throw new NotFoundException();
 
@@ -57,7 +58,7 @@ public class CarController {
     }
 
     @DeleteMapping(BASE_PATH+"/{id}")
-    public ResponseEntity deleteCarById (@PathVariable Long id) {
+    public ResponseEntity deleteCarById (@PathVariable UUID id) {
         if (!carService.deleteCarById(id))
             throw new NotFoundException();
 

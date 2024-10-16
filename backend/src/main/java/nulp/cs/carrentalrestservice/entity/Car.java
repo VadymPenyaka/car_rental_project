@@ -2,12 +2,13 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nulp.cs.carrentalrestservice.model.CarClass;
-import nulp.cs.carrentalrestservice.model.DriveType;
-import nulp.cs.carrentalrestservice.model.FuelType;
-import nulp.cs.carrentalrestservice.model.GearboxType;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
+import nulp.cs.carrentalrestservice.model.enumeration.DriveType;
+import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
+import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "cars")
@@ -20,7 +21,8 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @Column(nullable = false, columnDefinition = "varchar(50)", length = 50)
     private String brand;
     @Column(nullable = false, length = 50)

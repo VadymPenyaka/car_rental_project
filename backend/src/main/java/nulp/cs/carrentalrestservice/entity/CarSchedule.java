@@ -2,7 +2,7 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nulp.cs.carrentalrestservice.model.ScheduleStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 
 import java.time.LocalDate;
 import java.util.UUID;

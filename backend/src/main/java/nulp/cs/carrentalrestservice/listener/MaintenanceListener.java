@@ -5,9 +5,8 @@ import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
-import nulp.cs.carrentalrestservice.model.ScheduleStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.service.CarMaintenanceService;
-import nulp.cs.carrentalrestservice.service.CarScheduleService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

@@ -3,6 +3,8 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Setter
 @Getter
@@ -11,8 +13,9 @@ import lombok.*;
 @AllArgsConstructor
 public class CarPricing {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @Column(nullable = false)
     private Double pledge;
     @Column(nullable = false)

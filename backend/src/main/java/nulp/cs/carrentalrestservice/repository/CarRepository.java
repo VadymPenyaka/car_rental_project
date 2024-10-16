@@ -1,18 +1,18 @@
 package nulp.cs.carrentalrestservice.repository;
 
 import nulp.cs.carrentalrestservice.entity.Car;
-import nulp.cs.carrentalrestservice.entity.Location;
-import nulp.cs.carrentalrestservice.model.CarClass;
-import nulp.cs.carrentalrestservice.model.FuelType;
-import nulp.cs.carrentalrestservice.model.GearboxType;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
+import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
+import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, UUID> {
     @Query("SELECT c FROM Car c WHERE NOT EXISTS (" +
             "SELECT 1 FROM CarSchedule s WHERE s.car.id = c.id " +
             "AND s.startDate < :endDate AND s.endDate > :startDate)")
@@ -28,7 +28,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "NOT EXISTS (SELECT s FROM CarSchedule s WHERE s.car.id = c.id AND" +
             "(:startDate IS NULL OR s.endDate >= :startDate) AND " +
             "(:endDate IS NULL OR s.startDate <= :endDate)))" )
-    List<Car> findAllCarsByCriteria ( @Param("location") Long location,
+    List<Car> findAllCarsByCriteria ( @Param("location") UUID location,
                                       @Param("carClass") CarClass carClass,
                                       @Param("brand") String brand,
                                       @Param("gearboxType") GearboxType gearboxType,

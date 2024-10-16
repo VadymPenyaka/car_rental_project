@@ -2,16 +2,17 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
-import nulp.cs.carrentalrestservice.model.CarClass;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.FuelType;
-import nulp.cs.carrentalrestservice.model.GearboxType;
+import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
+import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -29,13 +30,13 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<CarDTO> getCarByID(Long id) {
+    public Optional<CarDTO> getCarByID(UUID id) {
         return Optional.ofNullable(carMapper
                 .carToCarDto(carRepository.findById(id).orElse(null)));
     }
 
     @Override
-    public List<CarDTO> getAllCarsByCriteria(Long locationId,
+    public List<CarDTO> getAllCarsByCriteria(UUID locationId,
                                              CarClass carClass,
                                              String brand,
                                              GearboxType gearboxType,
@@ -47,7 +48,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Boolean deleteCarById(Long id) {
+    public Boolean deleteCarById(UUID id) {
         if (carRepository.existsById(id)) {
             carRepository.deleteById(id);
             return true;
@@ -56,7 +57,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<CarDTO> updateCarByID(Long id, CarDTO carDTO) {
+    public Optional<CarDTO> updateCarByID(UUID id, CarDTO carDTO) {
         AtomicReference<Optional<CarDTO>> atomicReference = new AtomicReference<>();
 
         carRepository.findById(id).ifPresentOrElse( foundCar -> {

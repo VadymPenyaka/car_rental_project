@@ -2,9 +2,10 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.transaction.Transactional;
 import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.*;
 import nulp.cs.carrentalrestservice.model.*;
+import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

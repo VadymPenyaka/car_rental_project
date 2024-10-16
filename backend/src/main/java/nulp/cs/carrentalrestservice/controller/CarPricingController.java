@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
 @RequiredArgsConstructor
 public class CarPricingController {
@@ -16,7 +18,7 @@ public class CarPricingController {
     private final static String BASE_PATH = "api/v1/carPricing";
 
     @GetMapping(BASE_PATH +"/{id}")
-    public CarPricingDTO getCarPricingById (@PathVariable Long id) {
+    public CarPricingDTO getCarPricingById (@PathVariable UUID id) {
         return carPricingService.getCarPricingById(id)
                 .orElseThrow(NotFoundException::new);
     }
@@ -28,7 +30,7 @@ public class CarPricingController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateCarPricingById (@PathVariable Long id, @RequestBody CarPricingDTO carPricing) {
+    public ResponseEntity updateCarPricingById (@PathVariable UUID id, @RequestBody CarPricingDTO carPricing) {
         if(carPricingService.updateCarPricingByID(id, carPricing).isEmpty())
             throw new NotFoundException();
 
@@ -36,7 +38,7 @@ public class CarPricingController {
     }
 
     @DeleteMapping(BASE_PATH +"/{id}")
-    public ResponseEntity deleteCarPricingById (@PathVariable Long id) {
+    public ResponseEntity deleteCarPricingById (@PathVariable UUID id) {
         if(!carPricingService.deleteCarPricingById(id))
             throw new NotFoundException();
 
@@ -44,7 +46,7 @@ public class CarPricingController {
     }
 
     @GetMapping(BASE_PATH +"/getByCarId" +"/{carId}")
-    public CarPricingDTO getCarPricingByCarId (@PathVariable Long carId) {
+    public CarPricingDTO getCarPricingByCarId (@PathVariable UUID carId) {
         return carPricingService.getCarPricingByCarId(carId)
                 .orElseThrow(NotFoundException::new);
     }

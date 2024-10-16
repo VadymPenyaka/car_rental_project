@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.model;
+package nulp.cs.carrentalrestservice.model.enumeration;
 
 public enum CarClass {
     CHEAP, COMFORT, BUSINESS, MINIBUS
