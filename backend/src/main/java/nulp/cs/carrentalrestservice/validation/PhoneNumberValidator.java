@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
 
 import java.util.regex.Pattern;
 

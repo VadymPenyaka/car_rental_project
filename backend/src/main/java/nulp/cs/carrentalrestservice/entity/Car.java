@@ -6,6 +6,8 @@ import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.enumeration.DriveType;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +22,8 @@ import java.util.UUID;
 public class Car {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
     @Column(nullable = false, columnDefinition = "varchar(50)", length = 50)
@@ -51,7 +54,7 @@ public class Car {
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car")
     private Set<CarSchedule> carSchedules;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Location location;
 

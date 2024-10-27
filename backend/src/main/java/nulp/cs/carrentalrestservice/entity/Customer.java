@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import nulp.cs.carrentalrestservice.validation.ValidBirthDate;
-import nulp.cs.carrentalrestservice.validation.ValidEmail;
-import nulp.cs.carrentalrestservice.validation.ValidExpiryDate;
-import nulp.cs.carrentalrestservice.validation.ValidPhoneNumber;
+import nulp.cs.carrentalrestservice.annotation.ValidBirthDate;
+import nulp.cs.carrentalrestservice.annotation.ValidEmail;
+import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
+import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
 
 import java.time.LocalDate;
 import java.util.HashSet;

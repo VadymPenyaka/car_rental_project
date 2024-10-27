@@ -2,10 +2,9 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import nulp.cs.carrentalrestservice.validation.ValidEmail;
-import nulp.cs.carrentalrestservice.validation.ValidPassword;
+import nulp.cs.carrentalrestservice.annotation.ValidEmail;
+import nulp.cs.carrentalrestservice.annotation.ValidPassword;
 
 import java.util.HashSet;
 import java.util.Set;

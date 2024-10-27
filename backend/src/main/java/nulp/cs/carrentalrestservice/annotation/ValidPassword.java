@@ -1,7 +1,8 @@
-package nulp.cs.carrentalrestservice.validation;
+package nulp.cs.carrentalrestservice.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import nulp.cs.carrentalrestservice.validation.PasswordValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

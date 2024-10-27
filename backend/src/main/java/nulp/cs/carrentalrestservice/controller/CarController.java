@@ -25,14 +25,15 @@ public class CarController {
 
 
     @GetMapping(BASE_PATH)
-    public List<CarDTO> getAllCarsByCriteria(@RequestParam(required = false) UUID locationId,
+    public List<CarDTO> getAllCarsByCriteria( @RequestParam(required = false) UUID carId,
+                                             @RequestParam(required = false) UUID locationId,
                                              @RequestParam(required = false) CarClass carClass,
                                              @RequestParam(required = false) String brand,
                                              @RequestParam(required = false) GearboxType gearboxType,
                                              @RequestParam(required = false) FuelType fuelType,
                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return carService.getAllCarsByCriteria(locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
+        return carService.getAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
     }
 
     @PostMapping(BASE_PATH)
@@ -41,13 +42,6 @@ public class CarController {
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
-    @GetMapping(BASE_PATH +"/{id}")
-    public CarDTO getCarByID (@PathVariable("id") UUID id) {
-
-        return carService.getCarByID(id).orElseThrow(NotFoundException::new);
-    }
-
 
     @PutMapping(BASE_PATH+"/{id}")
     public ResponseEntity updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {

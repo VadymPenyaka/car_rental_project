@@ -3,6 +3,8 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class CarSchedule {
     @Id
     @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
     @ManyToOne
@@ -25,7 +28,7 @@ public class CarSchedule {
     @Column(nullable = false)
     private LocalDate endDate;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private ScheduleStatus status;
     @OneToOne(mappedBy = "schedule")
     private CarOrder carOrder;

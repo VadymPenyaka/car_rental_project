@@ -13,12 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CarRepository extends JpaRepository<Car, UUID> {
-    @Query("SELECT c FROM Car c WHERE NOT EXISTS (" +
-            "SELECT 1 FROM CarSchedule s WHERE s.car.id = c.id " +
-            "AND s.startDate < :endDate AND s.endDate > :startDate)")
-    List<Car> findAllAvailableOnPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
     @Query("SELECT c FROM Car c WHERE " +
+            "(:carId IS NULL OR  c.id = :carId) AND " +
             "(:location IS NULL OR c.location = :location) AND " +
             "(:carClass IS NULL OR c.carClass = :carClass) AND " +
             "(:brand IS NULL OR c.brand = :brand) AND " +
@@ -28,7 +24,8 @@ public interface CarRepository extends JpaRepository<Car, UUID> {
             "NOT EXISTS (SELECT s FROM CarSchedule s WHERE s.car.id = c.id AND" +
             "(:startDate IS NULL OR s.endDate >= :startDate) AND " +
             "(:endDate IS NULL OR s.startDate <= :endDate)))" )
-    List<Car> findAllCarsByCriteria ( @Param("location") UUID location,
+    List<Car> findAllCarsByCriteria ( @Param("carId") UUID carId,
+                                      @Param("location") UUID location,
                                       @Param("carClass") CarClass carClass,
                                       @Param("brand") String brand,
                                       @Param("gearboxType") GearboxType gearboxType,

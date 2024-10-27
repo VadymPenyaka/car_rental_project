@@ -32,7 +32,7 @@ class CarControllerIT {
 
     @Test
     void getAllCarsByCriteria() {
-        List<CarDTO> carDTOS = controller.getAllCarsByCriteria(null, null, null, null, null, null, null);
+        List<CarDTO> carDTOS = controller.getAllCarsByCriteria(null,null, null, null, null, null, null, null);
         assertThat(carDTOS.size()).isEqualTo(2);
     }
 
@@ -47,15 +47,6 @@ class CarControllerIT {
         ResponseEntity responseEntity = controller.createCar(carDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
-    }
-
-    @Test
-    void getCarByID() {
-        CarDTO expected = carMapper.carToCarDto(carRepository.findAll().get(0));
-
-        CarDTO actual = controller.getCarByID(expected.getId());
-
-        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
