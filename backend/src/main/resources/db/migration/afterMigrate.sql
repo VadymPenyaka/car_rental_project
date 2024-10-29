@@ -24,14 +24,14 @@ INSERT INTO `cars` (`fuel_consumption`, `fuel_type`, `number_of_seats`, `car_pri
 VALUES (9, 'GASOLINE', 5, '2e5ea1c7-4e5c-4330-a19c-e034f97f97c2', '05c398e4-de14-4c91-b8d6-0b3364c619b2', 'BMW', 'X6', 'BUSINESS', 'AUTO', '2d65947e-78ca-482a-9356-af6e929f5fbe', 2.0, 'FRONT_WD');
 
 INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_id`, `first_name`, `sure_name`, `email`, `phone_number`)
-VALUES ('2001-05-20', '2026-12-01', 2, '999999999', 'Pip', 'Ivan', 'ivan@gmail.com', '0955915122');
+VALUES ('2001-05-20', '2026-12-01', '2d030bce-2706-4238-8739-564eca07a342', '999999999', 'Pip', 'Ivan', 'ivan@gmail.com', '0955915122');
 INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_id`, `first_name`, `sure_name`, `email`, `phone_number`)
-VALUES ('2004-05-20', '2026-12-01', 1, '999911149', 'Vadym', 'Peniaka', 'vadym.penyaka@gmail.com', '0953322122');
+VALUES ('2004-05-20', '2026-12-01', '90ec8258-29cd-4367-b983-c18895e7a1a3', '999911149', 'Vadym', 'Peniaka', 'vadym.penyaka@gmail.com', '0953322122');
 
 INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
-VALUES (1, 'Vasyl', 'Melnyk', 'P@ssw0rd', 'vasyl@gmail.com', '09989874620');
+VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', 'Vasyl', 'Melnyk', 'P@ssw0rd', 'vasyl@gmail.com', '09989874620');
 INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
-VALUES (2, 'Ivan', 'Melnyk', 'P@ssw0rd', 'ivan@gmail.com', '09912374621');
+VALUES ('a262c3f3-1dac-4e5a-8079-bccb3026c551', 'Ivan', 'Melnyk', 'P@ssw0rd', 'ivan@gmail.com', '09912374621');
 
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
 VALUES ('526ea4c7-afa7-4a58-8c6d-967fabbcb180', 'b231afa5-79df-4597-ac6f-4f410fac85b4', '2024-09-20', '2024-09-22', 'BOOKED');
@@ -42,4 +42,4 @@ INSERT INTO `cars_maintenance` (`id`, `schedule_id`, `description`, `price`)
 VALUES ('ecb05a9b-0541-49f6-8d31-36acfb37ef09', '245deb7c-5e36-49df-8e9c-78a1bab2d373', 'Cleaning', 100);
 
 INSERT INTO `car_orders` (`admin_id`, `id`, `status`, `customer_id`, `total_price`, `comment`, `schedule_id`)
-VALUES (1, '9a49ebae-5abd-41ed-95ab-f9297de73dc5', 'APPROVED', 1, 300.0, 'none', '526ea4c7-afa7-4a58-8c6d-967fabbcb180');
+VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', '9a49ebae-5abd-41ed-95ab-f9297de73dc5', 'APPROVED', '90ec8258-29cd-4367-b983-c18895e7a1a3', 300.0, 'none', '526ea4c7-afa7-4a58-8c6d-967fabbcb180');

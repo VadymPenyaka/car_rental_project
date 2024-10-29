@@ -9,10 +9,13 @@ import nulp.cs.carrentalrestservice.annotation.ValidBirthDate;
 import nulp.cs.carrentalrestservice.annotation.ValidEmail;
 import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
 import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "customers")
 @Getter
@@ -22,8 +25,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class Customer {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @Column(nullable = false, length = 50)
     @NotBlank(message = "Name is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50!")

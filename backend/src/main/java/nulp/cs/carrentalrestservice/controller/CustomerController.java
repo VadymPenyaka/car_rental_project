@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping(BASE_PATH +"/{id}")
-    public CustomerDTO getCustomerById (@PathVariable Long id) {
+    public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
@@ -30,7 +31,7 @@ public class CustomerController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateCustomerById (@PathVariable Long id,@Valid @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
 

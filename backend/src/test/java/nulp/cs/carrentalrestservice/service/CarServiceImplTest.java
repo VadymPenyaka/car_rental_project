@@ -65,18 +65,18 @@ class CarServiceImplTest {
     }
 
     @Test
-    void getCarByBrand() {
+    void getCarByCarClass() {
         when(carRepository.findAllCarsByCriteria(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(List.of(car));
 
         List<CarDTO> foundCars = carService
-                .getAllCarsByCriteria(null, null,CarClass.BUSINESS,null, null,null, null, null);
+                .getAllCarsByCriteria(null, null, CarClass.BUSINESS,null, null,null, null, null);
 
         assertThat(foundCars.size()).isEqualTo(1);
     }
 
     @Test
     void getAllCarsByCriteria() {
-        when(carRepository.findAllCarsByCriteria(any(), any(), any(), any(), any(), any(), any(), any()))
+        when(carRepository.findAll())
                 .thenReturn(Arrays.asList(car));
 
         List<CarDTO> foundCars = carService.getAllCarsByCriteria(null,null, null, null, null, null, null, null);

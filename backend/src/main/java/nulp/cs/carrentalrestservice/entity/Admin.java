@@ -5,9 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import nulp.cs.carrentalrestservice.annotation.ValidEmail;
 import nulp.cs.carrentalrestservice.annotation.ValidPassword;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "admins")
@@ -18,8 +21,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class Admin implements Comparable<Admin>{
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @NotBlank(message = "This field is mandatory!")
     @Column(nullable = false, length = 50)
     private String firstName;

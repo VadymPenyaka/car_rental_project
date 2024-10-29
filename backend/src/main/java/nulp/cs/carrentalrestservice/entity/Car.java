@@ -54,7 +54,7 @@ public class Car {
     private CarPricing carPricing;
     @OneToMany(mappedBy = "car")
     private Set<CarSchedule> carSchedules;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Location location;
 

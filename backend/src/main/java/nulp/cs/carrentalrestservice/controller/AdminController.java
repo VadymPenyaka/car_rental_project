@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,12 +30,12 @@ public class AdminController {
     }
 
     @GetMapping(BASE_PATH +"/{id}")
-    public AdminDTO getAdminById (@PathVariable Long id) {
+    public AdminDTO getAdminById (@PathVariable UUID id) {
         return adminService.getAdminById(id).orElseThrow(NotFoundException::new);
     }
 
     @DeleteMapping(BASE_PATH +"/{id}")
-    public ResponseEntity deleteAdminById (@PathVariable Long id) {
+    public ResponseEntity deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
 
@@ -42,7 +43,7 @@ public class AdminController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateAdminById (@PathVariable Long id, @RequestBody AdminDTO adminDTO) {
+    public ResponseEntity updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();
 

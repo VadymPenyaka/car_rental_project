@@ -39,7 +39,7 @@ public class CarServiceImpl implements CarService {
                                              LocalDate startDate,
                                              LocalDate endDate) {
 
-        if(carId == null && locationId == null && brand == null && gearboxType == null && fuelType == null && startDate == null && endDate == null) {
+        if(carId == null && locationId == null && carClass==null && brand == null && gearboxType == null && fuelType == null && startDate == null && endDate == null) {
             return carRepository.findAll().stream().map(carMapper::carToCarDto).toList();
         }
 
