@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.model.CarPricingDTO;
 import nulp.cs.carrentalrestservice.service.CarPricingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarPricingController {
     private final CarPricingService carPricingService;
-    private final static String BASE_PATH = "api/v1/carPricing";
+    public final static String BASE_PATH = "api/v1/carPricing";
 
+    @PreAuthorize("permitAll()")
     @GetMapping(BASE_PATH +"/{id}")
     public CarPricingDTO getCarPricingById (@PathVariable UUID id) {
         return carPricingService.getCarPricingById(id)

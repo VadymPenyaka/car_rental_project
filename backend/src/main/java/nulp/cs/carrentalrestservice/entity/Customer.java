@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import nulp.cs.carrentalrestservice.annotation.ValidBirthDate;
-import nulp.cs.carrentalrestservice.annotation.ValidEmail;
-import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
-import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
+import nulp.cs.carrentalrestservice.annotation.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -54,6 +51,10 @@ public class Customer {
     @NotBlank(message = "Email is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
     private String email;
+//    @ValidPassword
+    @NotBlank(message = "This field is mandatory")
+    @Column(nullable = false, length = 100)
+    private String password;
     @ValidPhoneNumber
     @Column(nullable = false, name = "phone_number", length = 12)
     @NotBlank(message = "Phone number is mandatory!")
@@ -64,7 +65,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();
 
-    public Object getPassword() {
+    public String getPassword() {
         return null;
     }
 }

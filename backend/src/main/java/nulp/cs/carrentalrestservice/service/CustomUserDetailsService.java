@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
+import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.User;
@@ -22,13 +23,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-//        TODO
-//        Optional<Customer> customerOptional = customerRepository.findByEmail(username);
-//        if (customerOptional.isPresent()) {
-//            Customer customer = customerOptional.get();
-//            return new CustomUserDetails(customer.getEmail(), "Add password to customer");
-//        }
-//
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(username);
+
+        if (customerOptional.isPresent()) {
+            Customer customer = customerOptional.get();
+            return User.builder()
+                    .username(customer.getEmail())
+                    .password(customer.getPassword())
+                    .roles("USER")
+                    .build();
+        }
+
         Optional<Admin> adminOptional = adminRepository.findAdminByEmail(username);
         if(adminOptional.isPresent()) {
             Admin admin = adminOptional.get();
@@ -42,4 +48,5 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         throw new UsernameNotFoundException("User not found");
     }
+
 }

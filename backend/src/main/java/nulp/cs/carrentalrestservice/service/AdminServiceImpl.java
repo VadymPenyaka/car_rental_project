@@ -5,6 +5,7 @@ import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,10 +16,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public AdminDTO createAdmin(AdminDTO adminDTO) {
+        adminDTO.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
         return adminMapper.adminToAdminDto(adminRepository
                         .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }

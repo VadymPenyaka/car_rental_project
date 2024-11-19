@@ -3,9 +3,17 @@ package nulp.cs.carrentalrestservice.controller;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
+import nulp.cs.carrentalrestservice.model.LoginForm;
 import nulp.cs.carrentalrestservice.service.AdminService;
+import nulp.cs.carrentalrestservice.service.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.service.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +24,17 @@ import java.util.UUID;
 public class AdminController {
     public static final String BASE_PATH = "/api/v1/admins";
     private final AdminService adminService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final CustomUserDetailsService customUserDetailsService;
+
 
     @GetMapping(BASE_PATH)
     public List<AdminDTO> getAllAdmins () {
        return adminService.getAllAdmins();
     }
 
-    @PutMapping(BASE_PATH)
+    @PostMapping(BASE_PATH)
     public ResponseEntity createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
@@ -48,6 +60,20 @@ public class AdminController {
             throw new NotFoundException();
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(BASE_PATH+"/authenticate")
+    public ResponseEntity authenticateAdmin (@RequestBody LoginForm loginForm) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginForm.username(), loginForm.password()
+        ));
+
+        if(authentication.isAuthenticated()) {
+            return new ResponseEntity<>(jwtService.generateToken(customUserDetailsService
+                    .loadUserByUsername(loginForm.username())), HttpStatus.OK);
+        }
+        else
+            throw new UsernameNotFoundException("Invalid credentials");
     }
 
 }

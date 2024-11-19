@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarOrderController {
     private final CarOrderService carOrderService;
-    private final static String BASE_PATH = "api/v1/carOrders";
+    public final static String BASE_PATH = "api/v1/carOrders";
 
     @PostMapping(BASE_PATH)
     public ResponseEntity createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {

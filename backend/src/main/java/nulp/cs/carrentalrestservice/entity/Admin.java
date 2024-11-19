@@ -35,9 +35,9 @@ public class Admin implements Comparable<Admin>{
     @ValidEmail
     @Column(nullable = false, length = 50)
     private String email;
-    @ValidPassword
+//    @ValidPassword
     @NotBlank(message = "This field is mandatory")
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false, length = 12, name = "phone_number")
     @NotBlank(message = "This field is mandatory")

@@ -20,5 +20,6 @@ public class CustomerDTO {
     private LocalDate birthDate;
     private LocalDate passportExpiryDate;
     private String email;
+    private String password;
     private String phoneNumber;
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -28,6 +29,8 @@ class CustomerControllerIT {
 
     @Autowired
     private CustomerMapper customerMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     @Test
@@ -46,9 +49,8 @@ class CustomerControllerIT {
     @Transactional
     void createCustomerTest() {
         Customer customer = customerRepository.findAll().get(0);
-
         CustomerDTO customerToCreate = customerMapper.customerToCustomerDto(customer);
-
+        customerToCreate.setPassword(passwordEncoder.encode("Passw0rd!"));
         ResponseEntity responseEntity = controller.createCustomer(customerToCreate);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);

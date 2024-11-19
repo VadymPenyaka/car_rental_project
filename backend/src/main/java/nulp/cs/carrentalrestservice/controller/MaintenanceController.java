@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MaintenanceController {
     private final CarMaintenanceService carMaintenanceService;
-    private final String BASE_PATH = "api/v1/maintenance";
+    public static final String BASE_PATH = "api/v1/maintenance";
 
     @GetMapping(BASE_PATH+"/{id}")
     public CarMaintenanceDTO getMaintenanceById(@PathVariable("id") UUID id) {

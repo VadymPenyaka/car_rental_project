@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Arrays;
@@ -30,6 +31,8 @@ class AdminServiceImplTest {
     private AdminRepository adminRepository;
     @Mock
     private AdminMapperImpl adminMapper;
+    @Mock
+    PasswordEncoder passwordEncoder;
     @InjectMocks
     private AdminServiceImpl adminService;
 

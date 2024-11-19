@@ -10,6 +10,7 @@ import nulp.cs.carrentalrestservice.service.CarService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,9 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarController {
     public static final String BASE_PATH = "/api/v1/cars";
-
     private final CarService carService;
-
 
     @GetMapping(BASE_PATH)
     public List<CarDTO> getAllCarsByCriteria( @RequestParam(required = false) UUID carId,
@@ -36,6 +35,7 @@ public class CarController {
         return carService.getAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(BASE_PATH)
     public ResponseEntity createCar (@RequestBody CarDTO car) {
         carService.createCar(car);
@@ -43,6 +43,7 @@ public class CarController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(BASE_PATH+"/{id}")
     public ResponseEntity updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
         if(carService.updateCarByID(id, car).isEmpty())
@@ -51,6 +52,7 @@ public class CarController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(BASE_PATH+"/{id}")
     public ResponseEntity deleteCarById (@PathVariable UUID id) {
         if (!carService.deleteCarById(id))
