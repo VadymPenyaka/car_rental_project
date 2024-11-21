@@ -13,9 +13,8 @@ import java.util.UUID;
 public interface CarService {
     CarDTO createCar (CarDTO carDTO);
 
-    Optional<CarDTO> getCarByID (UUID id);
-
-    List<CarDTO> getAllCarsByCriteria(UUID locationId,
+    List<CarDTO> getAllCarsByCriteria(UUID carId,
+                                      UUID locationId,
                                       CarClass carClass,
                                       String brand,
                                       GearboxType gearboxType,

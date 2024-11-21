@@ -2,13 +2,15 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import nulp.cs.carrentalrestservice.validation.ValidEmail;
-import nulp.cs.carrentalrestservice.validation.ValidPassword;
+import nulp.cs.carrentalrestservice.annotation.ValidEmail;
+import nulp.cs.carrentalrestservice.annotation.ValidPassword;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "admins")
@@ -19,8 +21,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class Admin implements Comparable<Admin>{
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @NotBlank(message = "This field is mandatory!")
     @Column(nullable = false, length = 50)
     private String firstName;
@@ -31,9 +35,9 @@ public class Admin implements Comparable<Admin>{
     @ValidEmail
     @Column(nullable = false, length = 50)
     private String email;
-    @ValidPassword
+//    @ValidPassword
     @NotBlank(message = "This field is mandatory")
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false, length = 12, name = "phone_number")
     @NotBlank(message = "This field is mandatory")

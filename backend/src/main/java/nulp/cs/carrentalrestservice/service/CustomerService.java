@@ -2,13 +2,13 @@ package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CustomerService {
     CustomerDTO createCustomer (CustomerDTO customerDTO);
 
-    Optional<CustomerDTO> getCustomerByID (Long id);
+    Optional<CustomerDTO> getCustomerByID (UUID id);
 
-    Optional<CustomerDTO> updateCustomerById(Long id, CustomerDTO customerDTO);
+    Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
 }

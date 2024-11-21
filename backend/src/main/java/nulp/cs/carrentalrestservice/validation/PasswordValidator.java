@@ -2,8 +2,8 @@ package nulp.cs.carrentalrestservice.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import nulp.cs.carrentalrestservice.annotation.ValidPassword;
 
-import java.lang.ref.PhantomReference;
 import java.util.regex.Pattern;
 
 public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {

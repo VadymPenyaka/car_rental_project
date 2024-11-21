@@ -65,22 +65,21 @@ class CarServiceImplTest {
     }
 
     @Test
-    void getCarByID() {
-        when(carRepository.findById(any())).thenReturn(Optional.ofNullable(car));
-        when(carMapper.carToCarDto(any())).thenReturn(carDTO);
+    void getCarByCarClass() {
+        when(carRepository.findAllCarsByCriteria(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(List.of(car));
 
-        CarDTO foundCar = carService.getCarByID(carDTO.getId()).get();
+        List<CarDTO> foundCars = carService
+                .getAllCarsByCriteria(null, null, CarClass.BUSINESS,null, null,null, null, null);
 
-        assertThat(foundCar).isNotNull();
-        assertThat(foundCar.getId()).isEqualTo(carDTO.getId());
+        assertThat(foundCars.size()).isEqualTo(1);
     }
 
     @Test
     void getAllCarsByCriteria() {
-        when(carRepository.findAllCarsByCriteria(any(), any(), any(), any(), any(), any(), any()))
+        when(carRepository.findAll())
                 .thenReturn(Arrays.asList(car));
 
-        List<CarDTO> foundCars = carService.getAllCarsByCriteria(null, null, null, null, null, null, null);
+        List<CarDTO> foundCars = carService.getAllCarsByCriteria(null,null, null, null, null, null, null, null);
 
         assertThat(foundCars.size()).isEqualTo(1);
     }

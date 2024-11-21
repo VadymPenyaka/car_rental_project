@@ -30,20 +30,20 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<CarDTO> getCarByID(UUID id) {
-        return Optional.ofNullable(carMapper
-                .carToCarDto(carRepository.findById(id).orElse(null)));
-    }
-
-    @Override
-    public List<CarDTO> getAllCarsByCriteria(UUID locationId,
+    public List<CarDTO> getAllCarsByCriteria(UUID carId,
+                                             UUID locationId,
                                              CarClass carClass,
                                              String brand,
                                              GearboxType gearboxType,
                                              FuelType fuelType,
                                              LocalDate startDate,
                                              LocalDate endDate) {
-        return carRepository.findAllCarsByCriteria(locationId, carClass, brand, gearboxType, fuelType, startDate, endDate).stream()
+
+        if(carId == null && locationId == null && carClass==null && brand == null && gearboxType == null && fuelType == null && startDate == null && endDate == null) {
+            return carRepository.findAll().stream().map(carMapper::carToCarDto).toList();
+        }
+
+        return carRepository.findAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate).stream()
                 .map(carMapper::carToCarDto).toList();
     }
 

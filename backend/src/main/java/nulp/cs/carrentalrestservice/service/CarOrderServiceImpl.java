@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
@@ -26,8 +27,8 @@ public class CarOrderServiceImpl implements CarOrderService {
     private final ApplicationEventPublisher publisher;
 
     @Override
+    @CheckOrderAvailability
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        validateOrder(carOrderDTO);
         carOrderDTO.setSchedule(carScheduleService.createCarSchedule(carOrderDTO.getSchedule()));
 
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
@@ -67,14 +68,6 @@ public class CarOrderServiceImpl implements CarOrderService {
         }, ()-> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
-    }
-
-    public void validateOrder(CarOrderDTO carOrderDTO) {
-
-        if (carOrderRepository.isCustomerHasOverlapOrder(carOrderDTO.getCustomer().getId(),
-                carOrderDTO.getSchedule().getStartDate(),
-                carOrderDTO.getSchedule().getEndDate()))
-            throw new IllegalArgumentException("You have another order for this period.");
     }
 
 }

@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import nulp.cs.carrentalrestservice.validation.ValidBirthDate;
-import nulp.cs.carrentalrestservice.validation.ValidEmail;
-import nulp.cs.carrentalrestservice.validation.ValidExpiryDate;
-import nulp.cs.carrentalrestservice.validation.ValidPhoneNumber;
+import nulp.cs.carrentalrestservice.annotation.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "customers")
 @Getter
@@ -22,8 +22,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class Customer {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
     @Column(nullable = false, length = 50)
     @NotBlank(message = "Name is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
@@ -49,6 +51,10 @@ public class Customer {
     @NotBlank(message = "Email is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
     private String email;
+//    @ValidPassword
+    @NotBlank(message = "This field is mandatory")
+    @Column(nullable = false, length = 100)
+    private String password;
     @ValidPhoneNumber
     @Column(nullable = false, name = "phone_number", length = 12)
     @NotBlank(message = "Phone number is mandatory!")
@@ -58,4 +64,8 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();
+
+    public String getPassword() {
+        return null;
+    }
 }

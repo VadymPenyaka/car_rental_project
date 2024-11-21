@@ -5,31 +5,29 @@ import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
-import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public AdminDTO createAdmin(AdminDTO adminDTO) {
+        adminDTO.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
         return adminMapper.adminToAdminDto(adminRepository
                         .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }
 
     @Override
-    public Optional<AdminDTO> updateAdminById(Long id, AdminDTO admin) {
+    public Optional<AdminDTO> updateAdminById(UUID id, AdminDTO admin) {
         AtomicReference<Optional<AdminDTO>> atomicReference = new AtomicReference<>();
 
         adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
@@ -47,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Optional<AdminDTO> getAdminById(Long id) {
+    public Optional<AdminDTO> getAdminById(UUID id) {
         return Optional.ofNullable(adminMapper.adminToAdminDto(adminRepository
                 .findById(id).orElse(null)));
     }
@@ -60,21 +58,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Boolean deleteAdminByID(Long id) {
+    public Boolean deleteAdminByID(UUID id) {
         if (adminRepository.existsById(id)) {
             adminRepository.deleteById(id);
             return true;
         }
         return false;
     }
-
-//    @Override
-//    public Optional<AdminDTO> getAdminByLeastNumbErOfOrders() {
-//        Comparator<Admin> adminComparator = Comparator.comparingInt(a -> a.getCarOrders().size());
-//
-//        return Optional.ofNullable(adminMapper.adminToAdminDto(adminRepository
-//                .findAll().stream().min(adminComparator).get()));
-//    }
 
     @Override
     public Optional<AdminDTO> getAdminWithFewestOrders() {

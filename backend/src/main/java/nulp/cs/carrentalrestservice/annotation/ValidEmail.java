@@ -1,18 +1,19 @@
-package nulp.cs.carrentalrestservice.validation;
+package nulp.cs.carrentalrestservice.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import nulp.cs.carrentalrestservice.validation.EmailValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+@Constraint(validatedBy = EmailValidator.class)
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy =  ExpiryDateValidator.class)
-public @interface ValidExpiryDate {
-    String message() default "Your passport is expired.";
+public @interface ValidEmail {
+    String message() default "Invalid email format";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
