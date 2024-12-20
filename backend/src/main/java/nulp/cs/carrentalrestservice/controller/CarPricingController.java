@@ -16,9 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarPricingController {
     private final CarPricingService carPricingService;
-    public final static String BASE_PATH = "api/v1/carPricing";
+    public final static String BASE_PATH = "/api/v1/carPricing";
 
-    @PreAuthorize("permitAll()")
     @GetMapping(BASE_PATH +"/{id}")
     public CarPricingDTO getCarPricingById (@PathVariable UUID id) {
         return carPricingService.getCarPricingById(id)
@@ -26,12 +25,14 @@ public class CarPricingController {
     }
 
     @PostMapping(BASE_PATH)
+    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
     public ResponseEntity createCarPricing (@RequestBody CarPricingDTO carPricing) {
         carPricingService.createCarPricing(carPricing);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
     public ResponseEntity updateCarPricingById (@PathVariable UUID id, @RequestBody CarPricingDTO carPricing) {
         if(carPricingService.updateCarPricingByID(id, carPricing).isEmpty())
             throw new NotFoundException();
@@ -40,6 +41,7 @@ public class CarPricingController {
     }
 
     @DeleteMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
     public ResponseEntity deleteCarPricingById (@PathVariable UUID id) {
         if(!carPricingService.deleteCarPricingById(id))
             throw new NotFoundException();

@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

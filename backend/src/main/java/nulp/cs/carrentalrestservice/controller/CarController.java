@@ -35,16 +35,16 @@ public class CarController {
         return carService.getAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(BASE_PATH)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createCar (@RequestBody CarDTO car) {
         carService.createCar(car);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(BASE_PATH+"/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
         if(carService.updateCarByID(id, car).isEmpty())
             throw new NotFoundException();

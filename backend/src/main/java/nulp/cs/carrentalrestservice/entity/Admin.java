@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import nulp.cs.carrentalrestservice.annotation.ValidEmail;
 import nulp.cs.carrentalrestservice.annotation.ValidPassword;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -35,6 +36,9 @@ public class Admin implements Comparable<Admin>{
     @ValidEmail
     @Column(nullable = false, length = 50)
     private String email;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "role")
+    private Role role;
 //    @ValidPassword
     @NotBlank(message = "This field is mandatory")
     @Column(nullable = false, length = 100)

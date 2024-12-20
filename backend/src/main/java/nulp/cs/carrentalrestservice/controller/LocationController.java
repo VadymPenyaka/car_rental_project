@@ -14,12 +14,11 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class LocationController {
-    public static final String BASE_PATH = "api/v1/locations";
+    public static final String BASE_PATH = "/api/v1/locations";
 
     private final LocationService locationService;
 
 //    TODO Add getAll method
-
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createLocation (@RequestBody LocationDTO locationDTO) {
@@ -27,7 +26,6 @@ public class LocationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping(BASE_PATH +"/{id}")
     public LocationDTO getLocationById (@PathVariable UUID id) {
         return locationService.getLocationByID(id)

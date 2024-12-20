@@ -14,4 +14,6 @@ public interface CarOrderService {
 
     Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO);
 
+    boolean isOwner (UUID orderId, String username);
+
 }

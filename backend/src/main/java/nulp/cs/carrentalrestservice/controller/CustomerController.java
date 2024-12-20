@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.LoginForm;
-import nulp.cs.carrentalrestservice.service.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.service.CustomerService;
-import nulp.cs.carrentalrestservice.service.JwtService;
+import nulp.cs.carrentalrestservice.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,21 +30,21 @@ public class CustomerController {
     private final JwtService jwtService;
 
     @GetMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PostAuthorize("returnObject.email == authentication.name")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping(BASE_PATH)
-    @PreAuthorize("permitAll()")
     public ResponseEntity createCustomer (@Valid @RequestBody CustomerDTO customer) {
         customerService.createCustomer(customer);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    // TODO update
     @PutMapping(BASE_PATH +"/{id}")
+    @PostAuthorize("returnObject.email == authentication.name")
     public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();

@@ -70,4 +70,11 @@ public class CarOrderServiceImpl implements CarOrderService {
         return atomicReference.get();
     }
 
+    @Override
+    public boolean isOwner(UUID orderId, String username) {
+        return carOrderRepository.findById(orderId)
+                .map(order -> order.getCustomer().getEmail().equals(username))
+                .orElse(false);
+    }
+
 }

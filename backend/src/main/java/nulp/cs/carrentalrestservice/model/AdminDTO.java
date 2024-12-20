@@ -1,9 +1,11 @@
 package nulp.cs.carrentalrestservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
 
 import java.util.UUID;
 
@@ -18,4 +20,5 @@ public class AdminDTO {
     private String password;
     private String email;
     private String phoneNumber;
+    private Role role;
 }
