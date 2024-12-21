@@ -43,9 +43,8 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // TODO update
     @PutMapping(BASE_PATH +"/{id}")
-//    @PostAuthorize("returnObject.email == authentication.name")
+    @PreAuthorize("#customerServiceImpl.isOwner(#id, #customerDTO.email)")
     public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
@@ -63,7 +62,7 @@ public class CustomerController {
         if(authentication.isAuthenticated()) {
             String token =  jwtService.generateToken(customUserDetailsService
                     .loadUserByUsername(loginForm.username()));
-            return new ResponseEntity<>(token, HttpStatus.CREATED);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         }
         else
             throw new UsernameNotFoundException("Invalid credentials");

@@ -52,4 +52,11 @@ public class CustomerServiceImpl implements CustomerService {
         return atomicReference.get();
     }
 
+    @Override
+    public boolean isOwner(UUID id, String username) {
+        return customerRepository.findById(id)
+                .map(customer -> customer.getEmail()
+                .equals(username)).orElse(false);
+    }
+
 }
