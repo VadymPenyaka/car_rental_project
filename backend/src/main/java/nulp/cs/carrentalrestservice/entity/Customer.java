@@ -64,8 +64,4 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();
-
-    public String getPassword() {
-        return null;
-    }
 }
