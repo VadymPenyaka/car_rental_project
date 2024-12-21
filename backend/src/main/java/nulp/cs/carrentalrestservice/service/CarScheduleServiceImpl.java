@@ -79,8 +79,6 @@ public class CarScheduleServiceImpl implements CarScheduleService {
                     null);
         }
 
-
-
         if (isCarBooked) {
             throw new IllegalArgumentException("Car already booked for this period!");
         }

@@ -92,18 +92,6 @@ class CarOrderControllerIT {
     @Test
     @Rollback
     @Transactional
-    void deleteCarOrderById () {
-        CarOrderDTO carOrderDTO = carOrderMapper.carOrderToCarOrderDto(carOrderRepository.findAll().get(0));
-
-        ResponseEntity responseEntity = controller.deleteCarOrderById(carOrderDTO.getId());
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-        assertThat(carOrderRepository.findById(carOrderDTO.getId())).isEqualTo(Optional.empty());
-    }
-
-    @Test
-    @Rollback
-    @Transactional
     void updateCarOrderById () {
         CarOrderDTO expected = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));

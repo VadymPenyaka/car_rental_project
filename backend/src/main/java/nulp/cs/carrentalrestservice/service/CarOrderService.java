@@ -10,8 +10,6 @@ public interface CarOrderService {
 
     Optional<CarOrderDTO> getCarOrderByID (UUID id);
 
-    boolean deleteCarOrderById (UUID id);
-
     Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO);
 
     boolean isOwner (UUID orderId, String username);

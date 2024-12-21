@@ -43,17 +43,6 @@ public class CarOrderServiceImpl implements CarOrderService {
     }
 
     @Override
-    public boolean deleteCarOrderById(UUID id) {
-        if (carOrderRepository.existsById(id)) {
-            carOrderRepository.deleteById(id);
-//            carScheduleService.deleteCarScheduleById(id);
-            //TODO
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO) {
         AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
 

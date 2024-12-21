@@ -29,7 +29,7 @@ public class AdminController {
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
 
-//TODO update or delete
+//TODO send part of data
     @GetMapping(BASE_PATH)
     @PreAuthorize("hasRole('ADMIN')")
     public List<AdminDTO> getAllAdmins () {

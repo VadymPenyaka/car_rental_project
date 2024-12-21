@@ -33,14 +33,6 @@ public class CarOrderController {
     public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }
-// TODO delete
-    @DeleteMapping (BASE_PATH +"/{id}")
-    public ResponseEntity deleteCarOrderById (@PathVariable("id") UUID id) {
-        if (!carOrderService.deleteCarOrderById(id))
-            throw new NotFoundException();
-
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
 
     @PutMapping(BASE_PATH +"/{id}")
     @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")

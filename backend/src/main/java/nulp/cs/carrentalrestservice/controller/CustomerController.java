@@ -10,12 +10,10 @@ import nulp.cs.carrentalrestservice.service.CustomerService;
 import nulp.cs.carrentalrestservice.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +28,8 @@ public class CustomerController {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtService jwtService;
 
+    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping(BASE_PATH +"/{id}")
-    @PostAuthorize("returnObject.email == authentication.name")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }

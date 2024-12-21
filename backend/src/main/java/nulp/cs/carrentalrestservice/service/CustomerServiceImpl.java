@@ -54,8 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean isOwner(UUID id, String username) {
-        return customerRepository.findById(id)
-                .map(customer -> customer.getEmail()
+        return customerRepository.findById(id).map(customer -> customer.getEmail()
                 .equals(username)).orElse(false);
     }
 
