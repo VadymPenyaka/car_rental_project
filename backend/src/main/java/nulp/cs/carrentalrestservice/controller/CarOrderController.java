@@ -3,11 +3,9 @@ package nulp.cs.carrentalrestservice.controller;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.security.CarOrderPermissionEvaluator;
 import nulp.cs.carrentalrestservice.service.CarOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class CarOrderController {
     }
 
     @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name()) or" +
-            "@carOrderPermissionEvaluator.isOwner(#id, principal)")
+            "@carOrderServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping(BASE_PATH +"/{id}")
     public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
