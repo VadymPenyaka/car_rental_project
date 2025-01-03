@@ -5,10 +5,11 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.model.LoginForm;
 import nulp.cs.carrentalrestservice.service.AdminService;
-import nulp.cs.carrentalrestservice.service.CustomUserDetailsService;
-import nulp.cs.carrentalrestservice.service.JwtService;
+import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,13 +29,15 @@ public class AdminController {
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
 
-
+//TODO send part of data
     @GetMapping(BASE_PATH)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AdminDTO> getAllAdmins () {
        return adminService.getAllAdmins();
     }
 
     @PostMapping(BASE_PATH)
+    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
@@ -42,11 +45,13 @@ public class AdminController {
     }
 
     @GetMapping(BASE_PATH +"/{id}")
+    @PostAuthorize("returnObject.email == authentication.name")
     public AdminDTO getAdminById (@PathVariable UUID id) {
         return adminService.getAdminById(id).orElseThrow(NotFoundException::new);
     }
 
     @DeleteMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
@@ -55,6 +60,8 @@ public class AdminController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
+            "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();

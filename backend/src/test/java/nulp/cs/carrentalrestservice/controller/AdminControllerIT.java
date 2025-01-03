@@ -12,10 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,6 +32,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Sql(scripts = "/init_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
@@ -48,19 +57,22 @@ class AdminControllerIT {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(wac)
+                .build();
     }
 
     @Test
     void getAllAdminsTest() {
-        List<AdminDTO> adminDTOS = adminController.getAllAdmins();
+        List<Admin> admins = adminRepository.findAll();
 
-        assertThat(adminDTOS.size()).isNotEqualTo(0);
+        assertThat(admins).hasSize(2);
     }
 
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = {"SYS_ADMIN"})
     void createAdminTest () {
         AdminDTO adminDTO = adminMapper
                 .adminToAdminDto(adminRepository
@@ -69,10 +81,10 @@ class AdminControllerIT {
         ResponseEntity responseEntity = adminController.createAdmin(adminDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
-
     }
 
     @Test
+    @WithMockUser(username = "admin1@gmail.com", roles = {"ADMIN"})
     void getAdminByIdTest () {
         AdminDTO expected = adminMapper.adminToAdminDto(adminRepository.findAll().get(0));
 
@@ -84,6 +96,7 @@ class AdminControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "username", roles = {"SYS_ADMIN"})
     void updateAdminById () {
         Admin admin = adminRepository.findAll().get(0);
         AdminDTO expected = adminMapper.adminToAdminDto(admin);
@@ -103,6 +116,7 @@ class AdminControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = {"SYS_ADMIN"})
     void deleteAdminById () {
         AdminDTO admin = adminMapper.adminToAdminDto(adminRepository.findAll().get(0));
 

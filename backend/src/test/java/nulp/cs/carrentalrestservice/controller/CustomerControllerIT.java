@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -36,6 +37,7 @@ class CustomerControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "ivan@gmail.com", roles = "USER")
     void getCustomerByIdTest() {
         Customer expected = customerRepository.findAll().get(0);
 
@@ -50,6 +52,8 @@ class CustomerControllerIT {
     void createCustomerTest() {
         Customer customer = customerRepository.findAll().get(0);
         CustomerDTO customerToCreate = customerMapper.customerToCustomerDto(customer);
+        customerToCreate.setEmail(customer.getEmail()+"updated@gmail.com");
+        customerToCreate.setPhoneNumber("999999333");
         customerToCreate.setPassword(passwordEncoder.encode("Passw0rd!"));
         ResponseEntity responseEntity = controller.createCustomer(customerToCreate);
 
@@ -62,6 +66,7 @@ class CustomerControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "ivan@gmail.com", roles = "USER")
     void updateCustomerById () {
         CustomerDTO expected = customerMapper.customerToCustomerDto(customerRepository.findAll().get(0));
         expected.setFirstName("updated");

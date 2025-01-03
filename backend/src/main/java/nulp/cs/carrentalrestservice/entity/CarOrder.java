@@ -34,7 +34,7 @@ public class CarOrder {
     private double totalPrice;
     @Column(columnDefinition = "varchar(100)")
     private String comment;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "schedule_id")
     private CarSchedule schedule;
 

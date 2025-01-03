@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ScheduleController {
     private final CarScheduleService carScheduleService;
-    public static final String BASE_PATH = "api/v1/schedules";
+    public static final String BASE_PATH = "/api/v1/schedules";
 
     @GetMapping(BASE_PATH+"/{id}")
     public CarScheduleDTO getScheduleById(@PathVariable("id") UUID id) {

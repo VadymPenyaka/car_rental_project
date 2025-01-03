@@ -14,12 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "customers")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue
@@ -36,7 +36,7 @@ public class Customer {
     private String sureName;
     @Column(nullable = false, length = 9)
     @NotBlank(message = "Password ID is mandatory!")
-    @Size(min = 9, max = 9, message = "Must be between 3 and 20!")
+    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String passportId;
     @Column(nullable = false)
     @ValidBirthDate
@@ -64,8 +64,4 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();
-
-    public String getPassword() {
-        return null;
-    }
 }

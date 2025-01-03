@@ -7,6 +7,7 @@ import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,8 +29,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
     @Override
     public CarMaintenanceDTO createCarMaintenance(CarMaintenanceDTO carMaintenanceDTO) {
-        carMaintenanceDTO.setSchedule(carScheduleService
-                .createCarSchedule(carMaintenanceDTO.getSchedule()));
+        carScheduleService.createCarSchedule(carMaintenanceDTO.getSchedule());
 
         return carMaintenanceMapper.carMaintenanceToCarMaintenanceDTO(carMaintenanceRepository
                 .save(carMaintenanceMapper.carMaintenanceDTOToCarMaintenance(carMaintenanceDTO)));
@@ -59,7 +59,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public boolean deleteCarMaintenanceById(UUID id) {
         if(carMaintenanceRepository.existsById(id)) {
             carMaintenanceRepository.deleteById(id);
-            // TODO
+            // TODO delete schedule
 //            carScheduleService.deleteCarScheduleById(id);
             return true;
         }

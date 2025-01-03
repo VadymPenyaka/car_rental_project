@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
@@ -29,7 +30,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     @Override
     @CheckOrderAvailability
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        carOrderDTO.setSchedule(carScheduleService.createCarSchedule(carOrderDTO.getSchedule()));
+        carOrderDTO.setSchedule(carOrderDTO.getSchedule());
 
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         return carOrderMapper.carOrderToCarOrderDto(carOrderRepository
@@ -40,17 +41,6 @@ public class CarOrderServiceImpl implements CarOrderService {
     public Optional<CarOrderDTO> getCarOrderByID(UUID id) {
         return Optional.ofNullable(carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .findById(id).orElse(null)));
-    }
-
-    @Override
-    public boolean deleteCarOrderById(UUID id) {
-        if (carOrderRepository.existsById(id)) {
-            carOrderRepository.deleteById(id);
-//            carScheduleService.deleteCarScheduleById(id);
-            //TODO
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -68,6 +58,13 @@ public class CarOrderServiceImpl implements CarOrderService {
         }, ()-> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
+    }
+
+    @Override
+    public boolean isOwner(UUID orderId, String username) {
+        return carOrderRepository.findById(orderId)
+                .map(order -> order.getCustomer().getEmail().equals(username))
+                .orElse(false);
     }
 
 }

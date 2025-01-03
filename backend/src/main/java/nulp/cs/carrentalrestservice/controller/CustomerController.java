@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.LoginForm;
-import nulp.cs.carrentalrestservice.service.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.service.CustomerService;
-import nulp.cs.carrentalrestservice.service.JwtService;
+import nulp.cs.carrentalrestservice.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,22 +28,21 @@ public class CustomerController {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtService jwtService;
 
+    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping(BASE_PATH)
-    @PreAuthorize("permitAll()")
     public ResponseEntity createCustomer (@Valid @RequestBody CustomerDTO customer) {
         customerService.createCustomer(customer);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('USER')")
     @PutMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerDTO.email)")
     public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
@@ -60,8 +58,9 @@ public class CustomerController {
         ));
 
         if(authentication.isAuthenticated()) {
-            return new ResponseEntity<>(jwtService.generateToken(customUserDetailsService
-                    .loadUserByUsername(loginForm.username())), HttpStatus.NO_CONTENT);
+            String token =  jwtService.generateToken(customUserDetailsService
+                    .loadUserByUsername(loginForm.username()));
+            return new ResponseEntity<>(token, HttpStatus.OK);
         }
         else
             throw new UsernameNotFoundException("Invalid credentials");

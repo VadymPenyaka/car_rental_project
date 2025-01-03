@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.model.LocationDTO;
 import nulp.cs.carrentalrestservice.repository.LocationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -15,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LocationServiceImpl implements LocationService {
     private final LocationRepository repository;
     private final LocationMapper mapper;
+    private final LocationRepository locationRepository;
 
     @Override
     public LocationDTO createLocation(LocationDTO locationDTO) {
@@ -55,5 +57,11 @@ public class LocationServiceImpl implements LocationService {
         );
 
         return atomicReference.get();
+    }
+
+    @Override
+    public List<LocationDTO> getAllLocations() {
+        return locationRepository.findAll().stream()
+                .map(mapper::locationToLocationDto).toList();
     }
 }

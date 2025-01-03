@@ -1,9 +1,11 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -17,10 +19,8 @@ public class JwtServiceImpl implements JwtService {
     private static final String SECRET = "9RAOB5cMJIVWn1g8uw1erTVkFngeE/OVKKRBGmQBCq234swu+T8waHQBhawDGbmmkkmIj0KpGS1SkzoW9P/HjQ==";
     private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(30);
 
-
     @Override
     public String generateToken(UserDetails userDetails) {
-
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))

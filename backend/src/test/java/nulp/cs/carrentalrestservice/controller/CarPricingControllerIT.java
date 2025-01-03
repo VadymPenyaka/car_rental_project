@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -45,6 +46,7 @@ class CarPricingControllerIT {
     @Test
     @Transactional
     @Rollback
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void updateCarPricingById() {
         CarPricingDTO pricingToUpdate = mapper
                 .carPricingToCarPricingDto(carPricingRepository.findAll().get(0));
@@ -63,6 +65,7 @@ class CarPricingControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void deleteCarPricingById() {
         CarPricingDTO pricingToDelete = mapper
                 .carPricingToCarPricingDto(carPricingRepository.findAll().get(0));

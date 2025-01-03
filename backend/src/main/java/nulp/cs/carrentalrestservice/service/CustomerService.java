@@ -11,4 +11,6 @@ public interface CustomerService {
     Optional<CustomerDTO> getCustomerByID (UUID id);
 
     Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
+
+    boolean isOwner (UUID id, String username);
 }

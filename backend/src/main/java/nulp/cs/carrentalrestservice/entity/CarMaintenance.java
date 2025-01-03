@@ -23,7 +23,7 @@ public class CarMaintenance {
     private String description;
     @Column(nullable = false)
     private Double price;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "schedule_id")
     private CarSchedule schedule;
 }

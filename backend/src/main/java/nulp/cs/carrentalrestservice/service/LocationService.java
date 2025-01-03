@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.LocationDTO;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface LocationService {
     boolean deleteLocationById (UUID id);
 
     Optional<LocationDTO> updateLocationById(UUID id, LocationDTO locationDTO);
+
+    List<LocationDTO> getAllLocations();
 }

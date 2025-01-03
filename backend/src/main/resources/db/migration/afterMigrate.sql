@@ -28,12 +28,12 @@ VALUES ('2001-05-20', '2026-12-01', '2d030bce-2706-4238-8739-564eca07a342', '999
 INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_id`, `first_name`, `sure_name`, `email`, `phone_number`, `password`)
 VALUES ('2004-05-20', '2026-12-01', '90ec8258-29cd-4367-b983-c18895e7a1a3', '999911149', 'Vadym', 'Peniaka', 'vadym.penyaka@gmail.com', '0953322122', 'P@ssw0rd');
 
-INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
+INSERT INTO admins (id, first_name, last_name, password, email, phone_number, role)
 VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', 'Vasyl', 'Melnyk', '$2a$12$u4/oMka2lWSBZVv4X4TEgeLM68spYB3Obcw1iHfvkgIEX20eYczeO
-', 'admin1@gmail.com', '09989874620');
-INSERT INTO admins (id, first_name, last_name, password, email, phone_number)
+', 'admin1@gmail.com', '09989874620', 'ADMIN');
+INSERT INTO admins (id, first_name, last_name, password, email, phone_number, role)
 VALUES ('a262c3f3-1dac-4e5a-8079-bccb3026c551', 'Ivan', 'Melnyk', '$2a$12$u4/oMka2lWSBZVv4X4TEgeLM68spYB3Obcw1iHfvkgIEX20eYczeO',
-        'admin2@gmail.com', '09912374621');
+        'admin2@gmail.com', '09912374621', 'ADMIN');
 
 INSERT INTO `car_schedule` (`id`, `car_id`, `start_date`, `end_date`, `status`)
 VALUES ('526ea4c7-afa7-4a58-8c6d-967fabbcb180', 'b231afa5-79df-4597-ac6f-4f410fac85b4', '2024-09-20', '2024-09-22', 'BOOKED');
