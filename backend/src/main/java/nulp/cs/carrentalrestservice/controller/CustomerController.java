@@ -42,7 +42,7 @@ public class CustomerController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("#customerServiceImpl.isOwner(#id, #customerDTO.email)")
+    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerDTO.email)")
     public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();

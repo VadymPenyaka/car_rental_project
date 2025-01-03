@@ -21,6 +21,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
         customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+
+        if (customerRepository.existsByEmail(customerDTO.getEmail())) {
+            throw new IllegalArgumentException("User with this email already exists");
+        }
+        if (customerRepository.existsByPhoneNumber(customerDTO.getPhoneNumber())) {
+            throw new IllegalArgumentException("User with this phone number already exists");
+        }
+
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
     }
@@ -54,7 +62,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean isOwner(UUID id, String username) {
-        return customerRepository.findById(id).map(customer -> customer.getEmail()
+        return customerRepository.findById(id)
+                .map(customer -> customer.getEmail()
                 .equals(username)).orElse(false);
     }
 

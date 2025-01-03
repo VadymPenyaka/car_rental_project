@@ -72,6 +72,7 @@ class AdminControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = {"SYS_ADMIN"})
     void createAdminTest () {
         AdminDTO adminDTO = adminMapper
                 .adminToAdminDto(adminRepository
@@ -83,6 +84,7 @@ class AdminControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "admin1@gmail.com", roles = {"ADMIN"})
     void getAdminByIdTest () {
         AdminDTO expected = adminMapper.adminToAdminDto(adminRepository.findAll().get(0));
 
@@ -94,6 +96,7 @@ class AdminControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "username", roles = {"SYS_ADMIN"})
     void updateAdminById () {
         Admin admin = adminRepository.findAll().get(0);
         AdminDTO expected = adminMapper.adminToAdminDto(admin);
@@ -113,6 +116,7 @@ class AdminControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = {"SYS_ADMIN"})
     void deleteAdminById () {
         AdminDTO admin = adminMapper.adminToAdminDto(adminRepository.findAll().get(0));
 

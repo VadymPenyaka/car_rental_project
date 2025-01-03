@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
@@ -29,7 +30,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     @Override
     @CheckOrderAvailability
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        carOrderDTO.setSchedule(carScheduleService.createCarSchedule(carOrderDTO.getSchedule()));
+        carOrderDTO.setSchedule(carOrderDTO.getSchedule());
 
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         return carOrderMapper.carOrderToCarOrderDto(carOrderRepository

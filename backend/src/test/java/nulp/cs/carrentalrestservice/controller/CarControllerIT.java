@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -39,6 +40,7 @@ class CarControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "admin1@gmail.com", roles = {"ADMIN"})
     void createCar() {
         CarDTO carDTO = carMapper
                 .carToCarDto(carRepository
@@ -52,6 +54,7 @@ class CarControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "admin1@gmail.com", roles = {"ADMIN"})
     void updateCarById() {
         Car expected = carRepository.findAll().get(0);
         CarDTO expectedDTO = carMapper.carToCarDto(expected);
@@ -68,6 +71,7 @@ class CarControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "admin1@gmail.com", roles = {"ADMIN"})
     void deleteCarById () {
         Car car = carRepository.findAll().get(0);
 

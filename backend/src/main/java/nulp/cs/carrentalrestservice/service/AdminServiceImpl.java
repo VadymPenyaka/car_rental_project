@@ -74,7 +74,12 @@ public class AdminServiceImpl implements AdminService {
         return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)));
     }
 
-
+    @Override
+    public boolean isOwner(UUID id, String username) {
+        return adminRepository.findById(id)
+                .map(admin -> admin.getEmail()
+                .equals(username)).orElse(false);
+    }
 
 
 }

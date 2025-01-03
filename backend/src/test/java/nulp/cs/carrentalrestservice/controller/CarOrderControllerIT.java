@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -55,6 +56,7 @@ class CarOrderControllerIT {
     @Test
     @Transactional
     @Rollback
+    @WithMockUser(username = "testuser", roles = "USER")
     void createCarOrder() {
         CarScheduleDTO carScheduleDTO = CarScheduleDTO.builder()
                 .id(UUID.randomUUID())
@@ -80,6 +82,7 @@ class CarOrderControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "vadym.penyaka@gmail.com", roles = "USER")
     void getCarOrderById() {
         CarOrder expected = carOrderRepository.findAll().get(0);
         CarOrderDTO expectedDTO = carOrderMapper.carOrderToCarOrderDto(expected);
@@ -92,6 +95,7 @@ class CarOrderControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void updateCarOrderById () {
         CarOrderDTO expected = carOrderMapper
                 .carOrderToCarOrderDto(carOrderRepository.findAll().get(0));

@@ -14,12 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "customers")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue

@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                     registry.requestMatchers(CustomerController.BASE_PATH+"/authenticate").permitAll();
                     registry.requestMatchers(HttpMethod.POST, CustomerController.BASE_PATH).permitAll();
                     registry.requestMatchers(CarController.BASE_PATH).permitAll();
+                    registry.requestMatchers(HttpMethod.GET, LocationController.BASE_PATH, LocationController.BASE_PATH+"/**").permitAll();
                     registry.requestMatchers(MaintenanceController.BASE_PATH).hasRole(Role.ADMIN.name());
                     registry.requestMatchers(MaintenanceController.BASE_PATH+"/**").hasRole(Role.ADMIN.name());
                     registry.requestMatchers("/v3/api-docs", "/swagger-ui"+"/**").permitAll();

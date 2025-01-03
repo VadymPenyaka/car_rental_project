@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
@@ -55,6 +56,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
 
     @Override
     public boolean deleteCarScheduleById(UUID id) {
+//TODO delete method or update to delete car order or maintenance with it
         if (carScheduleRepository.existsById(id)) {
             carScheduleRepository.deleteById(id);
             return true;

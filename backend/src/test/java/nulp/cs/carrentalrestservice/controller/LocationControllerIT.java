@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -34,6 +35,7 @@ class LocationControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void createLocation() {
         LocationDTO dto = LocationDTO.builder()
                 .locationName("test")
@@ -63,6 +65,7 @@ class LocationControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void updateLocationBuId() {
         Location location = locationRepository.findAll().get(0);
         LocationDTO locationDTO = locationMapper.locationToLocationDto(location);
@@ -80,6 +83,7 @@ class LocationControllerIT {
     @Test
     @Rollback
     @Transactional
+    @WithMockUser(username = "testuser", roles = "ADMIN")
     void deleteLocationById() {
         Location location = locationRepository.findAll().get(0);
 

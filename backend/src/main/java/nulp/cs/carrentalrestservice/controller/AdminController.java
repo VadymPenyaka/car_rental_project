@@ -60,7 +60,7 @@ public class AdminController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("returnObject.email == authentication.name or " +
+    @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
             "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())

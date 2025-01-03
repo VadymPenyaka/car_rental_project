@@ -30,7 +30,7 @@ public class CarSchedule {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ScheduleStatus status;
-    @OneToOne(mappedBy = "schedule")
+    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
     private CarOrder carOrder;
     @OneToOne(mappedBy = "schedule")
     private CarMaintenance carMaintenance;

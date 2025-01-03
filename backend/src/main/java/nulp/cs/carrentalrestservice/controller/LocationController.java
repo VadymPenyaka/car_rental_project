@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,7 +19,11 @@ public class LocationController {
 
     private final LocationService locationService;
 
-//    TODO Add getAll method
+    @GetMapping(BASE_PATH)
+    public List<LocationDTO> getAllLocations() {
+        return locationService.getAllLocations();
+    }
+
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createLocation (@RequestBody LocationDTO locationDTO) {
