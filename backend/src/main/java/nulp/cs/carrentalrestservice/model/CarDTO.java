@@ -27,4 +27,5 @@ public class CarDTO {
         private LocationDTO location;
         private DriveType driveType;
         private Double engineCapacity;
+//TODO add car pricing to car dto
 }

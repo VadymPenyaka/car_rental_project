@@ -29,8 +29,8 @@ INSERT INTO `customers` (`birth_date`, `passport_expiry_date`, `id`, `passport_i
 VALUES ('2004-05-20', '2026-12-01', '90ec8258-29cd-4367-b983-c18895e7a1a3', '999911149', 'Vadym', 'Peniaka', 'vadym.penyaka@gmail.com', '0953322122', 'P@ssw0rd');
 
 INSERT INTO admins (id, first_name, last_name, password, email, phone_number, role)
-VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', 'Vasyl', 'Melnyk', '$2a$12$u4/oMka2lWSBZVv4X4TEgeLM68spYB3Obcw1iHfvkgIEX20eYczeO
-', 'admin1@gmail.com', '09989874620', 'ADMIN');
+VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', 'Vasyl', 'Melnyk', '$2a$10$ck.fh6qqoFFStLohUtZBEe1mmaFTx6o1tCt3atToq8/fM8Y6WXmZO
+', 'admin1@gmail.com', '09989874620', 'SYS_ADMIN');
 INSERT INTO admins (id, first_name, last_name, password, email, phone_number, role)
 VALUES ('a262c3f3-1dac-4e5a-8079-bccb3026c551', 'Ivan', 'Melnyk', '$2a$12$u4/oMka2lWSBZVv4X4TEgeLM68spYB3Obcw1iHfvkgIEX20eYczeO',
         'admin2@gmail.com', '09912374621', 'ADMIN');

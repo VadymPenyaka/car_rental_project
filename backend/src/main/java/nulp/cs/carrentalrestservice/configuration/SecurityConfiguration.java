@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                     registry.requestMatchers(MaintenanceController.BASE_PATH).hasRole(Role.ADMIN.name());
                     registry.requestMatchers(MaintenanceController.BASE_PATH+"/**").hasRole(Role.ADMIN.name());
                     registry.requestMatchers("/v3/api-docs", "/swagger-ui"+"/**").permitAll();
+                    registry.requestMatchers(HttpMethod.POST, AdminController.BASE_PATH).permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

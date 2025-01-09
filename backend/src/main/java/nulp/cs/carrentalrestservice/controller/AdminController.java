@@ -37,7 +37,7 @@ public class AdminController {
     }
 
     @PostMapping(BASE_PATH)
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
+//    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
