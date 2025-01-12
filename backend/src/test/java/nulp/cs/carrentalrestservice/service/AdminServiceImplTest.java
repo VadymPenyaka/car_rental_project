@@ -44,7 +44,7 @@ class AdminServiceImplTest {
         admin = Admin.builder()
                 .password("password")
                 .firstName("FirstName")
-                .lastName("LastName")
+                .sureName("LastName")
                 .email("email@gmail.com")
                 .phoneNumber("380958888222")
                 .build();
@@ -52,7 +52,7 @@ class AdminServiceImplTest {
         adminDTO = AdminDTO.builder()
                 .password("password")
                 .firstName("FirstName")
-                .lastName("LastName")
+                .sureName("LastName")
                 .email("email@gmail.com")
                 .phoneNumber("380958888222")
                 .build();

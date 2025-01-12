@@ -1,2 +1,4 @@
-ALTER TABLE `car_rental_service`.`admins`
-    ADD COLUMN `role` ENUM('USER', 'ADMIN', 'SYS_ADMIN') NOT NULL AFTER `password`;
+CREATE TYPE role_enum AS ENUM ('USER', 'ADMIN', 'SYS_ADMIN');
+
+ALTER TABLE admins
+    ADD COLUMN role role_enum NOT NULL;

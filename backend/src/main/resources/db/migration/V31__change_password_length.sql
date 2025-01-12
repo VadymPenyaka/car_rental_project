@@ -1,4 +1,4 @@
-ALTER TABLE `car_rental_service`.`admins`
-    CHANGE COLUMN `password` `password` VARCHAR(100) NOT NULL ;
-ALTER TABLE `car_rental_service`.`customers`
-    CHANGE COLUMN `password` `password` VARCHAR(100) NOT NULL ;
+ALTER TABLE admins
+    ALTER COLUMN password TYPE VARCHAR(100);
+ALTER TABLE customers
+    ALTER COLUMN password TYPE VARCHAR(100);

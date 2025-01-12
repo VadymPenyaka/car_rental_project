@@ -1,13 +1,13 @@
-ALTER TABLE `car_rental_service`.`cars`
-    DROP FOREIGN KEY `location_id`;
-ALTER TABLE `car_rental_service`.`locations`
-    CHANGE COLUMN `id` `id` VARCHAR(36) NOT NULL ;
+ALTER TABLE cars
+    DROP CONSTRAINT location_id;
+ALTER TABLE locations
+    ALTER COLUMN id TYPE VARCHAR(36);
 
-ALTER TABLE `car_rental_service`.`cars`
-    CHANGE COLUMN `location_id` `location_id` VARCHAR(36) NOT NULL ;
-ALTER TABLE `car_rental_service`.`cars`
-    ADD CONSTRAINT `location_id`
-        FOREIGN KEY (`location_id`)
-            REFERENCES `car_rental_service`.`locations` (`id`);
+ALTER TABLE cars
+    ALTER COLUMN location_id TYPE VARCHAR(36);
+ALTER TABLE cars
+    ADD CONSTRAINT location_id_fk
+        FOREIGN KEY (location_id)
+            REFERENCES locations (id);
 
 

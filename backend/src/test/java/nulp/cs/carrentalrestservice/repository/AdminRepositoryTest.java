@@ -30,7 +30,7 @@ public class AdminRepositoryTest {
         Admin admin = adminRepository.save(Admin.builder()
                         .email("admin@email.com")
                         .firstName("Admin")
-                        .lastName("User")
+                        .sureName("User")
                         .phoneNumber("123456789")
                         .build());
 

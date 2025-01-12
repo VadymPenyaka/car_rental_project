@@ -1,5 +1,5 @@
-ALTER TABLE `car_rental_service`.`orders_details`
-    DROP FOREIGN KEY `orders_details_ibfk_2`;
-ALTER TABLE `car_rental_service`.`orders_details`
-    DROP COLUMN `customer_id`
+ALTER TABLE  orders_details
+    DROP CONSTRAINT  orders_details_customer_id_fkey;
+ALTER TABLE  orders_details
+    DROP COLUMN  customer_id;
 ;

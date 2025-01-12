@@ -1,2 +1,2 @@
-ALTER TABLE `car_rental_service`.`customers`
-CHANGE COLUMN `expiry_date` `passport_expiry_date` DATE NOT NULL ;
+ALTER TABLE  customers
+RENAME COLUMN  expiry_date TO passport_expiry_date;

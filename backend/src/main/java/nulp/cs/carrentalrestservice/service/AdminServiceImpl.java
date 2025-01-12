@@ -33,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
         adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
             foundAdmin.setPassword(admin.getPassword());
             foundAdmin.setFirstName(admin.getFirstName());
-            foundAdmin.setLastName(admin.getLastName());
+            foundAdmin.setSureName(admin.getSureName());
             foundAdmin.setEmail(admin.getEmail());
             foundAdmin.setPhoneNumber(admin.getPhoneNumber());
 

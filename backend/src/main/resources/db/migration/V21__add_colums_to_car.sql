@@ -1,10 +1,13 @@
-ALTER TABLE `car_rental_service`.`cars`
-    DROP FOREIGN KEY `cars_ibfk_1`;
-ALTER TABLE `car_rental_service`.`cars`
-    ADD COLUMN `drive_type` ENUM('FRONT_WD', 'REAR_WD', 'ALL_WD') NOT NULL AFTER `location_id`,
-    ADD COLUMN `engine_capacity` DOUBLE NOT NULL AFTER `drive_type`,
-    CHANGE COLUMN `car_pricing_id` `car_pricing_id` BIGINT NOT NULL ;
-ALTER TABLE `car_rental_service`.`cars`
-    ADD CONSTRAINT `cars_ibfk_1`
-        FOREIGN KEY (`car_pricing_id`)
-            REFERENCES `car_rental_service`.`car_pricing` (`id`);
+CREATE TYPE drive_type_enum AS ENUM ('FRONT_WD', 'REAR_WD', 'ALL_WD');
+
+ALTER TABLE cars
+    ADD COLUMN drive_type drive_type_enum  NOT NULL,
+    ADD COLUMN engine_capacity DOUBLE PRECISION NOT NULL;
+
+ALTER TABLE cars
+    ALTER COLUMN car_pricing_id TYPE BIGINT;
+
+ALTER TABLE cars
+    ADD CONSTRAINT car_id_fk
+        FOREIGN KEY (car_pricing_id)
+            REFERENCES car_pricing (id);

@@ -1,2 +1,2 @@
-ALTER TABLE `car_rental_service`.`cars_services`
-    RENAME TO  `car_rental_service`.`cars_maintenance` ;
+ALTER TABLE cars_services
+    RENAME TO  cars_maintenance ;

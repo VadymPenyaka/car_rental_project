@@ -17,7 +17,7 @@ import java.util.UUID;
 public class AdminDTO {
     private UUID id;
     private String firstName;
-    private String lastName;
+    private String sureName;
     private String password;
     private String email;
     private String phoneNumber;

@@ -31,7 +31,7 @@ public class Admin implements Comparable<Admin>{
     private String firstName;
     @NotBlank(message = "This field is mandatory!")
     @Column(nullable = false, length = 50)
-    private String lastName;
+    private String sureName;
     @NotBlank(message = "This field is mandatory!")
     @ValidEmail
     @Column(nullable = false, length = 50)

@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+    java-app:
+      container_name: java-backend-compose
+      image: "openjdk:17-jdk-slim"
+      restart: always
+      working_dir: /app
+      volumes:
+        - "/Users/vadim/Downloads/Java/Java practice/car_rental_project/backend/target/car-rental-rest-service-0.0.1-SNAPSHOT.jar:/app/app.jar"
+      environment:
+        - "ENVIRONMENT=production"
+        - "PORT=9090"
+      ports:
+        - "9090:9090"
+      command: ["java", "-jar", "app.jar"]
