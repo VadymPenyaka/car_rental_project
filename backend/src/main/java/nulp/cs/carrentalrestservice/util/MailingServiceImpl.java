@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

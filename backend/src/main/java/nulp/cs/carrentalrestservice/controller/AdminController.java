@@ -38,7 +38,7 @@ public class AdminController {
 
     @PostMapping(BASE_PATH)
 //    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
-    public ResponseEntity createAdmin (@RequestBody AdminDTO admin) {
+    public ResponseEntity<?> createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -52,7 +52,7 @@ public class AdminController {
 
     @DeleteMapping(BASE_PATH +"/{id}")
     @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
-    public ResponseEntity deleteAdminById (@PathVariable UUID id) {
+    public ResponseEntity<?> deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
 
@@ -62,7 +62,7 @@ public class AdminController {
     @PutMapping(BASE_PATH +"/{id}")
     @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
             "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
-    public ResponseEntity updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
+    public ResponseEntity<?> updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();
 
@@ -70,7 +70,7 @@ public class AdminController {
     }
 
     @PostMapping(BASE_PATH+"/authenticate")
-    public ResponseEntity authenticateAdmin (@RequestBody LoginForm loginForm) {
+    public ResponseEntity<?> authenticateAdmin (@RequestBody LoginForm loginForm) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginForm.username(), loginForm.password()
         ));

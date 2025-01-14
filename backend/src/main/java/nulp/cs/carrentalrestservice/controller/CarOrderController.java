@@ -19,7 +19,7 @@ public class CarOrderController {
 
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).USER.name())")
-    public ResponseEntity createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {
+    public ResponseEntity<?> createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {
         carOrderService.createCarOrder(carOrderDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -34,7 +34,7 @@ public class CarOrderController {
 
     @PutMapping(BASE_PATH +"/{id}")
     @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
-    public ResponseEntity updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {
+    public ResponseEntity<?> updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {
         if (carOrderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
             throw new NotFoundException();
         }
