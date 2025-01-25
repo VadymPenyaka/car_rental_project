@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +31,8 @@ class CarPricingServiceImplTest {
     private CarPricingMapper carPricingMapper;
     @Mock
     private CarRepository carRepository;
+    @Mock
+    private LoggingService loggingService;
     @InjectMocks
     private CarPricingServiceImpl carPricingService;
 

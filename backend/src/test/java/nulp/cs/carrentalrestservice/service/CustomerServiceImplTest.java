@@ -4,6 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapperImpl;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,14 +22,14 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
-
     @Mock
     private CustomerRepository customerRepository;
-
     @Mock
     private CustomerMapperImpl customerMapper;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private LoggingService loggingService;
 
     @InjectMocks
     private CustomerServiceImpl customerService;

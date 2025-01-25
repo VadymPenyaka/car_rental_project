@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.util;
 
 import lombok.AllArgsConstructor;
-import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class LoggingServiceImpl implements LoggingService {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         for (int i = 2; i < stackTrace.length; i++) {
             String className = stackTrace[i].getClassName();
-            if (!className.startsWith("nulp.cs.carrentalrestservice.util")) { // Замість "com.example.logging" вкажіть пакет вашого логера
+            if (!className.startsWith("nulp.cs.carrentalrestservice.util")) {
                 return stackTrace[i].getClassName();
             }
         }
@@ -43,7 +42,7 @@ public class LoggingServiceImpl implements LoggingService {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         for (int i = 2; i < stackTrace.length; i++) {
             String className = stackTrace[i].getClassName();
-            if (!className.startsWith("nulp.cs.carrentalrestservice.util")) { // Замість "com.example.logging" вкажіть пакет вашого логера
+            if (!className.startsWith("nulp.cs.carrentalrestservice.util")) {
                 return stackTrace[i].getMethodName();
             }
         }

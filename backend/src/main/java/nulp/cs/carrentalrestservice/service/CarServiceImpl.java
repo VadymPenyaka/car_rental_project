@@ -7,6 +7,7 @@ import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final LoggingService loggingService;
 
 
     @Override
@@ -39,6 +41,7 @@ public class CarServiceImpl implements CarService {
                                              LocalDate startDate,
                                              LocalDate endDate) {
 
+        loggingService.logInfo("Getting cars by criteria");
         if(carId == null && locationId == null && carClass==null && brand == null && gearboxType == null && fuelType == null && startDate == null && endDate == null) {
             return carRepository.findAll().stream().map(carMapper::carToCarDto).toList();
         }
@@ -49,15 +52,19 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Boolean deleteCarById(UUID id) {
+        loggingService.logInfo("Deleting car for ID: " + id);
         if (carRepository.existsById(id)) {
             carRepository.deleteById(id);
+            loggingService.logInfo("Car deleted successfully");
             return true;
         }
+        loggingService.logInfo("Car not found for ID: "+id);
         return false;
     }
 
     @Override
     public Optional<CarDTO> updateCarByID(UUID id, CarDTO carDTO) {
+        loggingService.logInfo("Updating car for ID: " + id);
         AtomicReference<Optional<CarDTO>> atomicReference = new AtomicReference<>();
 
         carRepository.findById(id).ifPresentOrElse( foundCar -> {
@@ -67,7 +74,9 @@ public class CarServiceImpl implements CarService {
                 foundCar.setFuelType(carDTO.getFuelType());
                 atomicReference.set(Optional.of(carMapper
                         .carToCarDto(carRepository.save(foundCar))));
+                loggingService.logInfo("Car updated successfully");
             }, ()-> {
+                loggingService.logInfo("Car not found for ID: "+id);
                 atomicReference.set(Optional.empty());
             }
         );

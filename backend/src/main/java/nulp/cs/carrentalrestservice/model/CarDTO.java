@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.DriveType;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data

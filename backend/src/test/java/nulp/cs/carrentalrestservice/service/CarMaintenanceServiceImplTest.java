@@ -10,6 +10,7 @@ import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,8 @@ class CarMaintenanceServiceImplTest {
     private CarScheduleServiceImpl carScheduleService;
     @Mock
     private CarScheduleMapper carScheduleMapper;
+    @Mock
+    private LoggingService loggingService;
     private CarMaintenance carMaintenance;
     private CarMaintenanceDTO carMaintenanceDTO;
     private CarSchedule carSchedule;

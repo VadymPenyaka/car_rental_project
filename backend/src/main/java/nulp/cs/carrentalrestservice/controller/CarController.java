@@ -34,7 +34,6 @@ public class CarController {
                                              @RequestParam(required = false) FuelType fuelType,
                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        loggingService.logInfo("Get all cars by criteria;");
         return carService.getAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
     }
 

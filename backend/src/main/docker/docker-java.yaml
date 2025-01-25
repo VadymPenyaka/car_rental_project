@@ -12,4 +12,19 @@ services:
         - "PORT=9090"
       ports:
         - "9090:9090"
-      command: ["java", "-jar", "app.jar"]
+      command: ["java", "-Dspring.profiles.active=test", "-jar", "app.jar"]
+    postgres:
+      container_name: postgres-backend-compose
+      image: "postgres:${POSTGRES_VERSION}"
+      restart: always
+    #    volumes:
+    #      - "./postgres/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh"
+    #      - "./postgres/init-database.sql:/docker-entrypoint-initdb.d/init-database.sql"
+      tmpfs:
+        - "/var/lib/postgresql/data:rw"
+      environment:
+        - "POSTGRES_USER=${POSTGRES_USER}"
+        - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+        - "POSTGRES_DB=${POSTGRES_DB}"
+      ports:
+        - "${POSTGRES_PORT}:5432"

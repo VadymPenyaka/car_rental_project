@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
+import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,17 +20,19 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarPricingServiceImpl implements CarPricingService {
     private final CarPricingRepository carPricingRepository;
     private final CarRepository carRepository;
-
+    private final LoggingService loggingService;
     private final CarPricingMapper carPricingMapper;
 
     @Override
     public Optional<CarPricingDTO> getCarPricingById(UUID id) {
+        loggingService.logInfo("Getting car pricing for ID: " + id);
         return Optional.ofNullable(carPricingMapper
                 .carPricingToCarPricingDto(carPricingRepository.findById(id).get()));
     }
 
     @Override
     public Optional<CarPricingDTO> updateCarPricingByID(UUID id, CarPricingDTO carPricing) {
+        loggingService.logInfo("Updating car pricing for ID: " + id);
         AtomicReference<Optional<CarPricingDTO>> atomicReference = new AtomicReference<>();
 
         carPricingRepository.findById(id).ifPresentOrElse( foundPricing -> {
@@ -40,9 +44,12 @@ public class CarPricingServiceImpl implements CarPricingService {
 
             atomicReference.set(Optional.of(carPricingMapper
                     .carPricingToCarPricingDto(carPricingRepository.save(foundPricing))));
+
+            loggingService.logInfo("Car pricing updated successfully");
         }, ()-> {
-                    atomicReference.set(Optional.empty());
-                }
+            atomicReference.set(Optional.empty());
+            loggingService.logInfo("Car pricing not found for ID: "+id);
+        }
         );
 
         return atomicReference.get();
@@ -50,24 +57,30 @@ public class CarPricingServiceImpl implements CarPricingService {
 
     @Override
     public Boolean deleteCarPricingById(UUID id) {
+        loggingService.logInfo("Deleting car pricing for ID: " + id);
         if(carPricingRepository.existsById(id)) {
             carPricingRepository.deleteById(id);
+            loggingService.logInfo("Car pricing deleted successfully");
             return true;
         }
-
+        loggingService.logInfo("Car pricing not found for ID: "+id);
         return false;
     }
 
     @Override
     public CarPricingDTO createCarPricing(CarPricingDTO carPricingDTO) {
+        loggingService.logInfo("Creating car pricing");
         return carPricingMapper.carPricingToCarPricingDto(carPricingRepository
                 .save(carPricingMapper.carPricingDtoToCarPricing(carPricingDTO)));
     }
 
     @Override
     public Optional<CarPricingDTO> getCarPricingByCarId(UUID carId) {
+        loggingService.logInfo("Getting car pricing for car ID: " + carId);
         Car car = carRepository.findById(carId).get();
         CarPricingDTO carPricingDTO = carPricingMapper.carPricingToCarPricingDto(car.getCarPricing());
+        if (carPricingDTO == null)
+            loggingService.logInfo("Car pricing not found for car ID: " + carId);
         return Optional.ofNullable(carPricingDTO);
     }
 }

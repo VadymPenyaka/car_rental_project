@@ -7,6 +7,7 @@ import nulp.cs.carrentalrestservice.model.LoginForm;
 import nulp.cs.carrentalrestservice.service.AdminService;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.security.JwtService;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -33,7 +34,7 @@ public class AdminController {
     @GetMapping(BASE_PATH)
     @PreAuthorize("hasRole('ADMIN')")
     public List<AdminDTO> getAllAdmins () {
-       return adminService.getAllAdmins();
+        return adminService.getAllAdmins();
     }
 
     @PostMapping(BASE_PATH)
@@ -55,7 +56,6 @@ public class AdminController {
     public ResponseEntity<?> deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
-
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

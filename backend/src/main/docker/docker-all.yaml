@@ -1,3 +1,0 @@
-include:
-  - docker-java.yaml
-  - docker-postgres.yaml

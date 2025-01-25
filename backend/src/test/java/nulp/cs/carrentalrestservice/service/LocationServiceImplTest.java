@@ -4,6 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.mapper.LocationMapper;
 import nulp.cs.carrentalrestservice.model.LocationDTO;
 import nulp.cs.carrentalrestservice.repository.LocationRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,8 @@ class LocationServiceImplTest {
     private LocationRepository locationRepository;
     @Mock
     private LocationMapper locationMapper;
+    @Mock
+    private LoggingService loggingService;
     @InjectMocks
     private LocationServiceImpl locationService;
     private Location location;

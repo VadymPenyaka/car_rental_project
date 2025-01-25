@@ -16,7 +16,6 @@ public class OrderValidationAspect {
     private final CarScheduleRepository carScheduleRepository;
     private final CarOrderRepository carOrderRepository;
 
-
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability) && args(carOrderDTO)")
     public void checkOrderAvailability(CarOrder carOrderDTO) {
         CarSchedule carSchedule = carOrderDTO.getSchedule();

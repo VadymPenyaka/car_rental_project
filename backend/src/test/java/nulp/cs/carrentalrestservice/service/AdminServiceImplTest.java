@@ -5,6 +5,7 @@ import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.AdminMapperImpl;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,8 @@ class AdminServiceImplTest {
     PasswordEncoder passwordEncoder;
     @InjectMocks
     private AdminServiceImpl adminService;
+    @Mock
+    private LoggingService loggingService;
 
     private Admin admin;
     private AdminDTO adminDTO;

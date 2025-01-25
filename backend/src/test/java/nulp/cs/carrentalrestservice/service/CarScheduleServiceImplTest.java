@@ -7,6 +7,7 @@ import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +31,8 @@ class CarScheduleServiceImplTest {
     private CarScheduleRepository carScheduleRepository;
     @Mock
     private CarScheduleMapper carScheduleMapper;
+    @Mock
+    private LoggingService loggingService;
 
     private CarSchedule carSchedule;
     private CarScheduleDTO carScheduleDTO;
@@ -77,7 +80,7 @@ class CarScheduleServiceImplTest {
 
         CarScheduleDTO result = carScheduleService.updateCarScheduleById(updated, carSchedule.getId()).get();
 
-        assertThat(updated).isEqualTo(carScheduleDTO);
+        assertThat(result).isEqualTo(carScheduleDTO);
     }
 
     @Test

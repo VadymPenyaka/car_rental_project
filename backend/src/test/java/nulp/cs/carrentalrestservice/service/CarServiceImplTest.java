@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.mapper.CarMapperImpl;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,10 +28,10 @@ import static org.mockito.Mockito.when;
 class CarServiceImplTest {
     @Mock
     private CarRepository carRepository;
-
     @Mock
     private CarMapperImpl carMapper;
-
+    @Mock
+    private LoggingService loggingService;
 
     @InjectMocks
     private CarServiceImpl carService;

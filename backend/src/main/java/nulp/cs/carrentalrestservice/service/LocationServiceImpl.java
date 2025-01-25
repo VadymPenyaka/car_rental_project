@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.LocationMapper;
 import nulp.cs.carrentalrestservice.model.LocationDTO;
 import nulp.cs.carrentalrestservice.repository.LocationRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,30 +18,37 @@ public class LocationServiceImpl implements LocationService {
     private final LocationRepository repository;
     private final LocationMapper mapper;
     private final LocationRepository locationRepository;
+    private final LoggingService loggingService;
 
     @Override
     public LocationDTO createLocation(LocationDTO locationDTO) {
+        loggingService.logInfo("Creating location with name: " + locationDTO.getLocationName());
         return mapper.locationToLocationDto(repository.save(mapper
                 .locationDtoToLocation(locationDTO)));
     }
 
     @Override
     public Optional<LocationDTO> getLocationByID(UUID id) {
+        loggingService.logInfo("Getting location with ID: " + id);
         return Optional.ofNullable(mapper.locationToLocationDto(repository
                 .findById(id).orElse(null)));
     }
 
     @Override
     public boolean deleteLocationById(UUID id) {
+        loggingService.logInfo("Deleting location with ID: " + id);
         if (repository.existsById(id)) {
             repository.deleteById(id);
+            loggingService.logInfo("Location deleted successfully");
             return true;
         }
+        loggingService.logInfo("Location not found for ID: " + id);
         return false;
     }
 
     @Override
     public Optional<LocationDTO> updateLocationById(UUID id, LocationDTO locationDTO) {
+        loggingService.logInfo("Updating location with ID: " + id);
         AtomicReference<Optional<LocationDTO>> atomicReference = new AtomicReference<>();
 
         repository.findById(id).ifPresentOrElse(foundLocation -> {
@@ -53,7 +61,11 @@ public class LocationServiceImpl implements LocationService {
 
                     atomicReference.set(Optional.ofNullable(mapper
                             .locationToLocationDto(repository.save(foundLocation))));
-                },()-> atomicReference.set(Optional.empty())
+                    loggingService.logInfo("Location updated successfully");
+                },()-> {
+                    atomicReference.set(Optional.empty());
+                    loggingService.logInfo("Location not found for ID: " + id);
+                }
         );
 
         return atomicReference.get();
@@ -61,6 +73,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<LocationDTO> getAllLocations() {
+        loggingService.logInfo("Getting all locations");
         return locationRepository.findAll().stream()
                 .map(mapper::locationToLocationDto).toList();
     }

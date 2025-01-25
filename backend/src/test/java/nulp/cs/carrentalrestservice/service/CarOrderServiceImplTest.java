@@ -8,6 +8,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,8 @@ class CarOrderServiceImplTest {
     private CarScheduleService carScheduleService;
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
+    @Mock
+    private LoggingService loggingService;
     @InjectMocks
     private CarOrderServiceImpl carOrderService;
 
