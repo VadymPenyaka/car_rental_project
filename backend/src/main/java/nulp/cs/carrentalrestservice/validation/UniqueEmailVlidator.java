@@ -13,7 +13,6 @@ public class UniqueEmailVlidator implements ConstraintValidator <UniqueEmail, St
     private final CustomerService customerService;
 
 
-
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
         return !customerService.isEmailUsed(email);
