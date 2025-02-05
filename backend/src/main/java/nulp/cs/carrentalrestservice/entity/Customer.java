@@ -34,17 +34,17 @@ public class Customer {
     @NotBlank(message = "Sure name is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
     private String sureName;
-    @Column(nullable = false, length = 9)
-    @NotBlank(message = "Password ID is mandatory!")
-    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
+    @Column
+//    @NotBlank(message = "Password ID is mandatory!")
+//    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String passportId;
-    @Column(nullable = false)
-    @ValidBirthDate
-    @NotNull(message = "Birth date is mandatory!")
+    @Column
+//    @ValidBirthDate
+//    @NotNull(message = "Birth date is mandatory!")
     private LocalDate birthDate;
-    @ValidExpiryDate
-    @Column(nullable = false, name = "passport_expiry_date")
-    @NotNull(message = "Passport expiry date is mandatory!")
+//    @ValidExpiryDate
+    @Column(name = "passport_expiry_date")
+//    @NotNull(message = "Passport expiry date is mandatory!")
     private LocalDate passportExpiryDate;
     @ValidEmail
     @Column(nullable = false)

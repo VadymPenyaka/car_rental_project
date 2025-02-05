@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service;
 
+import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
@@ -13,14 +14,7 @@ import java.util.UUID;
 public interface CarService {
     CarDTO createCar (CarDTO carDTO);
 
-    List<CarDTO> getAllCarsByCriteria(UUID carId,
-                                      UUID locationId,
-                                      CarClass carClass,
-                                      String brand,
-                                      GearboxType gearboxType,
-                                      FuelType fuelType,
-                                      LocalDate startDate,
-                                      LocalDate endDate);
+    List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate);
 
     Boolean deleteCarById (UUID id);
 

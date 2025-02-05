@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
+import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
@@ -32,21 +33,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> getAllCarsByCriteria(UUID carId,
-                                             UUID locationId,
-                                             CarClass carClass,
-                                             String brand,
-                                             GearboxType gearboxType,
-                                             FuelType fuelType,
-                                             LocalDate startDate,
-                                             LocalDate endDate) {
+    public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
 
         loggingService.logInfo("Getting cars by criteria");
-        if(carId == null && locationId == null && carClass==null && brand == null && gearboxType == null && fuelType == null && startDate == null && endDate == null) {
+        if(carDTO.getId() == null && carDTO.getLocation() == null && carDTO.getCarClass()==null && carDTO.getBrand() == null && carDTO.getGearboxType() == null && carDTO.getFuelType() == null && startDate == null && endDate == null) {
             return carRepository.findAll().stream().map(carMapper::carToCarDto).toList();
         }
 
-        return carRepository.findAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate).stream()
+        UUID locationId = carDTO.getLocation() != null ? carDTO.getLocation().getId() : null;
+        return carRepository.findAllCarsByCriteria(carDTO.getId(), locationId, carDTO.getCarClass(), carDTO.getBrand(), carDTO.getGearboxType(), carDTO.getFuelType(), startDate, endDate).stream()
                 .map(carMapper::carToCarDto).toList();
     }
 

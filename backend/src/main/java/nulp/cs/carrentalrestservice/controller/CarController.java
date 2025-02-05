@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
@@ -26,15 +27,8 @@ public class CarController {
     private final LoggingService loggingService;
 
     @GetMapping(BASE_PATH)
-    public List<CarDTO> getAllCarsByCriteria( @RequestParam(required = false) UUID carId,
-                                             @RequestParam(required = false) UUID locationId,
-                                             @RequestParam(required = false) CarClass carClass,
-                                             @RequestParam(required = false) String brand,
-                                             @RequestParam(required = false) GearboxType gearboxType,
-                                             @RequestParam(required = false) FuelType fuelType,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return carService.getAllCarsByCriteria(carId, locationId, carClass, brand, gearboxType, fuelType, startDate, endDate);
+    public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
+        return carService.getAllCarsByCriteria(carDTO, startDate, endDate);
     }
 
     @PostMapping(BASE_PATH)
