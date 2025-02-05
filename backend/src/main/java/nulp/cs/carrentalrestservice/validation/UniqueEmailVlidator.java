@@ -12,6 +12,8 @@ import nulp.cs.carrentalrestservice.service.CustomerService;
 public class UniqueEmailVlidator implements ConstraintValidator <UniqueEmail, String> {
     private final CustomerService customerService;
 
+
+
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
         return !customerService.isEmailUsed(email);
