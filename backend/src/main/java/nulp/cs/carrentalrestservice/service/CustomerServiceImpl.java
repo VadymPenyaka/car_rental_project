@@ -25,13 +25,6 @@ public class CustomerServiceImpl implements CustomerService {
         loggingService.logInfo("Creating customer for email: "+ customerDTO.getEmail());
         customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
 
-        if (customerRepository.existsByEmail(customerDTO.getEmail())) {
-            throw new IllegalArgumentException("User with this email already exists");
-        }
-        if (customerRepository.existsByPhoneNumber(customerDTO.getPhoneNumber())) {
-            throw new IllegalArgumentException("User with this phone number already exists");
-        }
-
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
     }
@@ -75,6 +68,22 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                 .map(customer -> customer.getEmail()
                 .equals(username)).orElse(false);
+    }
+
+    @Override
+    public boolean isEmailUsed(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
+
+    @Override
+    public boolean isPassportIdUsed(String passportId) {
+        return customerRepository.existsByPassportId(passportId);
+    }
+
+    @Override
+    public boolean isPhoneNumberUsed(String phoneNumber) {
+        return customerRepository.existsByPhoneNumber(phoneNumber);
     }
 
 }

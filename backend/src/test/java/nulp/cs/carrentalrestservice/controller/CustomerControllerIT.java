@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -55,7 +57,9 @@ class CustomerControllerIT {
         customerToCreate.setEmail(customer.getEmail()+"updated@gmail.com");
         customerToCreate.setPhoneNumber("999999333");
         customerToCreate.setPassword(passwordEncoder.encode("Passw0rd!"));
-        ResponseEntity responseEntity = controller.createCustomer(customerToCreate);
+        BindingResult bindingResult = new BeanPropertyBindingResult(customerToCreate, "customerDTO");
+
+        ResponseEntity responseEntity = controller.createCustomer(customerToCreate, bindingResult);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Customer savedCustomer = customerRepository.findById(customerToCreate.getId()).get();

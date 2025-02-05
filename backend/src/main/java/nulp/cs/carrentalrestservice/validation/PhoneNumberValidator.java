@@ -2,16 +2,19 @@ package nulp.cs.carrentalrestservice.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
+import nulp.cs.carrentalrestservice.service.CustomerService;
 
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor
 public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumber, String> {
 
+    private Pattern pattern;
+    private final CustomerService customerService;
     private static final String PHONE_PATTERN =
             "^\\+?[0-9]\\d{1,14}$";
-
-    private Pattern pattern;
 
     @Override
     public void initialize(ValidPhoneNumber constraintAnnotation) {
