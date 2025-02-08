@@ -60,8 +60,8 @@ public class AdminController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
-            "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
+//    @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
+//            "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
     public ResponseEntity<?> updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();

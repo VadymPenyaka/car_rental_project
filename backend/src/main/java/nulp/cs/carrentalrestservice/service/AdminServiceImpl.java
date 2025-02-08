@@ -23,22 +23,18 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDTO createAdmin(AdminDTO adminDTO) {
-        loggingService.logInfo("Create admin for email: " + adminDTO.getEmail());
-        adminDTO.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
+        loggingService.logInfo("Create admin for id: " + adminDTO.getId());
+
         return adminMapper.adminToAdminDto(adminRepository
                         .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }
 
+//    TODO add fields to update
     @Override
     public Optional<AdminDTO> updateAdminById(UUID id, AdminDTO admin) {
         AtomicReference<Optional<AdminDTO>> atomicReference = new AtomicReference<>();
         loggingService.logInfo("Update admin for ID: " + id);
         adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
-            foundAdmin.setPassword(admin.getPassword());
-            foundAdmin.setFirstName(admin.getFirstName());
-            foundAdmin.setSureName(admin.getSureName());
-            foundAdmin.setEmail(admin.getEmail());
-            foundAdmin.setPhoneNumber(admin.getPhoneNumber());
 
             atomicReference.set(Optional.of(adminMapper
                     .adminToAdminDto(adminRepository.save(foundAdmin))));
@@ -85,14 +81,5 @@ public class AdminServiceImpl implements AdminService {
 
         return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)));
     }
-
-    @Override
-    public boolean isOwner(UUID id, String username) {
-        loggingService.logInfo("Check if admin email ("+ username + ") match with authenticated user");;
-        return adminRepository.findById(id)
-                .map(admin -> admin.getEmail()
-                .equals(username)).orElse(false);
-    }
-
 
 }

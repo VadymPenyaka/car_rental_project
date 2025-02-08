@@ -19,6 +19,4 @@ public interface AdminService {
 
     Optional<AdminDTO> getAdminWithFewestOrders();
 
-    boolean isOwner (UUID id, String username);
-
 }

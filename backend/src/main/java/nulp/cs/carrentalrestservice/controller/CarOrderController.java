@@ -25,8 +25,8 @@ public class CarOrderController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name()) or" +
-            "@carOrderServiceImpl.isOwner(#id, authentication.name)")
+//    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name()) or" +
+//            "@carOrderServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping(BASE_PATH +"/{id}")
     public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);

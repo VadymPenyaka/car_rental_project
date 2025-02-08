@@ -44,11 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.findById(id).ifPresentOrElse( foundCustomer -> {
                     foundCustomer.setBirthDate(customerDTO.getBirthDate());
                     foundCustomer.setPassportExpiryDate(customerDTO.getPassportExpiryDate());
-                    foundCustomer.setFirstName(customerDTO.getFirstName());
                     foundCustomer.setPassportId(customerDTO.getPassportId());
-                    foundCustomer.setSureName(customerDTO.getSureName());
-                    foundCustomer.setEmail(customerDTO.getEmail());
-                    foundCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
 
                     atomicReference.set(Optional.ofNullable(customerMapper
                             .customerToCustomerDto(customerRepository.save(foundCustomer))));
@@ -63,27 +59,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean isOwner(UUID id, String username) {
-        loggingService.logInfo("Check if customer email ("+ username + ") match with authenticated user");;
-        return customerRepository.findById(id)
-                .map(customer -> customer.getEmail()
-                .equals(username)).orElse(false);
-    }
-
-    @Override
-    public boolean isEmailUsed(String email) {
-        return customerRepository.existsByEmail(email);
-    }
-
-
-    @Override
     public boolean isPassportIdUsed(String passportId) {
         return customerRepository.existsByPassportId(passportId);
-    }
-
-    @Override
-    public boolean isPhoneNumberUsed(String phoneNumber) {
-        return customerRepository.existsByPhoneNumber(phoneNumber);
     }
 
 }

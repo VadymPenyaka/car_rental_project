@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class CustomerController {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtService jwtService;
 
-    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
+//    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping(BASE_PATH +"/{id}")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
@@ -50,7 +51,7 @@ public class CustomerController {
 
 //    TODO make accessible for right user
     @PostMapping(BASE_PATH+"/personalInfo")
-    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerPersonalInfoDTO.passportId)")
+//    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerPersonalInfoDTO.passportId)")
     public ResponseEntity<?> setCustomerPersonalInfo (@PathVariable UUID id, @Valid @RequestBody CustomerPersonalInfoDTO customerPersonalInfoDTO) {
 
 
@@ -58,7 +59,7 @@ public class CustomerController {
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerDTO.email)")
+//    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerDTO.email)")
     public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();

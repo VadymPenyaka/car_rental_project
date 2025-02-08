@@ -26,41 +26,14 @@ public class Customer {
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @Column(nullable = false, length = 50)
-    @NotBlank(message = "Name is mandatory!")
-    @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
-    private String firstName;
-    @Column(nullable = false, length = 50)
-    @NotBlank(message = "Sure name is mandatory!")
-    @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
-    private String sureName;
     @Column
-//    @NotBlank(message = "Password ID is mandatory!")
-//    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String passportId;
     @Column
-//    @ValidBirthDate
-//    @NotNull(message = "Birth date is mandatory!")
+    @NotNull(message = "Birth date is mandatory!")
     private LocalDate birthDate;
-//    @ValidExpiryDate
     @Column(name = "passport_expiry_date")
-//    @NotNull(message = "Passport expiry date is mandatory!")
+    @NotNull(message = "Passport expiry date is mandatory!")
     private LocalDate passportExpiryDate;
-    @ValidEmail
-    @Column(nullable = false)
-    @NotBlank(message = "Email is mandatory!")
-    @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
-    private String email;
-//    @ValidPassword
-    @NotBlank(message = "This field is mandatory")
-    @Column(nullable = false, length = 100)
-    private String password;
-    @ValidPhoneNumber
-    @Column(nullable = false, name = "phone_number", length = 12)
-    @NotBlank(message = "Phone number is mandatory!")
-    @Size(min = 9, max = 11, message = "Must be 10 characters!")
-    private String phoneNumber;
-
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();

@@ -12,9 +12,5 @@ public interface CustomerService {
 
     Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
 
-    boolean isOwner (UUID id, String username);
-
-    boolean isEmailUsed (String email);
     boolean isPassportIdUsed (String passportId);
-    boolean isPhoneNumberUsed (String phoneNumber);
 }

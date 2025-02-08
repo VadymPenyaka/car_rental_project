@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LocationServiceImpl implements LocationService {
     private final LocationRepository repository;
     private final LocationMapper mapper;
-    private final LocationRepository locationRepository;
     private final LoggingService loggingService;
 
     @Override
@@ -74,7 +73,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDTO> getAllLocations() {
         loggingService.logInfo("Getting all locations");
-        return locationRepository.findAll().stream()
+        return repository.findAll().stream()
                 .map(mapper::locationToLocationDto).toList();
     }
 }

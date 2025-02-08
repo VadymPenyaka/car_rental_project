@@ -20,9 +20,9 @@ public class JwtServiceImpl implements JwtService {
     private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(30);
 
     @Override
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(PersonDetails personDetails) {
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(personDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSecretKey())
@@ -35,7 +35,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails user) {
+    public boolean isTokenValid(String token, PersonDetails user) {
         final String username = extractUsername(token);
         return username.equals(user.getUsername()) && !isTokenExpired(token);
     }

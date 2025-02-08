@@ -16,10 +16,4 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AdminDTO {
     private UUID id;
-    private String firstName;
-    private String sureName;
-    private String password;
-    private String email;
-    private String phoneNumber;
-    private Role role;
 }

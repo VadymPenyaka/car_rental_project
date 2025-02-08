@@ -5,15 +5,16 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniqueEmail;
 import nulp.cs.carrentalrestservice.service.CustomerService;
+import nulp.cs.carrentalrestservice.service.PersonService;
 
 
 @RequiredArgsConstructor
 public class UniqueEmailValidator implements ConstraintValidator <UniqueEmail, String> {
-    private final CustomerService customerService;
+    private final PersonService personService;
 
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
-        return !customerService.isEmailUsed(email);
+        return !personService.isEmailUsed(email);
     }
 }

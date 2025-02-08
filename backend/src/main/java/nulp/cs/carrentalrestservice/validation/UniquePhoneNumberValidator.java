@@ -5,12 +5,13 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniquePhoneNumber;
 import nulp.cs.carrentalrestservice.service.CustomerService;
+import nulp.cs.carrentalrestservice.service.PersonService;
 
 @RequiredArgsConstructor
 public class UniquePhoneNumberValidator implements ConstraintValidator<UniquePhoneNumber, String> {
-    private final CustomerService customerService;
+    private final PersonService personService;
     @Override
     public boolean isValid(String phoneNumber, ConstraintValidatorContext constraintValidatorContext) {
-        return !customerService.isPhoneNumberUsed(phoneNumber);
+        return !personService.isPhoneNumberUsed(phoneNumber);
     }
 }
