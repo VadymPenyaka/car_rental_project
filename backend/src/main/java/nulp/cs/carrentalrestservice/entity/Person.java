@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@Table(name = "persons")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {

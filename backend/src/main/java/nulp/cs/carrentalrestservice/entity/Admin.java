@@ -36,6 +36,9 @@ public class Admin implements Comparable<Admin>{
 
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Person person;
 
     @Override
     public int compareTo(Admin otherAdmin) {

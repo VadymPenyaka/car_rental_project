@@ -1,8 +1,9 @@
 package nulp.cs.carrentalrestservice.configuration;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.filter.JwtAuthenticationFilter;
-import nulp.cs.carrentalrestservice.service.security.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.controller.*;
+import nulp.cs.carrentalrestservice.security.filter.JwtAuthenticationFilter;
+import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -32,11 +34,10 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests( authorizeRequest -> authorizeRequest
-                        .requestMatchers("/api/v1"+"/**").permitAll()
-                        .requestMatchers("/sys_admin/data").permitAll()
-                        .requestMatchers("/admin/cars").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests( authorizeRequest -> {
+
+                    authorizeRequest.anyRequest().authenticated();
+                })
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }

@@ -2,31 +2,61 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
-import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
-import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
-import nulp.cs.carrentalrestservice.service.car.CarService;
+import nulp.cs.carrentalrestservice.model.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
+import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
+import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import nulp.cs.carrentalrestservice.service.CarService;
+import nulp.cs.carrentalrestservice.util.LoggingService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(CarController.BASE_PATH)
 @RequiredArgsConstructor
 public class CarController {
     public static final String BASE_PATH = "/api/v1/cars";
     private final CarService carService;
+    private final LoggingService loggingService;
 
-    @PostMapping
-    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto searchRequest) {
-        return carService.getAllCarsByCriteria(searchRequest);
+    @GetMapping("/public" + BASE_PATH)
+    public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
+        return carService.getAllCarsByCriteria(carDTO, startDate, endDate);
     }
 
-    @GetMapping("/{id}")
-    public CarCustomerDetailsResponse getCarById (@PathVariable UUID id) {
-        return carService.getCarCustomerDetailsById(id).orElseThrow(NotFoundException::new);
+    @PostMapping("/admin" + BASE_PATH)
+    public ResponseEntity<?> createCar (@RequestBody CarDTO car) {
+        carService.createCar(car);
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PutMapping("/admin" + BASE_PATH+"/{id}")
+    public ResponseEntity<?> updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
+        loggingService.logInfo("Update car with id:"+car.getId()+";");
+        if(carService.updateCarByID(id, car).isEmpty()) {
+            loggingService.logError("Car not found;", new NotFoundException());
+            throw new NotFoundException();
+        }
+
+        loggingService.logInfo("Car " + car.getId() + " wos updated");
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/admin" + BASE_PATH+"/{id}")
+    public ResponseEntity<?> deleteCarById (@PathVariable UUID id) {
+        if (!carService.deleteCarById(id))
+            throw new NotFoundException();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
