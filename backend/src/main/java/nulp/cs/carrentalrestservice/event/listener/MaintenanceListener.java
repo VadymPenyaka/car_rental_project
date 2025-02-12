@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.listener;
+package nulp.cs.carrentalrestservice.event.listener;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;

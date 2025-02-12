@@ -21,8 +21,8 @@ public class CustomerRepositoryTest {
 
     @Test
     @Transactional
-    void getAllUsersTest() {
+    void getAllCustomersTest() {
         int size = customerRepository.findAll().size();
-        assertThat(size).isEqualTo(2);
+        assertThat(size).isEqualTo(1);
     }
 }

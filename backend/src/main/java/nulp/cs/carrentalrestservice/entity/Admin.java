@@ -1,12 +1,7 @@
 package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import nulp.cs.carrentalrestservice.annotation.ValidEmail;
-import nulp.cs.carrentalrestservice.annotation.ValidPassword;
-import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
-import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -29,6 +24,9 @@ public class Admin implements Comparable<Admin>{
     private UUID id;
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Person person;
 
     @Override
     public int compareTo(Admin otherAdmin) {

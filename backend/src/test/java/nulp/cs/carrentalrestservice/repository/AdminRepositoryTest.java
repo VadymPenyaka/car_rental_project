@@ -21,17 +21,13 @@ public class AdminRepositoryTest {
     void getAllAdminsTest() {
         List<Admin> foundAdmins = adminRepository.findAll();
 
-        assertThat(foundAdmins.size()).isEqualTo(2);
+        assertThat(foundAdmins.size()).isEqualTo(1);
     }
 
 
     @Test
     void createAdminTest() {
         Admin admin = adminRepository.save(Admin.builder()
-                        .email("admin@email.com")
-                        .firstName("Admin")
-                        .sureName("User")
-                        .phoneNumber("123456789")
                         .build());
 
 

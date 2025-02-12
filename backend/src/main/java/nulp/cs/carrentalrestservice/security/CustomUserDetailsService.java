@@ -1,18 +1,11 @@
 package nulp.cs.carrentalrestservice.security;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.Admin;
-import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.entity.Person;
-import nulp.cs.carrentalrestservice.model.enumeration.Role;
-import nulp.cs.carrentalrestservice.repository.AdminRepository;
-import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import nulp.cs.carrentalrestservice.repository.PersonRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final PersonRepository personRepository;
 
     @Override
-    public PersonDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<Person> personOptional = personRepository.findByUsername(username);
 

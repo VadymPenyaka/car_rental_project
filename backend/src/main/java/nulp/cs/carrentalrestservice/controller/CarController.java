@@ -26,21 +26,19 @@ public class CarController {
     private final CarService carService;
     private final LoggingService loggingService;
 
-    @GetMapping(BASE_PATH)
+    @GetMapping("/public" + BASE_PATH)
     public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
         return carService.getAllCarsByCriteria(carDTO, startDate, endDate);
     }
 
-    @PostMapping(BASE_PATH)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin" + BASE_PATH)
     public ResponseEntity<?> createCar (@RequestBody CarDTO car) {
         carService.createCar(car);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping(BASE_PATH+"/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin" + BASE_PATH+"/{id}")
     public ResponseEntity<?> updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
         loggingService.logInfo("Update car with id:"+car.getId()+";");
         if(carService.updateCarByID(id, car).isEmpty()) {
@@ -50,11 +48,10 @@ public class CarController {
 
         loggingService.logInfo("Car " + car.getId() + " wos updated");
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(BASE_PATH+"/{id}")
+    @DeleteMapping("/admin" + BASE_PATH+"/{id}")
     public ResponseEntity<?> deleteCarById (@PathVariable UUID id) {
         if (!carService.deleteCarById(id))
             throw new NotFoundException();

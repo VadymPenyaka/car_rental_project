@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.listener;
+package nulp.cs.carrentalrestservice.event.listener;
 
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.util.MailingService;
@@ -17,7 +17,7 @@ public class MailingListener {
     @EventListener
     public void handleEmailEvent (EmailEvent event) {
 
-        mailingService.sendEmail(event.getCustomer().getEmail(), EmailContentCreator.generateSubjectForStatusEmail(event),
+        mailingService.sendEmail(event.getCustomer().getPerson().getUsername(), EmailContentCreator.generateSubjectForStatusEmail(event),
                 EmailContentCreator.generateBodyForStatusEmail(event));
     }
 

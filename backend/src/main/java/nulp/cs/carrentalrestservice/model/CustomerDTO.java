@@ -17,8 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CustomerDTO {
     private UUID id;
-    private String firstName;
-    private String sureName;
+    private PersonDTO person;
     @UniquePassportId
     @NotBlank(message = "Password ID is mandatory!")
     @Size(min = 9, max = 9, message = "Must be 9 digit length!")
@@ -27,9 +26,4 @@ public class CustomerDTO {
     private LocalDate birthDate;
     @ValidExpiryDate
     private LocalDate passportExpiryDate;
-    @UniqueEmail
-    private String email;
-    private String password;
-    @UniquePhoneNumber
-    private String phoneNumber;
 }

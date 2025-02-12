@@ -45,19 +45,9 @@ class AdminServiceImplTest {
     @BeforeEach
     void setUp() {
         admin = Admin.builder()
-                .password("password")
-                .firstName("FirstName")
-                .sureName("LastName")
-                .email("email@gmail.com")
-                .phoneNumber("380958888222")
                 .build();
 
         adminDTO = AdminDTO.builder()
-                .password("password")
-                .firstName("FirstName")
-                .sureName("LastName")
-                .email("email@gmail.com")
-                .phoneNumber("380958888222")
                 .build();
     }
 
@@ -69,7 +59,7 @@ class AdminServiceImplTest {
         AdminDTO savedAdminDTO = adminService.createAdmin(adminDTO);
 
         assertThat(savedAdminDTO).isNotNull();
-        assertThat(savedAdminDTO.getFirstName()).isEqualTo(adminDTO.getFirstName());
+        assertThat(savedAdminDTO).isEqualTo(adminDTO);
     }
 
     @Test
@@ -80,7 +70,7 @@ class AdminServiceImplTest {
         AdminDTO  foundAdmin = adminService.getAdminById(adminDTO.getId()).get();
 
         assertThat(foundAdmin).isNotNull();
-        assertThat(foundAdmin.getFirstName()).isEqualTo(adminDTO.getFirstName());
+        assertThat(foundAdmin).isEqualTo(adminDTO);
     }
 
     @Test
@@ -120,8 +110,6 @@ class AdminServiceImplTest {
         when(adminMapper.adminToAdminDto(any())).thenReturn(adminDTO);
 
         AdminDTO expected = adminDTO;
-        String updatedName = "UPDATED";
-        expected.setFirstName(updatedName);
 
         AdminDTO actual = adminService.updateAdminById(expected.getId(), expected).get();
 

@@ -38,6 +38,7 @@ public class CustomerController {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
+//    TODO refactor method to get personal info + hash the data
     @PostMapping(BASE_PATH)
     public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerDTO customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -49,38 +50,13 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    TODO make accessible for right user
-    @PostMapping(BASE_PATH+"/personalInfo")
-//    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerPersonalInfoDTO.passportId)")
-    public ResponseEntity<?> setCustomerPersonalInfo (@PathVariable UUID id, @Valid @RequestBody CustomerPersonalInfoDTO customerPersonalInfoDTO) {
-
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PutMapping(BASE_PATH +"/{id}")
-//    @PreAuthorize("@customerServiceImpl.isOwner(#id, #customerDTO.email)")
-    public ResponseEntity updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
+//    @PreAuthorize("#customerDTO.") TODO add personId to customer
+    public ResponseEntity<?> updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-    @PostMapping(BASE_PATH+"/authenticate")
-    public ResponseEntity authenticateCustomer (@RequestBody LoginForm loginForm) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginForm.username(), loginForm.password()
-        ));
-
-        if(authentication.isAuthenticated()) {
-            String token =  jwtService.generateToken(customUserDetailsService
-                    .loadUserByUsername(loginForm.username()));
-            return new ResponseEntity<>(token, HttpStatus.OK);
-        }
-        else
-            throw new UsernameNotFoundException("Invalid credentials");
     }
 
 

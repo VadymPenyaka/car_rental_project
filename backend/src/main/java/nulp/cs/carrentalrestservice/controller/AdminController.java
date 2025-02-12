@@ -31,56 +31,36 @@ public class AdminController {
     private final CustomUserDetailsService customUserDetailsService;
 
 //TODO send part of data
-    @GetMapping(BASE_PATH)
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin" + BASE_PATH)
     public List<AdminDTO> getAllAdmins () {
         return adminService.getAllAdmins();
     }
 
-    @PostMapping(BASE_PATH)
-//    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
+    @PostMapping("/sys_admin"+BASE_PATH)
     public ResponseEntity<?> createAdmin (@RequestBody AdminDTO admin) {
         adminService.createAdmin(admin);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(BASE_PATH +"/{id}")
-    @PostAuthorize("returnObject.email == authentication.name")
+    @GetMapping("/admin" + BASE_PATH + "/{id}")
     public AdminDTO getAdminById (@PathVariable UUID id) {
         return adminService.getAdminById(id).orElseThrow(NotFoundException::new);
     }
 
-    @DeleteMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
+    @DeleteMapping("/sys_admin" + BASE_PATH + "/{id}")
     public ResponseEntity<?> deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(BASE_PATH +"/{id}")
-//    @PreAuthorize("@adminServiceImpl.isOwner(#id, authentication.name) or " +
-//            "hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).SYS_ADMIN.name())")
+    @PutMapping("/sys_admin"+BASE_PATH +"/{id}")
     public ResponseEntity<?> updateAdminById (@PathVariable UUID id, @RequestBody AdminDTO adminDTO) {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping(BASE_PATH+"/authenticate")
-    public ResponseEntity<?> authenticateAdmin (@RequestBody LoginForm loginForm) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginForm.username(), loginForm.password()
-        ));
-
-        if(authentication.isAuthenticated()) {
-            return new ResponseEntity<>(jwtService.generateToken(customUserDetailsService
-                    .loadUserByUsername(loginForm.username())), HttpStatus.OK);
-        }
-        else
-            throw new UsernameNotFoundException("Invalid credentials");
     }
 
 }

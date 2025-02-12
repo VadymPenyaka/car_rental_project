@@ -49,23 +49,17 @@ class CarOrderServiceImplTest {
     @BeforeEach
     void setUp() {
         Admin admin = Admin.builder()
-                .password("password")
-                .firstName("FirstName")
-                .sureName("LastName")
-                .email("email@gmail.com")
-                .phoneNumber("123456789000")
                 .build();
 
         AdminDTO adminDTO = AdminDTO.builder()
-                .password("password")
-                .firstName("FirstName")
-                .sureName("LastName")
-                .email("email@gmail.com")
-                .phoneNumber("123456789000")
                 .build();
 
-        Customer customer =  Customer.builder().email("email@gmail.com").firstName("FirstName").build();
-        CustomerDTO customerDTO = CustomerDTO.builder().build();
+        Customer customer =  Customer.builder().build();
+        PersonDTO personDTO = PersonDTO.builder()
+                .firstName("Vadym")
+                .username("vadym.penyaka@gmail.com")
+                .build();
+        CustomerDTO customerDTO = CustomerDTO.builder().person(personDTO).build();
 
         CarScheduleDTO carScheduleDTO = CarScheduleDTO.builder()
                 .startDate(LocalDate.now())

@@ -42,18 +42,12 @@ class CustomerServiceImplTest {
         customer = Customer.builder()
                 .birthDate(LocalDate.now())
                 .passportExpiryDate(LocalDate.now())
-                .firstName("FirstName")
-                .sureName("SureName")
-                .phoneNumber("380958888222")
                 .passportId("12345678")
                 .build();
 
         customerDTO = CustomerDTO.builder()
                 .birthDate(LocalDate.now())
                 .passportExpiryDate(LocalDate.now())
-                .firstName("FirstName")
-                .sureName("SureName")
-                .phoneNumber("380958888222")
                 .passportId("12345678")
                 .build();
     }

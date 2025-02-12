@@ -54,9 +54,8 @@ class CustomerControllerIT {
     void createCustomerTest() {
         Customer customer = customerRepository.findAll().get(0);
         CustomerDTO customerToCreate = customerMapper.customerToCustomerDto(customer);
-        customerToCreate.setEmail(customer.getEmail()+"updated@gmail.com");
-        customerToCreate.setPhoneNumber("999999333");
-        customerToCreate.setPassword(passwordEncoder.encode("Passw0rd!"));
+//        customerToCreate.setEmail(customer.getEmail()+"updated@gmail.com");
+
         BindingResult bindingResult = new BeanPropertyBindingResult(customerToCreate, "customerDTO");
 
         ResponseEntity responseEntity = controller.createCustomer(customerToCreate, bindingResult);
@@ -73,9 +72,9 @@ class CustomerControllerIT {
     @WithMockUser(username = "ivan@gmail.com", roles = "USER")
     void updateCustomerById () {
         CustomerDTO expected = customerMapper.customerToCustomerDto(customerRepository.findAll().get(0));
-        expected.setFirstName("updated");
+        expected.setBirthDate(expected.getBirthDate().plusDays(1));
 
-        ResponseEntity responseEntity = controller.updateCustomerById(expected.getId(), expected);
+        ResponseEntity<?> responseEntity = controller.updateCustomerById(expected.getId(), expected);
 
         CustomerDTO actual = customerMapper.customerToCustomerDto(customerRepository
                 .findById(expected.getId()).get());

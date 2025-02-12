@@ -33,7 +33,7 @@ public class CarOrderServiceImpl implements CarOrderService {
     @Override
     @CheckOrderAvailability
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        loggingService.logInfo("Creating car order for customer with email: " + carOrderDTO.getCustomer().getEmail());
+        loggingService.logInfo("Creating car order for customer with email: " + carOrderDTO.getCustomer().getPerson().getUsername());
 
         carOrderDTO.setSchedule(carOrderDTO.getSchedule());
 

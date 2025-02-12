@@ -37,4 +37,8 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Person person;
+
 }

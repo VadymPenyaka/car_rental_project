@@ -22,8 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        loggingService.logInfo("Creating customer for email: "+ customerDTO.getEmail());
-        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+        loggingService.logInfo("Creating customer for id: "+ customerDTO.getId());
 
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));

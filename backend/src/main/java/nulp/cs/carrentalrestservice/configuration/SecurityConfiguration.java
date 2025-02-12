@@ -3,16 +3,14 @@ package nulp.cs.carrentalrestservice.configuration;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.controller.*;
 import nulp.cs.carrentalrestservice.security.filter.JwtAuthenticationFilter;
-import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,8 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -34,19 +33,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( registry -> {
-                    registry.requestMatchers(AdminController.BASE_PATH+"/authenticate").permitAll();
-                    registry.requestMatchers(CustomerController.BASE_PATH+"/authenticate").permitAll();
-                    registry.requestMatchers(HttpMethod.POST, CustomerController.BASE_PATH).permitAll();
-                    registry.requestMatchers(CarController.BASE_PATH).permitAll();
-                    registry.requestMatchers(HttpMethod.GET, LocationController.BASE_PATH, LocationController.BASE_PATH+"/**").permitAll();
-                    registry.requestMatchers(MaintenanceController.BASE_PATH).hasRole(Role.ADMIN.name());
-                    registry.requestMatchers(MaintenanceController.BASE_PATH+"/**").hasRole(Role.ADMIN.name());
-                    registry.requestMatchers("/v3/api-docs", "/swagger-ui"+"/**").permitAll();
-                    registry.requestMatchers(HttpMethod.POST, AdminController.BASE_PATH).permitAll();
-                    registry.anyRequest().authenticated();
-                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests( authorizeRequest -> {
+
+                    authorizeRequest.anyRequest().authenticated();
+                })
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }
