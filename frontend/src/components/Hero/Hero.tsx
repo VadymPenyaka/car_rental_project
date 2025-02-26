@@ -1,14 +1,13 @@
 import lvivPanorama from "../../assets/lvivPanorama.jpg"
+import CarRentalSearch from "../CarRentalSearch/carRentalSearch"
 
 export default function Hero() {
   return (
-    <div className="bg-cover bg-center h-[535px]"
+    <div className="bg-cover bg-center h-[535px] flex items-center justify-center"
     style={{
       backgroundImage: `url(${lvivPanorama})`,
     }}>
-        <h1>Автопрокат, якому довіряють!</h1>
-        <p><span>4 / 5 ★ ★ ★ ★ ☆</span> за <a href="#">Google відгуками</a></p>
-        
+        <CarRentalSearch />
     </div>
   )
 }
