@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Table(name = "admins")
 @Setter
 @Getter
 @Builder
@@ -28,17 +29,9 @@ public class Admin implements Comparable<Admin>{
     private String position;
     @Column(columnDefinition = "varchar(50)")
     private String department;
-    @Column
-    private boolean isOnVocation;
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "location_id")
-    private Location location;
 
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders = new HashSet<>();
-    @OneToOne
-    @JoinColumn
-    private Person person;
 
     @Override
     public int compareTo(Admin otherAdmin) {

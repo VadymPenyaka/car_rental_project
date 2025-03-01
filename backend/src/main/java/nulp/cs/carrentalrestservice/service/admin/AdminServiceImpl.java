@@ -1,19 +1,14 @@
-package nulp.cs.carrentalrestservice.service.admin;
+package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
-import nulp.cs.carrentalrestservice.entity.Location;
-import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
-import nulp.cs.carrentalrestservice.mapper.LocationMapper;
-import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
-import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
-import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
+import nulp.cs.carrentalrestservice.model.AdminDTO;
+import nulp.cs.carrentalrestservice.model.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
-import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,17 +21,17 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
     private final PersonService personService;
     private final LoggingService loggingService;
-    private final LocationMapper locationMapper;
+
 
     @Override
-    public void createAdmin(AdminDTO adminDTO) {
+    public AdminDTO createAdmin(AdminDTO adminDTO) {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
-        PersonDTO person = adminDTO.getPerson();
-        person.setRole(Role.ADMIN);
-        personService.createPerson(adminDTO.getPerson());
+        PersonDTO personDTO = adminDTO.getPerson();
+        personDTO.setRole(Role.ADMIN);
 
-        adminMapper.adminToAdminDto(adminRepository
-                .save(adminMapper.adminDtoToAdmin(adminDTO)));
+        personService.updatePersonById(adminDTO.getPerson().getId(), personDTO);
+        return adminMapper.adminToAdminDto(adminRepository
+                        .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }
 
 //    TODO add fields to update
@@ -44,8 +39,11 @@ public class AdminServiceImpl implements AdminService {
     public Optional<AdminDTO> updateAdminById(UUID id, AdminDTO admin) {
         AtomicReference<Optional<AdminDTO>> atomicReference = new AtomicReference<>();
         loggingService.logInfo("Update admin for ID: " + id);
-        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> atomicReference.set(Optional.of(adminMapper
-                .adminToAdminDto(adminRepository.save(foundAdmin)))), () -> {
+        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
+
+            atomicReference.set(Optional.of(adminMapper
+                    .adminToAdminDto(adminRepository.save(foundAdmin))));
+        }, () -> {
             loggingService.logInfo("Admin with ID: " + id + " not found");
             atomicReference.set(Optional.empty());
         });
@@ -81,20 +79,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminDTO getAdminForOrderByLocation(LocationDTO locationDTO) {
+    public Optional<AdminDTO> getAdminWithFewestOrders() {
         loggingService.logInfo("Getting admin with fewest orders");
-        Location location = locationMapper.locationDtoToLocation(locationDTO);
-//TODO use flat map
-        List<Admin> admins = adminRepository.findAll().stream()
-                .filter(a -> !a.isOnVocation() && Objects.equals(a.getLocation(), location))
-                .sorted(Comparator.comparingInt(a -> (int) a.getCarOrders().stream()
-                        .filter(o -> o.getStatus().equals(OrderStatus.IN_USE)
-                                || o.getStatus().equals(OrderStatus.PAID))
-                        .count()))
-                .toList();
+        List<Admin> admins =  adminRepository.findAll();
+        Collections.sort(admins);
 
-
-        return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)))
-                .orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
+        return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)));
     }
+
 }

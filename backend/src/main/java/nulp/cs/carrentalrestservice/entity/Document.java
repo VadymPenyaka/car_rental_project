@@ -3,7 +3,6 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
-import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -15,6 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "documents")
 public class Document {
     @Id
     @JdbcTypeCode(SqlTypes.VARCHAR)
@@ -27,9 +27,14 @@ public class Document {
     private DocumentType type;
 
     @Column(nullable = false)
-    @Convert(converter = SensitiveDataConverter.class)
     private String filePath;
 
     @Column(nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
+
+    @OneToOne(mappedBy = "document")
+    private DriverLicense driverLicense;
+
+    @OneToOne(mappedBy = "document")
+    private Passport passport;
 }

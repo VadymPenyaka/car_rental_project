@@ -4,20 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
-import nulp.cs.carrentalrestservice.model.CustomerPersonalInfoDTO;
-import nulp.cs.carrentalrestservice.model.LoginForm;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.service.CustomerService;
 import nulp.cs.carrentalrestservice.security.JwtService;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(CustomerController.BASE_PATH)
 public class CustomerController {
     public static final String BASE_PATH = "/api/v1/customers";
     private final CustomerService customerService;
@@ -33,13 +26,13 @@ public class CustomerController {
     private final JwtService jwtService;
 
 //    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
-    @GetMapping(BASE_PATH +"/{id}")
+    @GetMapping("/{id}")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
 //    TODO refactor method to get personal info + hash the data
-    @PostMapping(BASE_PATH)
+    @PostMapping
     public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerDTO customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
@@ -50,8 +43,8 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping(BASE_PATH +"/{id}")
-//    @PreAuthorize("#customerDTO.") TODO add personId to customer
+    @PutMapping("/{id}")
+//    @PreAuthorize("#customerDTO.person.id==authentication.principal.id")
     public ResponseEntity<?> updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();

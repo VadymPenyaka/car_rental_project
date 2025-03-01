@@ -1,9 +1,9 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.Car;
-import nulp.cs.carrentalrestservice.model.dto.CarDTO;
-import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
-import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
+import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCardDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -11,18 +11,13 @@ import org.mapstruct.Mapping;
 public interface CarMapper {
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
-    @Mapping(source = "model", target = "model")
     Car carDtoToCar (CarDTO carDTO);
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
-    @Mapping(source = "model", target = "model")
     CarDTO carToCarDto (Car car);
     @Mapping(source = "carPricing", target = "carPricing")
-    @Mapping(source = "model.modelName", target = "modelName")
-    @Mapping(source = "model.brandName.name", target = "brandName")
-    CarCardResponse carToCarCardDto (Car car);
+    CarCardDTO carToCarCardDto (Car car);
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
-    @Mapping(source = "model", target = "model")
-    CarCustomerDetailsResponse carToCustomerDetailDto (Car car);
+    CarCustomerDetailsDTO carToCustomerDetailDto (Car car);
 }

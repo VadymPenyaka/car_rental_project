@@ -4,11 +4,10 @@ import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.UUID;
-@Repository
+
 public interface CarScheduleRepository extends JpaRepository <CarSchedule, UUID> {
     @Query("SELECT COUNT(s) > 0 FROM CarSchedule s " +
             "WHERE s.car.id =:carId AND s.startDate <= :endDate " +

@@ -3,8 +3,9 @@ package nulp.cs.carrentalrestservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.LoginForm;
+import nulp.cs.carrentalrestservice.model.request.LoginForm;
 import nulp.cs.carrentalrestservice.model.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.security.JwtService;
 import nulp.cs.carrentalrestservice.security.PersonDetails;
@@ -23,8 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(AuthController.BASE_PATH)
 @RequiredArgsConstructor
+@RequestMapping(AuthController.BASE_PATH)
 public class AuthController {
     public static final String BASE_PATH = "/api/v1/auth";
     private final PersonService personService;
@@ -32,24 +33,25 @@ public class AuthController {
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
 
-    @GetMapping("/public" + BASE_PATH)
+    @GetMapping
     public PersonDTO getAuthenticatedPersonInfo (@AuthenticationPrincipal PersonDetails personDetails) {
         return personService.getPersonById(personDetails.person().getId())
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping("/public" + BASE_PATH +"/register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerPerson (@Valid @RequestBody PersonDTO personDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
+        personDTO.setRole(Role.USER);
 
         personService.createPerson(personDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/public" + BASE_PATH +"/login")
+    @PostMapping("/login")
     public ResponseEntity<?> loginPerson (@RequestBody LoginForm loginForm) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginForm.username(), loginForm.password()
@@ -65,7 +67,7 @@ public class AuthController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("#id==authentication.principal.person.id")
     public ResponseEntity<?> updatePersonInfo (@PathVariable UUID id, @Valid @RequestBody PersonDTO personDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

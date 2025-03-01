@@ -13,5 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AdminDTO {
     private UUID id;
+    private String position;
     private PersonDTO person;
+    private String department;
 }
