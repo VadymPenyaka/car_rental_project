@@ -18,28 +18,28 @@ public class CarOrderController {
     public final static String BASE_PATH = "/api/v1/carOrders";
 
     @PostMapping(BASE_PATH)
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).USER.name())")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {
         carOrderService.createCarOrder(carOrderDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name()) or" +
-//            "@carOrderServiceImpl.isOwner(#id, authentication.name)")
+    //    TODO make check if user is the owner id order
     @GetMapping(BASE_PATH +"/{id}")
+    @PreAuthorize("hasRole('ADMIN') ")
     public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return carOrderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }
 
     @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {
         if (carOrderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
             throw new NotFoundException();
         }
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -1,12 +1,10 @@
 package nulp.cs.carrentalrestservice.service;
 
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
-import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.response.CarCardDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsDTO;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,10 +12,13 @@ import java.util.UUID;
 public interface CarService {
     CarDTO createCar (CarDTO carDTO);
 
-    List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate);
+    List<CarCardDTO> getAllCarsByCriteria(CarSearchRequestDto carDto);
 
     Boolean deleteCarById (UUID id);
 
     Optional<CarDTO> updateCarByID(UUID id, CarDTO carDTO);
 
+    Optional<CarCustomerDetailsDTO> getCarCustomerDetailsById(UUID id);
+
+    Optional<CarDTO> getCarFullDetailsById(UUID id);
 }

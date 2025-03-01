@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.model;
+package nulp.cs.carrentalrestservice.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

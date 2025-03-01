@@ -1,17 +1,18 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.Car;
+import nulp.cs.carrentalrestservice.entity.CarPricing;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
-import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.response.CarCardDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsDTO;
+import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,28 +22,33 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
+    private final CarPricingRepository carPricingRepository;
     private final CarMapper carMapper;
     private final LoggingService loggingService;
 
 
     @Override
     public CarDTO createCar(CarDTO carDTO) {
+        Car car = carMapper.carDtoToCar(carDTO);
+        CarPricing carPricing = car.getCarPricing();
+        car.setCarPricing(carPricingRepository.save(carPricing));
+
         return carMapper.carToCarDto(carRepository
-                .save(carMapper.carDtoToCar(carDTO)));
+                .save(car));
 
     }
 
     @Override
-    public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
+    public List<CarCardDTO> getAllCarsByCriteria(CarSearchRequestDto carDTO) {
 
         loggingService.logInfo("Getting cars by criteria");
-        if(carDTO.getId() == null && carDTO.getLocation() == null && carDTO.getCarClass()==null && carDTO.getBrand() == null && carDTO.getGearboxType() == null && carDTO.getFuelType() == null && startDate == null && endDate == null) {
-            return carRepository.findAll().stream().map(carMapper::carToCarDto).toList();
+        if(carDTO.getId() == null && carDTO.getLocation() == null && carDTO.getCarClass()==null && carDTO.getBrand() == null && carDTO.getGearboxType() == null && carDTO.getFuelType() == null && carDTO.getStartDate() == null && carDTO.getEndDate() == null) {
+            return carRepository.findAll().stream().map(carMapper::carToCarCardDto).toList();
         }
 
         UUID locationId = carDTO.getLocation() != null ? carDTO.getLocation().getId() : null;
-        return carRepository.findAllCarsByCriteria(carDTO.getId(), locationId, carDTO.getCarClass(), carDTO.getBrand(), carDTO.getGearboxType(), carDTO.getFuelType(), startDate, endDate).stream()
-                .map(carMapper::carToCarDto).toList();
+        return carRepository.findAllCarsByCriteria(carDTO.getId(), locationId, carDTO.getCarClass(), carDTO.getBrand(), carDTO.getGearboxType(), carDTO.getFuelType(), carDTO.getStartDate(), carDTO.getEndDate()).stream()
+                .map(carMapper::carToCarCardDto).toList();
     }
 
     @Override
@@ -77,6 +83,19 @@ public class CarServiceImpl implements CarService {
         );
 
         return atomicReference.get();
+    }
+
+    @Override
+    public Optional<CarCustomerDetailsDTO> getCarCustomerDetailsById(UUID id) {
+        return Optional.ofNullable(carMapper
+                .carToCustomerDetailDto(carRepository
+                        .findById(id).orElse(null)));
+    }
+
+    @Override
+    public Optional<CarDTO> getCarFullDetailsById(UUID id) {
+        return Optional.ofNullable(carMapper.carToCarDto(carRepository
+                .findById(id).orElse(null)));
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Controller
+
 @RequiredArgsConstructor
 public class CarPricingController {
     private final CarPricingService carPricingService;
@@ -24,30 +25,6 @@ public class CarPricingController {
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping(BASE_PATH)
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
-    public ResponseEntity createCarPricing (@RequestBody CarPricingDTO carPricing) {
-        carPricingService.createCarPricing(carPricing);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PutMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
-    public ResponseEntity updateCarPricingById (@PathVariable UUID id, @RequestBody CarPricingDTO carPricing) {
-        if(carPricingService.updateCarPricingByID(id, carPricing).isEmpty())
-            throw new NotFoundException();
-
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasRole(T(nulp.cs.carrentalrestservice.model.enumeration.Role).ADMIN.name())")
-    public ResponseEntity deleteCarPricingById (@PathVariable UUID id) {
-        if(!carPricingService.deleteCarPricingById(id))
-            throw new NotFoundException();
-
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
 
     @GetMapping(BASE_PATH +"/getByCarId" +"/{carId}")
     public CarPricingDTO getCarPricingByCarId (@PathVariable UUID carId) {

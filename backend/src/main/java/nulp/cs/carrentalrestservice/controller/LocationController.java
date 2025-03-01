@@ -14,44 +14,23 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(LocationController.BASE_PATH)
 public class LocationController {
     public static final String BASE_PATH = "/api/v1/locations";
 
     private final LocationService locationService;
 
-    @GetMapping(BASE_PATH)
+    @GetMapping
     public List<LocationDTO> getAllLocations() {
         return locationService.getAllLocations();
     }
 
-    @PostMapping(BASE_PATH)
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity createLocation (@RequestBody LocationDTO locationDTO) {
-        locationService.createLocation(locationDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 
-    @GetMapping(BASE_PATH +"/{id}")
+    @GetMapping("/{id}")
     public LocationDTO getLocationById (@PathVariable UUID id) {
         return locationService.getLocationByID(id)
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(BASE_PATH +"/{id}")
-    public ResponseEntity updateLocationBuId (@PathVariable UUID id, @RequestBody LocationDTO locationDTO) {
-        if (locationService.updateLocationById(id, locationDTO).isEmpty())
-            throw new NotFoundException();
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(BASE_PATH +"/{id}")
-    public ResponseEntity deleteLocationById (@PathVariable UUID id) {
-        if (!locationService.deleteLocationById(id))
-            throw new NotFoundException();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

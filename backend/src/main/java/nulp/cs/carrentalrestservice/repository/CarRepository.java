@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface CarRepository extends JpaRepository<Car, UUID> {
+public interface CarRepository extends JpaRepository <Car, UUID> {
     @Query("SELECT c FROM Car c WHERE " +
             "(:carId IS NULL OR  c.id = :carId) AND " +
             "(:location IS NULL OR c.location = :location) AND " +

@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
+import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -26,14 +27,18 @@ public class Person {
     @Column(nullable = false, columnDefinition = "varchar(36)")
     private Role role;
     @Column(nullable = false, unique = true)
+    @Convert(converter = SensitiveDataConverter.class)
     private String username;
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false)
     private String password;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
+    @Convert(converter = SensitiveDataConverter.class)
     private String sureName;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
+    @Convert(converter = SensitiveDataConverter.class)
     private String firstName;
-    @Column(nullable = false, length = 12, unique = true)
+    @Convert(converter = SensitiveDataConverter.class)
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)

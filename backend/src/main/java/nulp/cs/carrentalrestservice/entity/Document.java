@@ -1,0 +1,40 @@
+package nulp.cs.carrentalrestservice.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "documents")
+public class Document {
+    @Id
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @GeneratedValue
+    @Column(updatable = false, nullable = false, unique = true)
+    private UUID id;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DocumentType type;
+
+    @Column(nullable = false)
+    private String filePath;
+
+    @Column(nullable = false, updatable = false)
+    private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
+
+    @OneToOne(mappedBy = "document")
+    private DriverLicense driverLicense;
+
+    @OneToOne(mappedBy = "document")
+    private Passport passport;
+}

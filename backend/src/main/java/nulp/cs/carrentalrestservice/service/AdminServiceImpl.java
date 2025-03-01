@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
+import nulp.cs.carrentalrestservice.model.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,14 +19,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
-    private final PasswordEncoder passwordEncoder;
+    private final PersonService personService;
     private final LoggingService loggingService;
 
 
     @Override
     public AdminDTO createAdmin(AdminDTO adminDTO) {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
+        PersonDTO personDTO = adminDTO.getPerson();
+        personDTO.setRole(Role.ADMIN);
 
+        personService.updatePersonById(adminDTO.getPerson().getId(), personDTO);
         return adminMapper.adminToAdminDto(adminRepository
                         .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }

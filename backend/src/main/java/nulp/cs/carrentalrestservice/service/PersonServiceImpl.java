@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonMapper personMapper;
-    private final LoggingService loggingService;
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
 
@@ -46,6 +45,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonDTO createPerson(PersonDTO personDTO) {
         personDTO.setPassword(passwordEncoder
                 .encode(personDTO.getPassword()));
+
 
         return personMapper.personToPersonDto(personRepository
                 .save(personMapper.personDtoToPerson(personDTO)));

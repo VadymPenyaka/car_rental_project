@@ -85,8 +85,6 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         if (carMaintenanceRepository.existsById(id)) {
             carMaintenanceRepository.deleteById(id);
             loggingService.logInfo("Maintenance deleted successfully");
-            // TODO delete schedule
-            // carScheduleService.deleteCarScheduleById(id);
             return true;
         }
 

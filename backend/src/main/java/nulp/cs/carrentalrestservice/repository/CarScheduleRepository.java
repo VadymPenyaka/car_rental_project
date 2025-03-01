@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public interface CarScheduleRepository extends JpaRepository<CarSchedule, UUID> {
+public interface CarScheduleRepository extends JpaRepository <CarSchedule, UUID> {
     @Query("SELECT COUNT(s) > 0 FROM CarSchedule s " +
             "WHERE s.car.id =:carId AND s.startDate <= :endDate " +
             "AND s.endDate >= :startDate AND (:scheduleId IS NULL OR s.id <> :scheduleId)")

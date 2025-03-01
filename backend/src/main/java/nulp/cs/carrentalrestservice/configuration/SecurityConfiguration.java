@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.security.filter.JwtAuthenticationFilter;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -24,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -35,8 +35,11 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests( authorizeRequest -> {
-
-                    authorizeRequest.anyRequest().authenticated();
+                    authorizeRequest
+//                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/api/v1"+"/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, CarAdminController.BASE_PATH).permitAll()
+                            .anyRequest().authenticated();
                 })
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

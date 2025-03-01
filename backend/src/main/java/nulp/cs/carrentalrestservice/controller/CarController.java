@@ -7,6 +7,9 @@ import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.response.CarCardDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsDTO;
 import nulp.cs.carrentalrestservice.service.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,37 +29,15 @@ public class CarController {
     private final CarService carService;
     private final LoggingService loggingService;
 
-    @GetMapping("/public" + BASE_PATH)
-    public List<CarDTO> getAllCarsByCriteria(CarDTO carDTO, LocalDate startDate, LocalDate endDate) {
-        return carService.getAllCarsByCriteria(carDTO, startDate, endDate);
+    @PostMapping(BASE_PATH)
+    public List<CarCardDTO> getAllCarsByCriteria(@RequestBody CarSearchRequestDto carDTO) {
+        return carService.getAllCarsByCriteria(carDTO);
     }
 
-    @PostMapping("/admin" + BASE_PATH)
-    public ResponseEntity<?> createCar (@RequestBody CarDTO car) {
-        carService.createCar(car);
-
-        return new ResponseEntity(HttpStatus.CREATED);
+    @GetMapping(BASE_PATH+"/{id}")
+    public CarCustomerDetailsDTO getCarById (@PathVariable UUID id) {
+        return carService.getCarCustomerDetailsById(id).orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping("/admin" + BASE_PATH+"/{id}")
-    public ResponseEntity<?> updateCarById (@PathVariable UUID id, @RequestBody CarDTO car) {
-        loggingService.logInfo("Update car with id:"+car.getId()+";");
-        if(carService.updateCarByID(id, car).isEmpty()) {
-            loggingService.logError("Car not found;", new NotFoundException());
-            throw new NotFoundException();
-        }
-
-        loggingService.logInfo("Car " + car.getId() + " wos updated");
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/admin" + BASE_PATH+"/{id}")
-    public ResponseEntity<?> deleteCarById (@PathVariable UUID id) {
-        if (!carService.deleteCarById(id))
-            throw new NotFoundException();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 
 }

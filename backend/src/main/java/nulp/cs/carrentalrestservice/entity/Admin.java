@@ -22,11 +22,16 @@ public class Admin implements Comparable<Admin>{
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
-    private Set<CarOrder> carOrders = new HashSet<>();
     @OneToOne
     @JoinColumn
     private Person person;
+    @Column(columnDefinition = "varchar(50)")
+    private String position;
+    @Column(columnDefinition = "varchar(50)")
+    private String department;
+
+    @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
+    private Set<CarOrder> carOrders = new HashSet<>();
 
     @Override
     public int compareTo(Admin otherAdmin) {

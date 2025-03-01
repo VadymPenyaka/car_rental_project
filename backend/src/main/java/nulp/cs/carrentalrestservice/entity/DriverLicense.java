@@ -1,0 +1,49 @@
+package nulp.cs.carrentalrestservice.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "driver_licenses")
+public class DriverLicense {
+
+    @Id
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
+
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private LocalDate issueDate;
+
+    @Column(nullable = false)
+    private LocalDate expirationDate;
+
+    @Column(nullable = false)
+    private String issuedBy;
+
+    @Column(nullable = false)
+    private String series;
+
+    @Column(nullable = false, unique = true)
+    private String documentNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_id")
+    private Document document;
+}

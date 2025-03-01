@@ -18,7 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Optional<Person> personOptional = personRepository.findByUsername(username);
 
         if (personOptional.isPresent()) {
@@ -26,29 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .person(personOptional.get())
                     .build();
         }
-
-//        Optional<Customer> customerOptional = customerRepository.findByEmail(username);
-//
-//        if (customerOptional.isPresent()) {
-//            Customer customer = customerOptional.get();
-//
-//            return User.builder()
-//                    .username(customer.getEmail())
-//                    .password(customer.getPassword())
-//                    .roles(Role.USER.name())
-//                    .build();
-//        }
-//
-//        Optional<Admin> adminOptional = adminRepository.findAdminByEmail(username);
-//        if(adminOptional.isPresent()) {
-//            Admin admin = adminOptional.get();
-//            return User.builder()
-//                    .username(admin.getEmail())
-//                    .password(admin.getPassword())
-//                    .roles(admin.getRole().name()).build();
-//        }
-
-
         throw new UsernameNotFoundException("User not found");
     }
 

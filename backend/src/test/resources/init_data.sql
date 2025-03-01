@@ -32,8 +32,8 @@ VALUES ('82ad7c5d-a926-4eda-9cff-f2eee2146039', 'Customer', 'Customer', '0111111
 INSERT INTO customers (birth_date, passport_expiry_date, id, passport_id, person_id)
 VALUES ('2004-05-20', '2026-12-01', '90ec8258-29cd-4367-b983-c18895e7a1a3', '999911149', '82ad7c5d-a926-4eda-9cff-f2eee2146039');
 
-INSERT INTO admins (id, person_id)
-VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', '08368a63-2f14-43a5-b8f0-84e2b3b51675');
+INSERT INTO admins (id, person_id, position, department)
+VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', '08368a63-2f14-43a5-b8f0-84e2b3b51675', 'manager', 'department');
 
 INSERT INTO car_schedule (id, car_id, start_date, end_date, status)
 VALUES ('526ea4c7-afa7-4a58-8c6d-967fabbcb180', 'b231afa5-79df-4597-ac6f-4f410fac85b4', '2024-09-20', '2024-09-22', 'BOOKED');

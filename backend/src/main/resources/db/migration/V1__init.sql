@@ -1,5 +1,6 @@
 -- Drop tables if they exist
 DROP TABLE IF EXISTS car_orders CASCADE;
+DROP TABLE IF EXISTS persons CASCADE;
 DROP TABLE IF EXISTS orders_details CASCADE;
 DROP TABLE IF EXISTS cars_maintenance CASCADE;
 DROP TABLE IF EXISTS car_schedule CASCADE;

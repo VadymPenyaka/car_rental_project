@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
-import nulp.cs.carrentalrestservice.model.enumeration.DriveType;
-import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
-import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
+import nulp.cs.carrentalrestservice.model.enumeration.*;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -18,15 +15,22 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarDTO {
         private UUID id;
+        private int year;
+        private String vin;
+        private String color;
+        private GearboxType gearboxType;
         private String brand;
         private String model;
+        private String number;
+        private BodyType bodyType;
         private CarClass carClass;
-        private int fuelConsumption;
         private int numberOfSeats;
         private FuelType fuelType;
-        private GearboxType gearboxType;
-        private LocationDTO location;
+        private int trunkCapacity;
+        private int fuelConsumption;
+        private CarPricingDTO carPricing;
         private DriveType driveType;
-        private Double engineCapacity;
-//TODO add car pricing to car dto
+        private LocationDTO location;
+        private int fuelTankCapacity;
+        private double engineCapacity;
 }
