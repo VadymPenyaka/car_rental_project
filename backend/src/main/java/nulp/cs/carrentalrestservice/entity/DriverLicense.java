@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,24 +28,28 @@ public class DriverLicense {
     private UUID id;
 
     @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
     private LocalDate issueDate;
 
     @Column(nullable = false)
     private LocalDate expirationDate;
 
     @Column(nullable = false)
+    @Convert(converter = SensitiveDataConverter.class)
     private String issuedBy;
 
-    @Column(nullable = false)
-    private String series;
-
     @Column(nullable = false, unique = true)
+    @Convert(converter = SensitiveDataConverter.class)
     private String documentNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "document_id")
     private Document document;
+
+    @OneToOne(mappedBy = "driverLicense")
+    private Customer customer;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "driver_license_categories", joinColumns = @JoinColumn(name = "license_id"))
+    @Column(name = "category")
+    private Set<String> categories;
 }

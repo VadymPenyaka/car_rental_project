@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.enumeration.DriveType;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarCardDTO {
+public class CarCardResponse {
     private UUID id;
     private String brand;
     private String model;

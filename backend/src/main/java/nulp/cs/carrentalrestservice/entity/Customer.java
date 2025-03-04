@@ -26,14 +26,12 @@ public class Customer {
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @Column
-    private String passportId;
-    @Column
-    @NotNull(message = "Birth date is mandatory!")
-    private LocalDate birthDate;
-    @Column(name = "passport_expiry_date")
-    @NotNull(message = "Passport expiry date is mandatory!")
-    private LocalDate passportExpiryDate;
+    @OneToOne
+    @JoinColumn(nullable = false, name = "passport_id")
+    private Passport passport;
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private DriverLicense driverLicense;
 
     @OneToMany(mappedBy = "customer")
     private Set<CarOrder> carOrders = new HashSet<>();

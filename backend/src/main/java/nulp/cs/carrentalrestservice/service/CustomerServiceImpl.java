@@ -3,9 +3,11 @@ package nulp.cs.carrentalrestservice.service;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapper;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
+import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,12 +19,26 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PersonService personService;
     private final LoggingService loggingService;
 
     @Override
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        loggingService.logInfo("Creating customer for id: "+ customerDTO.getId());
+    public PersonDTO registerCustomer(CustomerRegistrationRequest customerData) {
+        PersonDTO personDTO = PersonDTO.builder()
+                .phoneNumber(customerData.getPhoneNumber())
+                .firstName(customerData.getFirstName())
+                .sureName(customerData.getSureName())
+                .password(customerData.getPassword())
+                .username(customerData.getEmail())
+                .role(Role.USER)
+                .build();
+
+        return personService.createPerson(personDTO);
+    }
+
+    @Override
+    public CustomerDTO createCustomerFullInfo(CustomerDTO customerDTO) {
+        loggingService.logInfo("Creating customer full information for id: "+ customerDTO.getId());
 
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
@@ -41,10 +57,6 @@ public class CustomerServiceImpl implements CustomerService {
         AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
 
         customerRepository.findById(id).ifPresentOrElse( foundCustomer -> {
-                    foundCustomer.setBirthDate(customerDTO.getBirthDate());
-                    foundCustomer.setPassportExpiryDate(customerDTO.getPassportExpiryDate());
-                    foundCustomer.setPassportId(customerDTO.getPassportId());
-
                     atomicReference.set(Optional.ofNullable(customerMapper
                             .customerToCustomerDto(customerRepository.save(foundCustomer))));
                     loggingService.logInfo("Customer updated successfully");

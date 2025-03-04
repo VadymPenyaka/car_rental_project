@@ -29,8 +29,8 @@ VALUES ('08368a63-2f14-43a5-b8f0-84e2b3b51675', 'Admin', 'Admin', '0999999999', 
 INSERT INTO persons (id, first_name, sure_name, phone_number, username, password, role)
 VALUES ('82ad7c5d-a926-4eda-9cff-f2eee2146039', 'Customer', 'Customer', '0111111111', 'customer@gmail.com', 'Passw0rd&!', 'ADMIN');
 
-INSERT INTO customers (birth_date, passport_expiry_date, id, passport_id, person_id)
-VALUES ('2004-05-20', '2026-12-01', '90ec8258-29cd-4367-b983-c18895e7a1a3', '999911149', '82ad7c5d-a926-4eda-9cff-f2eee2146039');
+INSERT INTO customers (id, person_id)
+VALUES ('90ec8258-29cd-4367-b983-c18895e7a1a3', '82ad7c5d-a926-4eda-9cff-f2eee2146039');
 
 INSERT INTO admins (id, person_id, position, department)
 VALUES ('e1cbe369-09cb-45a4-b370-61b9ae7c7efc', '08368a63-2f14-43a5-b8f0-84e2b3b51675', 'manager', 'department');

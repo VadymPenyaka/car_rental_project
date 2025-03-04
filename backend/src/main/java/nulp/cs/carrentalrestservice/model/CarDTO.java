@@ -33,4 +33,5 @@ public class CarDTO {
         private LocationDTO location;
         private int fuelTankCapacity;
         private double engineCapacity;
+        private LicenseCategory category;
 }

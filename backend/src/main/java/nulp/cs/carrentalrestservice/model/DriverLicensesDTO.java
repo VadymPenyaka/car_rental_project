@@ -1,16 +1,18 @@
 package nulp.cs.carrentalrestservice.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nulp.cs.carrentalrestservice.annotation.UniqueDriverLicenseNumber;
+import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
 import nulp.cs.carrentalrestservice.entity.Document;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -19,17 +21,19 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DriverLicensesDTO {
     private UUID id;
-
-    private String category;
-
+//    TODO verify category
+    @NotNull(message = "Category is mandatory!")
+    private Set<String> category;
+    @NotNull(message = "Issue date is mandatory!")
     private LocalDate issueDate;
-
+    @ValidExpiryDate
     private LocalDate expirationDate;
-
+    @NotBlank(message = "Authority code is mandatory!")
+    @Size(min = 6, max = 6, message = "Must be 6 digit length!")
     private String issuedBy;
-
-    private String series;
-
+    @UniqueDriverLicenseNumber
+    @NotBlank(message = "Password ID is mandatory!")
+    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String documentNumber;
 
     private Document document;
