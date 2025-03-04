@@ -34,13 +34,9 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests( authorizeRequest -> {
-                    authorizeRequest
-//                            .requestMatchers("/admin/**").hasRole("ADMIN")
-                            .requestMatchers("/api/v1"+"/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, CarAdminController.BASE_PATH).permitAll()
-                            .anyRequest().authenticated();
-                })
+                .authorizeHttpRequests( authorizeRequest -> authorizeRequest
+                        .requestMatchers("/api/v1"+"/**").permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }

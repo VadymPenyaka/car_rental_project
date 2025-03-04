@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -28,18 +29,25 @@ public class Passport {
     private LocalDate dateOfBirth;
 
     @Column(nullable = false, unique = true)
+    @Convert(converter = SensitiveDataConverter.class)
     private String documentNumber;
 
     @Column(nullable = false)
+    @Convert(converter = SensitiveDataConverter.class)
     private String issuedBy;
 
     @Column(nullable = false)
     private LocalDate expirationDate;
 
+    @Column
+    @Convert(converter = SensitiveDataConverter.class)
     private String taxIdentificationNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "document_id")
     private Document document;
+
+    @OneToOne(mappedBy = "passport")
+    private Customer customer;
 
 }

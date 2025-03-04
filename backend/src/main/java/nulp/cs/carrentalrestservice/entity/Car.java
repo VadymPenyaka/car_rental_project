@@ -63,6 +63,9 @@ public class Car {
     private int fuelTankCapacity;
     @Column(nullable = false)
     private int trunkCapacity;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(5)")
+    private LicenseCategory category;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_pricing_id")

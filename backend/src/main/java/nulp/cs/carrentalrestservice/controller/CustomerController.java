@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
+import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.service.CustomerService;
 import nulp.cs.carrentalrestservice.security.JwtService;
@@ -31,14 +34,25 @@ public class CustomerController {
         return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
+        customerService.registerCustomer(request);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 //    TODO refactor method to get personal info + hash the data
-    @PostMapping
+    @PostMapping("/personalInfo")
     public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerDTO customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        customerService.createCustomer(customer);
+        customerService.createCustomerFullInfo(customer);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

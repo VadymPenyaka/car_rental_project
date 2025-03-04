@@ -1,6 +1,8 @@
 package nulp.cs.carrentalrestservice.model;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,13 +19,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CustomerDTO {
     private UUID id;
+    @Valid
+    @NotNull(message = "Credentials can not be empty!")
     private PersonDTO person;
-    @UniquePassportId
-    @NotBlank(message = "Password ID is mandatory!")
-    @Size(min = 9, max = 9, message = "Must be 9 digit length!")
-    private String passportId;
-    @ValidBirthDate
-    private LocalDate birthDate;
-    @ValidExpiryDate
-    private LocalDate passportExpiryDate;
+    @Valid
+    @NotNull(message = "Passport credentials is required!")
+    private PassportDTO passport;
+    @Valid
+    @NotNull(message = "Driver license credentials is required!")
+    private DriverLicensesDTO driverLicenses;
 }

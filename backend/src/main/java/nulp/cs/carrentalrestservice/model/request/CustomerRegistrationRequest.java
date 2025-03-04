@@ -33,6 +33,6 @@ public class CustomerRegistrationRequest {
     @ValidPhoneNumber
     @UniquePhoneNumber
     @NotBlank(message = "Phone number is mandatory!")
-    @Size(min = 13, max = 13, message = "Must be 10 characters!")
+    @Size(min = 9, max = 11, message = "Must be 10 characters!")
     private String phoneNumber;
 }

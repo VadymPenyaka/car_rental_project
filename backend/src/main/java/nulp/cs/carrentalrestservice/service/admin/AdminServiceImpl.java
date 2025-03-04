@@ -26,10 +26,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminDTO createAdmin(AdminDTO adminDTO) {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
-        PersonDTO personDTO = adminDTO.getPerson();
-        personDTO.setRole(Role.ADMIN);
+        PersonDTO person = adminDTO.getPerson();
+        person.setRole(Role.ADMIN);
+        personService.createPerson(adminDTO.getPerson());
 
-        personService.updatePersonById(adminDTO.getPerson().getId(), personDTO);
         return adminMapper.adminToAdminDto(adminRepository
                         .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }

@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
@@ -7,6 +8,7 @@ import nulp.cs.carrentalrestservice.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,10 @@ public class AdminController {
 
     @PostMapping
     @PreAuthorize("hasRole('SYS_ADMIN')")
-    public ResponseEntity<?> createAdmin (@RequestBody AdminDTO admin) {
+    public ResponseEntity<?> createAdmin (@Valid @RequestBody AdminDTO admin, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
         adminService.createAdmin(admin);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -42,7 +47,7 @@ public class AdminController {
     public ResponseEntity<?> deleteAdminById (@PathVariable UUID id) {
         if(!adminService.deleteAdminByID(id))
             throw new NotFoundException();
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
@@ -51,7 +56,7 @@ public class AdminController {
         if (adminService.updateAdminById(id, adminDTO).isEmpty())
             throw new NotFoundException();
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

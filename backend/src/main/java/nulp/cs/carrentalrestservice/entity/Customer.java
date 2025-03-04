@@ -1,7 +1,11 @@
 package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import nulp.cs.carrentalrestservice.annotation.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -15,17 +19,17 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "customer")
+@Entity(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "passport_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(nullable = false, name = "passport_id")
     private Passport passport;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(nullable = false)
     private DriverLicense driverLicense;
 

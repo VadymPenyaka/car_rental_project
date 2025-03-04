@@ -6,8 +6,8 @@ import nulp.cs.carrentalrestservice.entity.CarPricing;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
-import nulp.cs.carrentalrestservice.model.response.CarCardDTO;
-import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsDTO;
+import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
+import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -39,7 +39,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarCardDTO> getAllCarsByCriteria(CarSearchRequestDto carDTO) {
+    public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequestDto carDTO) {
 
         loggingService.logInfo("Getting cars by criteria");
         if(carDTO.getId() == null && carDTO.getLocation() == null && carDTO.getCarClass()==null && carDTO.getBrand() == null && carDTO.getGearboxType() == null && carDTO.getFuelType() == null && carDTO.getStartDate() == null && carDTO.getEndDate() == null) {
@@ -86,7 +86,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<CarCustomerDetailsDTO> getCarCustomerDetailsById(UUID id) {
+    public Optional<CarCustomerDetailsResponse> getCarCustomerDetailsById(UUID id) {
         return Optional.ofNullable(carMapper
                 .carToCustomerDetailDto(carRepository
                         .findById(id).orElse(null)));
