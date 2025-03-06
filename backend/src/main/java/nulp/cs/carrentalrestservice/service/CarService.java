@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 
@@ -21,4 +22,6 @@ public interface CarService {
     Optional<CarCustomerDetailsResponse> getCarCustomerDetailsById(UUID id);
 
     Optional<CarDTO> getCarFullDetailsById(UUID id);
+
+    boolean verifyCarForOrder (OrderCreationRequest orderCreationRequest);
 }

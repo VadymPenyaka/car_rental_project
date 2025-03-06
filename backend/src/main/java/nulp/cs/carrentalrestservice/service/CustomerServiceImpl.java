@@ -1,13 +1,20 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapper;
+import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,6 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
     private final PersonService personService;
+    private final CarService carService;
     private final LoggingService loggingService;
 
     @Override
@@ -70,8 +78,45 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean isPassportIdUsed(String passportId) {
-        return customerRepository.existsByPassportId(passportId);
+    public Optional<CustomerDTO> getAuthenticatedCustomerDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("You should log in");
+        }
+
+        if (!(authentication.getPrincipal() instanceof UserDetails userDetails)) {
+            throw new UsernameNotFoundException("Invalid authentication principal");
+        }
+
+        Optional<PersonDTO> personOpt = personService.getPersonByEmail(userDetails.getUsername());
+
+        if (personOpt.isEmpty()) {
+            throw new UsernameNotFoundException("User not found by email: " + userDetails.getUsername());
+        }
+
+        UUID personId = personOpt.get().getId();
+        return customerRepository.findCustomersByPersonId(personId)
+                .map(customerMapper::customerToCustomerDto);
+    }
+
+    @Override
+    public boolean verifyCustomerForOrder(OrderCreationRequest orderCreationRequest) {
+        CustomerDTO customerDTO = getAuthenticatedCustomerDetails().orElse(null);
+
+        if (    customerDTO == null ||
+                customerDTO.getDriverLicenses() == null ||
+                customerDTO.getPassport() == null
+        ) {
+            throw new NotFoundException("You did not provide all the required data");
+        }
+
+        CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest.getCarId()).orElse(null);
+        if (carDTO==null) {
+            throw new NotFoundException("Car not found");
+        }
+
+        return customerDTO.getDriverLicenses().getCategory().contains(carDTO.getLicenseCategory().toString());
     }
 
 }

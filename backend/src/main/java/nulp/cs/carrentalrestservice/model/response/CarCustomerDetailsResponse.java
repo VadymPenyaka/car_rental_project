@@ -31,4 +31,5 @@ public class CarCustomerDetailsResponse {
     private double engineCapacity;
     private GearboxType gearboxType;
     private CarPricingDTO carPricing;
+    private LicenseCategory licenseCategory;
 }

@@ -2,8 +2,8 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
-import nulp.cs.carrentalrestservice.service.car.CarPricingService;
+import nulp.cs.carrentalrestservice.model.CarPricingDTO;
+import nulp.cs.carrentalrestservice.service.CarPricingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

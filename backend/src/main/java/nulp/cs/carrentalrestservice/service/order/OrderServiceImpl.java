@@ -1,15 +1,15 @@
 package nulp.cs.carrentalrestservice.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
-import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderRepository carOrderRepository;
     private final CarOrderMapper carOrderMapper;
-    private final CarScheduleService carScheduleService;
-    private final CarScheduleMapper carScheduleMapper;
+    private final CustomerService customerService;
+    private final CarService carService;
 
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
@@ -33,10 +33,6 @@ public class CarOrderServiceImpl implements CarOrderService {
     @Override
     @CheckOrderAvailability
     public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
-        loggingService.logInfo("Creating car order for customer with email: " + carOrderDTO.getCustomer().getPerson().getUsername());
-
-        carOrderDTO.setSchedule(carOrderDTO.getSchedule());
-
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
@@ -44,6 +40,8 @@ public class CarOrderServiceImpl implements CarOrderService {
         loggingService.logInfo("Car order created successfully");
         return savedOrder;
     }
+
+
 
     @Override
     public Optional<CarOrderDTO> getCarOrderByID(UUID id) {
@@ -60,6 +58,7 @@ public class CarOrderServiceImpl implements CarOrderService {
         return carOrderDTO;
     }
 
+    //TODO ???
     @Override
     public Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO) {
         loggingService.logInfo("Updating car order with ID: " + id);
@@ -70,8 +69,8 @@ public class CarOrderServiceImpl implements CarOrderService {
             publisher.publishEvent(new EmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
 
             CarScheduleDTO scheduleDTO = carOrderDTO.getSchedule();
-            foundOrder.setSchedule(carScheduleMapper.carScheduleDtoToCarSchedule(carScheduleService
-                    .updateCarScheduleById(scheduleDTO, scheduleDTO.getId()).get()));
+//            foundOrder.setSchedule(carScheduleMapper.carScheduleDtoToCarSchedule(carScheduleService
+//                    .updateCarScheduleById(scheduleDTO, scheduleDTO.getId()).get()));
             CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(carOrderRepository.save(foundOrder));
             atomicReference.set(Optional.of(updatedOrder));
 
@@ -95,5 +94,15 @@ public class CarOrderServiceImpl implements CarOrderService {
 //        loggingService.logInfo("Ownership check result: " + isOwner);
 //        return isOwner;
         return true;
+    }
+
+//    TODO refactor verifications methods to throw all necessary exception add validation to aspect
+    @Override
+    public boolean isOrderValid(OrderCreationRequest creationRequest) {
+        if (customerService.verifyCustomerForOrder(creationRequest)) {
+            throw new IllegalArgumentException("You do not have the right to drive this car!");
+        }
+
+        return carService.verifyCarForOrder(creationRequest);
     }
 }

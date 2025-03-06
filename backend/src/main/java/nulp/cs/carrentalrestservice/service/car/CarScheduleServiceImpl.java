@@ -1,12 +1,9 @@
-package nulp.cs.carrentalrestservice.service.car;
+package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
-import nulp.cs.carrentalrestservice.model.dto.CarDTO;
-import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
-import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
+import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     @Override
     public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, UUID id) {
         loggingService.logInfo("Updating car schedule for ID: " + id);
-        if (isCarBooked(carScheduleDTO, id)) {
+        if (checkIfCarBooked(carScheduleDTO, id)) {
             throw new IllegalArgumentException("Car already booked for this period!");
         }
 
@@ -60,17 +57,20 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     }
 
     @Override
-    public CarScheduleDTO createCarScheduleForCarOrder(OrderCreationRequest orderRequest) {
+    public CarScheduleDTO createCarSchedule(CarScheduleDTO carSchedule) {
+        loggingService.logInfo(
+                "Creating car schedule for car:"
+                + carSchedule.getCar()
+                + " ("+carSchedule.getStartDate()
+                + "-"+carSchedule.getEndDate()+")");
 
-        CarScheduleDTO schedule = CarScheduleDTO.builder()
-                        .car(CarDTO.builder().id(orderRequest.getCarId()).build())
-                        .status(ScheduleStatus.BOOKED)
-                        .startDate(orderRequest.getStartDate())
-                        .endDate(orderRequest.getEndDate()).build();
 
+        if (checkIfCarBooked(carSchedule, null)){
+            throw new IllegalArgumentException("Car already booked for this period!");
+        }
 
         return carScheduleMapper.carScheduleToCarScheduleDTO(carScheduleRepository
-                .save(carScheduleMapper.carScheduleDtoToCarSchedule(schedule)));
+                .save(carScheduleMapper.carScheduleDtoToCarSchedule(carSchedule)));
     }
 
     @Override
@@ -86,9 +86,8 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-//    TODO refactor to use start end amd carId
     @Override
-    public boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
+    public boolean checkIfCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("
                 + carSchedule.getCar().getId()
                 +") is booked for period: "

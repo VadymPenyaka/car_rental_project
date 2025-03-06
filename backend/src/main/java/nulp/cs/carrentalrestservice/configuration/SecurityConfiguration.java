@@ -1,12 +1,10 @@
 package nulp.cs.carrentalrestservice.configuration;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.controller.*;
 import nulp.cs.carrentalrestservice.security.filter.JwtAuthenticationFilter;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
