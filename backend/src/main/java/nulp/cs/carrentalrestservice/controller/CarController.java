@@ -18,7 +18,6 @@ import java.util.UUID;
 public class CarController {
     public static final String BASE_PATH = "/api/v1/cars";
     private final CarService carService;
-    private final LoggingService loggingService;
 
     @PostMapping
     public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto carDTO) {

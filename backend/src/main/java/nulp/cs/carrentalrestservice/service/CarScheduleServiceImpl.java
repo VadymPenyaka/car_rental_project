@@ -1,6 +1,5 @@
 package nulp.cs.carrentalrestservice.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
@@ -30,7 +29,10 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     @Override
     public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, UUID id) {
         loggingService.logInfo("Updating car schedule for ID: " + id);
-        checkIfCarBooked(id, carScheduleDTO);
+        if (checkIfCarBooked(carScheduleDTO, id)) {
+            throw new IllegalArgumentException("Car already booked for this period!");
+        }
+
 
         AtomicReference<Optional<CarScheduleDTO>> atomicReference= new AtomicReference<>();
 
@@ -62,7 +64,10 @@ public class CarScheduleServiceImpl implements CarScheduleService {
                 + " ("+carSchedule.getStartDate()
                 + "-"+carSchedule.getEndDate()+")");
 
-        checkIfCarBooked(null, carSchedule);
+
+        if (checkIfCarBooked(carSchedule, null)){
+            throw new IllegalArgumentException("Car already booked for this period!");
+        }
 
         return carScheduleMapper.carScheduleToCarScheduleDTO(carScheduleRepository
                 .save(carScheduleMapper.carScheduleDtoToCarSchedule(carSchedule)));
@@ -81,31 +86,18 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-    public void checkIfCarBooked(UUID excludeScheduleId, CarScheduleDTO carSchedule) {
+    @Override
+    public boolean checkIfCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("
                 + carSchedule.getCar().getId()
                 +") is booked for period: "
                 + carSchedule.getStartDate()
                 + " - " + carSchedule.getEndDate());
-        boolean isCarBooked;
-        // TODO
-        if(carSchedule!=null) {
-            isCarBooked = carScheduleRepository.isCarBooked(
-                    carSchedule.getCar().getId(),
-                    carSchedule.getStartDate(),
-                    carSchedule.getEndDate(),
-                    excludeScheduleId);
-        } else {
-            isCarBooked = carScheduleRepository.isCarBooked(
-                    carSchedule.getCar().getId(),
-                    carSchedule.getStartDate(),
-                    carSchedule.getEndDate(),
-                    null);
-        }
 
-        if (isCarBooked) {
-            loggingService.logInfo("Car already booked for ID:" + carSchedule.getId());
-            throw new IllegalArgumentException("Car already booked for this period!");
-        }
+        return carScheduleRepository.isCarBooked(
+                carSchedule.getCar().getId(),
+                carSchedule.getStartDate(),
+                carSchedule.getEndDate(),
+                excludeScheduleId);
     }
 }

@@ -8,7 +8,6 @@ import nulp.cs.carrentalrestservice.model.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,11 +38,8 @@ public class AdminServiceImpl implements AdminService {
     public Optional<AdminDTO> updateAdminById(UUID id, AdminDTO admin) {
         AtomicReference<Optional<AdminDTO>> atomicReference = new AtomicReference<>();
         loggingService.logInfo("Update admin for ID: " + id);
-        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
-
-            atomicReference.set(Optional.of(adminMapper
-                    .adminToAdminDto(adminRepository.save(foundAdmin))));
-        }, () -> {
+        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> atomicReference.set(Optional.of(adminMapper
+                .adminToAdminDto(adminRepository.save(foundAdmin)))), () -> {
             loggingService.logInfo("Admin with ID: " + id + " not found");
             atomicReference.set(Optional.empty());
         });

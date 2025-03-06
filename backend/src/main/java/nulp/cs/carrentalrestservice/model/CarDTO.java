@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.model.enumeration.*;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 @Data
@@ -33,5 +32,5 @@ public class CarDTO {
         private LocationDTO location;
         private int fuelTankCapacity;
         private double engineCapacity;
-        private LicenseCategory category;
+        private LicenseCategory licenseCategory;
 }

@@ -3,9 +3,13 @@ package nulp.cs.carrentalrestservice.service;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.entity.CarPricing;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
+import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
@@ -24,9 +28,10 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final CarPricingRepository carPricingRepository;
     private final CarMapper carMapper;
+    private final CarScheduleService scheduleService;
     private final LoggingService loggingService;
 
-
+//TODO delete creating car pricing creation
     @Override
     public CarDTO createCar(CarDTO carDTO) {
         Car car = carMapper.carDtoToCar(carDTO);
@@ -96,6 +101,25 @@ public class CarServiceImpl implements CarService {
     public Optional<CarDTO> getCarFullDetailsById(UUID id) {
         return Optional.ofNullable(carMapper.carToCarDto(carRepository
                 .findById(id).orElse(null)));
+    }
+
+    @Override
+    public boolean verifyCarForOrder(OrderCreationRequest orderCreationRequest) {
+        CarDTO carDTO = carMapper.carToCarDto(carRepository
+                .findById(orderCreationRequest
+                        .getCarId()).orElse(null));
+
+        if (carDTO == null) {
+            throw new NotFoundException("Car not found");
+        }
+        CarScheduleDTO scheduleDTO = CarScheduleDTO.builder()
+                .car(carDTO)
+                .startDate(orderCreationRequest.getStartDate())
+                .endDate(orderCreationRequest.getEndDate())
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
+        return scheduleService.checkIfCarBooked(scheduleDTO, null);
     }
 
 }

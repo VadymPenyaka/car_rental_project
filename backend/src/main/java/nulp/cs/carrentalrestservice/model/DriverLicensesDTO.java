@@ -21,7 +21,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DriverLicensesDTO {
     private UUID id;
-//    TODO verify category
     @NotNull(message = "Category is mandatory!")
     private Set<String> category;
     @NotNull(message = "Issue date is mandatory!")

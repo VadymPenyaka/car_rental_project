@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.service;
 import nulp.cs.carrentalrestservice.model.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.PersonDTO;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,5 +17,7 @@ public interface CustomerService {
 
     Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
 
-    boolean isPassportIdUsed (String passportId);
+    Optional<CustomerDTO> getAuthenticatedCustomerDetails();
+
+    boolean verifyCustomerForOrder (OrderCreationRequest orderCreationRequest);
 }

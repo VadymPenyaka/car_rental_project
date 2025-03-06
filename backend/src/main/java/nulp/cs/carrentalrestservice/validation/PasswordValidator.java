@@ -2,9 +2,7 @@ package nulp.cs.carrentalrestservice.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.ValidPassword;
-import nulp.cs.carrentalrestservice.service.CustomerService;
 
 import java.util.regex.Pattern;
 
