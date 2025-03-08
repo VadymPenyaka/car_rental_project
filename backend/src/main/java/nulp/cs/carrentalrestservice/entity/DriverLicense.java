@@ -48,8 +48,6 @@ public class DriverLicense {
     @OneToOne(mappedBy = "driverLicense")
     private Customer customer;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "driver_license_categories", joinColumns = @JoinColumn(name = "license_id"))
-    @Column(name = "category")
-    private Set<String> categories;
+    @OneToMany(mappedBy = "license")
+    private Set<DriverLicenseCategories> categories;
 }

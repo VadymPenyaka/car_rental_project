@@ -11,13 +11,17 @@ import org.mapstruct.Mapping;
 public interface CarMapper {
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
+    @Mapping(source = "model", target = "model")
     Car carDtoToCar (CarDTO carDTO);
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
+    @Mapping(source = "model", target = "model")
     CarDTO carToCarDto (Car car);
     @Mapping(source = "carPricing", target = "carPricing")
+    @Mapping(source = "model", target = "model")
     CarCardResponse carToCarCardDto (Car car);
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
+    @Mapping(source = "model", target = "model")
     CarCustomerDetailsResponse carToCustomerDetailDto (Car car);
 }

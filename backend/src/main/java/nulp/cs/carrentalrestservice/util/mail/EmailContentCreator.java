@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.util.mail;
 
 import nulp.cs.carrentalrestservice.event.EmailEvent;
 

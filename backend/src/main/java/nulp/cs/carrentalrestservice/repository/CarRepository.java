@@ -12,13 +12,14 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+//TODO refactor query
 @Repository
 public interface CarRepository extends JpaRepository <Car, UUID> {
     @Query("SELECT c FROM Car c WHERE " +
             "(:carId IS NULL OR  c.id = :carId) AND " +
             "(:location IS NULL OR c.location = :location) AND " +
             "(:carClass IS NULL OR c.carClass = :carClass) AND " +
-            "(:brand IS NULL OR c.brand = :brand) AND " +
             "(:gearboxType IS NULL OR c.gearboxType = :gearboxType) AND " +
             "(:fuelType IS NULL OR c.fuelType = :fuelType) AND " +
             "((:startDate IS NULL AND :endDate IS NULL) OR " +
