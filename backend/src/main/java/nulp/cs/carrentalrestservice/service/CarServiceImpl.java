@@ -74,8 +74,6 @@ public class CarServiceImpl implements CarService {
         AtomicReference<Optional<CarDTO>> atomicReference = new AtomicReference<>();
 
         carRepository.findById(id).ifPresentOrElse( foundCar -> {
-                foundCar.setBrand(carDTO.getBrand());
-                foundCar.setModel(carDTO.getModel());
                 foundCar.setCarClass(carDTO.getCarClass());
                 foundCar.setFuelType(carDTO.getFuelType());
                 atomicReference.set(Optional.of(carMapper

@@ -111,10 +111,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotFoundException("You did not provide all the required data");
         }
 
-        CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest.getCarId()).orElse(null);
-        if (carDTO==null) {
-            throw new NotFoundException("Car not found");
-        }
+        CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest.getCarId()).orElseThrow(()->new NotFoundException("Car not found"));
 
         return customerDTO.getDriverLicenses().getCategory().contains(carDTO.getLicenseCategory().toString());
     }

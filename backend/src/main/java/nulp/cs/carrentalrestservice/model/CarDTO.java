@@ -14,12 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarDTO {
         private UUID id;
-        private int year;
         private String vin;
         private String color;
+        private ModelDTO model;
         private GearboxType gearboxType;
-        private String brand;
-        private String model;
         private String number;
         private BodyType bodyType;
         private CarClass carClass;
