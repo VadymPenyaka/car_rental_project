@@ -14,6 +14,6 @@ public interface CarScheduleService {
 
     boolean deleteCarScheduleById(UUID id);
 
-    boolean checkIfCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId);
+    boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId);
 
 }

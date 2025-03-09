@@ -105,11 +105,8 @@ public class CarServiceImpl implements CarService {
     public boolean verifyCarForOrder(OrderCreationRequest orderCreationRequest) {
         CarDTO carDTO = carMapper.carToCarDto(carRepository
                 .findById(orderCreationRequest
-                        .getCarId()).orElse(null));
+                        .getCarId()).orElseThrow(() -> new NotFoundException("Car not found")));
 
-        if (carDTO == null) {
-            throw new NotFoundException("Car not found");
-        }
         CarScheduleDTO scheduleDTO = CarScheduleDTO.builder()
                 .car(carDTO)
                 .startDate(orderCreationRequest.getStartDate())
@@ -117,7 +114,7 @@ public class CarServiceImpl implements CarService {
                 .status(ScheduleStatus.BOOKED)
                 .build();
 
-        return scheduleService.checkIfCarBooked(scheduleDTO, null);
+        return !scheduleService.isCarBooked(scheduleDTO, null);
     }
 
 }

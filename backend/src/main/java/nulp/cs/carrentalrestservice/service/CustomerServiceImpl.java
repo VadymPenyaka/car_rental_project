@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -104,6 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean verifyCustomerForOrder(OrderCreationRequest orderCreationRequest) {
         CustomerDTO customerDTO = getAuthenticatedCustomerDetails().orElse(null);
 
+
         if (    customerDTO == null ||
                 customerDTO.getDriverLicenses() == null ||
                 customerDTO.getPassport() == null
@@ -111,9 +113,22 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotFoundException("You did not provide all the required data");
         }
 
-        CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest.getCarId()).orElseThrow(()->new NotFoundException("Car not found"));
+        CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest
+                .getCarId()).orElseThrow(()->new NotFoundException("Car not found"));
 
-        return customerDTO.getDriverLicenses().getCategory().contains(carDTO.getLicenseCategory().toString());
+        customerDTO.getDriverLicenses().getCategory()
+                .stream()
+                .filter(category -> category.equals(carDTO.getLicenseCategory().toString()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("You have not necessary category"));
+
+        return customerDTO
+                .getDriverLicenses()
+                .getIssueDate()
+                .isBefore(LocalDate.now()
+                        .minusYears(carDTO
+                                .getRequiredExperience()));
     }
 
 }

@@ -1,10 +1,12 @@
-package nulp.cs.carrentalrestservice.service.car;
+package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
-import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
+import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
+import nulp.cs.carrentalrestservice.model.CarPricingDTO;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;

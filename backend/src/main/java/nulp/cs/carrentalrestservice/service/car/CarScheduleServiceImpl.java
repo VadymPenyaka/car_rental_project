@@ -29,7 +29,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     @Override
     public Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, UUID id) {
         loggingService.logInfo("Updating car schedule for ID: " + id);
-        if (checkIfCarBooked(carScheduleDTO, id)) {
+        if (isCarBooked(carScheduleDTO, id)) {
             throw new IllegalArgumentException("Car already booked for this period!");
         }
 
@@ -65,7 +65,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
                 + "-"+carSchedule.getEndDate()+")");
 
 
-        if (checkIfCarBooked(carSchedule, null)){
+        if (isCarBooked(carSchedule, null)){
             throw new IllegalArgumentException("Car already booked for this period!");
         }
 
@@ -86,8 +86,9 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
+//    TODO refactore to use start end amd carId
     @Override
-    public boolean checkIfCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
+    public boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("
                 + carSchedule.getCar().getId()
                 +") is booked for period: "
