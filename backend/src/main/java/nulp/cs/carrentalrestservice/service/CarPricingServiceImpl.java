@@ -2,15 +2,18 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.mapper.CarPricingMapper;
 import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -82,5 +85,25 @@ public class CarPricingServiceImpl implements CarPricingService {
         if (carPricingDTO == null)
             loggingService.logInfo("Car pricing not found for car ID: " + carId);
         return Optional.ofNullable(carPricingDTO);
+    }
+
+    @Override
+    public Double calculateOrderPrice(OrderCreationRequest orderRequest) {
+        CarPricingDTO carPricingDTO = getCarPricingByCarId(orderRequest.getCarId())
+                .orElseThrow(()-> new NotFoundException("Car pricing not found for this car"));
+
+        long numberOfDays = ChronoUnit.DAYS.between(orderRequest.getStartDate(), orderRequest.getEndDate());
+        double sum;
+        if (numberOfDays<3) {
+            sum = numberOfDays * carPricingDTO.getUpToThreeDays();
+        } else if (numberOfDays<10) {
+            sum = numberOfDays * carPricingDTO.getUpToTenDays();
+        } else if (numberOfDays<30) {
+            sum = numberOfDays * carPricingDTO.getUpToMonth();
+        } else {
+            sum = numberOfDays * carPricingDTO.getMoreThenMonth();
+        }
+
+        return sum + carPricingDTO.getPledge();
     }
 }

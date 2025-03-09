@@ -3,10 +3,13 @@ package nulp.cs.carrentalrestservice.controller;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
+import nulp.cs.carrentalrestservice.security.PersonDetails;
 import nulp.cs.carrentalrestservice.service.CarOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -19,8 +22,8 @@ public class CarOrderController {
 
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createCarOrder (@RequestBody CarOrderDTO carOrderDTO) {
-        carOrderService.createCarOrder(carOrderDTO);
+    public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest, @AuthenticationPrincipal PersonDetails personDetails) {
+        carOrderService.createCarOrder(orderRequest, personDetails);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

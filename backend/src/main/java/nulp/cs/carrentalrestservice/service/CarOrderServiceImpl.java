@@ -1,16 +1,18 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability;
+import nulp.cs.carrentalrestservice.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
-import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
+import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
-import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
+import nulp.cs.carrentalrestservice.security.PersonDetails;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -26,16 +28,36 @@ public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderMapper carOrderMapper;
     private final CustomerService customerService;
     private final CarService carService;
+    private final CarScheduleService scheduleService;
+    private final CarPricingService pricingService;
 
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
 
+
+//    TODO add method to find admin, calculate price+, aspect to bank, send pay link to customer
+//    TODO create method to get customer by person id, create method to get schedule with car,
     @Override
-    @CheckOrderAvailability
-    public CarOrderDTO createCarOrder(CarOrderDTO carOrderDTO) {
+    @VerifyOrder
+    public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest, PersonDetails personDetails) {
+        CarScheduleDTO schedule = scheduleService
+                .createCarSchedule(CarScheduleDTO.builder()
+                .car(CarDTO.builder()
+                        .id(orderRequest.getCarId())
+                        .build())
+                .status(ScheduleStatus.BOOKED)
+                .startDate(orderRequest.getStartDate())
+                .endDate(orderRequest.getEndDate()).build());
+
+        CarOrderDTO carOrderDTO = CarOrderDTO.builder()
+                .totalPrice(pricingService.calculateOrderPrice(orderRequest))
+                .status(OrderStatus.PENDING)
+                .schedule(schedule)
+                .build();
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
+
 
         loggingService.logInfo("Car order created successfully");
         return savedOrder;
@@ -96,13 +118,4 @@ public class CarOrderServiceImpl implements CarOrderService {
         return true;
     }
 
-//    TODO refactor verifications methods to throw all necessary exception add validation to aspect
-    @Override
-    public boolean isOrderValid(OrderCreationRequest creationRequest) {
-        if (customerService.verifyCustomerForOrder(creationRequest)) {
-            throw new IllegalArgumentException("You do not have the right to drive this car!");
-        }
-
-        return carService.verifyCarForOrder(creationRequest);
-    }
 }

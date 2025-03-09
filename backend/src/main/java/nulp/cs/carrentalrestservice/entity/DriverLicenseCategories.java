@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import nulp.cs.carrentalrestservice.model.enumeration.LicenseCategory;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,8 +24,9 @@ public class DriverLicenseCategories {
     @JoinColumn(nullable = false, insertable = false, updatable = false)
     private DriverLicense license;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, insertable = false, updatable = false)
-    private String category;
+    private LicenseCategory category;
 
     @Column(name = "issue_date", nullable = false)
     private LocalDate issueDate;
@@ -40,6 +42,7 @@ class DriverLicenseCategoryId implements Serializable {
     @Column(name = "license_id")
     private Long licenseId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "category")
-    private String category;
+    private LicenseCategory category;
 }

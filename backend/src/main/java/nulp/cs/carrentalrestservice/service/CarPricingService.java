@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CarPricingDTO;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,4 +16,6 @@ public interface CarPricingService {
     CarPricingDTO createCarPricing (CarPricingDTO carPricingDTO);
 
     Optional<CarPricingDTO> getCarPricingByCarId (UUID carId);
+
+    Double calculateOrderPrice(OrderCreationRequest orderRequest);
 }
