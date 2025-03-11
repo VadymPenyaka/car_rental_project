@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -10,7 +11,7 @@ public interface CarScheduleService {
 
     Optional<CarScheduleDTO> updateCarScheduleById(CarScheduleDTO carScheduleDTO, UUID id);
 
-    CarScheduleDTO createCarSchedule(CarScheduleDTO carSchedule);
+    CarScheduleDTO createCarScheduleForCarOrder(OrderCreationRequest orderRequest);
 
     boolean deleteCarScheduleById(UUID id);
 

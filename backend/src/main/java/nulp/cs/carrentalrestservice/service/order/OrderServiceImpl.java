@@ -17,6 +17,7 @@ import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,34 +27,29 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CarOrderServiceImpl implements CarOrderService {
     private final CarOrderRepository carOrderRepository;
     private final CarOrderMapper carOrderMapper;
-    private final CustomerService customerService;
-    private final CarService carService;
+    private final AdminService adminService;
     private final CarScheduleService scheduleService;
+    private final CustomerService customerService;
     private final CarPricingService pricingService;
-
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
 
 
-//    TODO add method to find admin, calculate price+, aspect to bank, send pay link to customer
-//    TODO create method to get customer by person id, create method to get schedule with car,
+//    TODO add method to find admin+, calculate price+, aspect to bank, send pay link to customer
+//    TODO create method to get authenticated customer+, create method to get schedule with car+,
     @Override
     @VerifyOrder
-    public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest, PersonDetails personDetails) {
-        CarScheduleDTO schedule = scheduleService
-                .createCarSchedule(CarScheduleDTO.builder()
-                .car(CarDTO.builder()
-                        .id(orderRequest.getCarId())
-                        .build())
-                .status(ScheduleStatus.BOOKED)
-                .startDate(orderRequest.getStartDate())
-                .endDate(orderRequest.getEndDate()).build());
+    public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest) {
+        CarScheduleDTO schedule = scheduleService.createCarScheduleForCarOrder(orderRequest);
 
         CarOrderDTO carOrderDTO = CarOrderDTO.builder()
                 .totalPrice(pricingService.calculateOrderPrice(orderRequest))
                 .status(OrderStatus.PENDING)
                 .schedule(schedule)
+                .admin(adminService.getAdminForOrderByLocation(schedule.getCar().getLocation()))
+                .customer(customerService.getAuthenticatedCustomer())
                 .build();
+
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(carOrderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
@@ -116,6 +112,11 @@ public class CarOrderServiceImpl implements CarOrderService {
 //        loggingService.logInfo("Ownership check result: " + isOwner);
 //        return isOwner;
         return true;
+    }
+
+    @Override
+    public boolean isCustomerHasOverlapOrder(UUID customerId, LocalDate startDate, LocalDate endDate) {
+        return carOrderRepository.isCustomerHasOverlapOrder(customerId, startDate, endDate);
     }
 
 }

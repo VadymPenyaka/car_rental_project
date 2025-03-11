@@ -17,7 +17,7 @@ public interface CustomerService {
 
     Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
 
-    Optional<CustomerDTO> getAuthenticatedCustomerDetails();
+    CustomerDTO getAuthenticatedCustomer();
 
     boolean verifyCustomerForOrder (OrderCreationRequest orderCreationRequest);
 }

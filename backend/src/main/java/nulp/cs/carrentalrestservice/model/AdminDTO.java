@@ -20,4 +20,6 @@ public class AdminDTO {
     @NotNull(message = "Credentials can not be empty!")
     private PersonDTO person;
     private String department;
+    private boolean isOnVocation;
+    private LocationDTO location;
 }
