@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapper;
 import nulp.cs.carrentalrestservice.model.CarDTO;
@@ -79,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDTO> getAuthenticatedCustomerDetails() {
+    public CustomerDTO getAuthenticatedCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -87,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         if (!(authentication.getPrincipal() instanceof UserDetails userDetails)) {
-            throw new UsernameNotFoundException("Invalid authentication principal");
+            throw new IllegalArgumentException("Invalid authentication principal");
         }
 
         Optional<PersonDTO> personOpt = personService.getPersonByEmail(userDetails.getUsername());
@@ -98,30 +99,30 @@ public class CustomerServiceImpl implements CustomerService {
 
         UUID personId = personOpt.get().getId();
         return customerRepository.findCustomersByPersonId(personId)
-                .map(customerMapper::customerToCustomerDto);
+                .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
     public boolean verifyCustomerForOrder(OrderCreationRequest orderCreationRequest) {
-        CustomerDTO customerDTO = getAuthenticatedCustomerDetails().orElse(null);
+        CustomerDTO customerDTO = getAuthenticatedCustomer();
 
 
         if (    customerDTO == null ||
                 customerDTO.getDriverLicenses() == null ||
                 customerDTO.getPassport() == null
         ) {
-            throw new NotFoundException("You did not provide all the required data");
+            throw new IllegalArgumentException("You did not provide all the required data.");
         }
 
         CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest
-                .getCarId()).orElseThrow(()->new NotFoundException("Car not found"));
+                .getCarId()).orElseThrow(()->new NotFoundException("Car not found."));
 
         customerDTO.getDriverLicenses().getCategory()
                 .stream()
                 .filter(category -> category.equals(carDTO.getLicenseCategory().toString()))
                 .findFirst()
                 .orElseThrow(() ->
-                        new IllegalArgumentException("You have not necessary category"));
+                        new CategoryVerificationException("You have not necessary category."));
 
         return customerDTO
                 .getDriverLicenses()

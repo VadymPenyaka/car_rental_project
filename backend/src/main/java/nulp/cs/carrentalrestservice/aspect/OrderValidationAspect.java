@@ -1,18 +1,17 @@
 package nulp.cs.carrentalrestservice.aspect;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.CarSchedule;
+import nulp.cs.carrentalrestservice.exception.CarUnavailableException;
+import nulp.cs.carrentalrestservice.exception.CategoryExperienceVerificationException;
+import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
+import nulp.cs.carrentalrestservice.exception.InvalidOrderException;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
-import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
-import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import nulp.cs.carrentalrestservice.security.PersonDetails;
-import nulp.cs.carrentalrestservice.service.CarScheduleService;
+import nulp.cs.carrentalrestservice.service.CarOrderService;
 import nulp.cs.carrentalrestservice.service.CarService;
 import nulp.cs.carrentalrestservice.service.CustomerService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -20,23 +19,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderValidationAspect {
     private final CustomerService customerService;
+    private final CarOrderService carOrderService;
     private final CarService carService;
 
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest, personDetails)", argNames = "orderRequest,personDetails")
     public void checkOrderAvailability(OrderCreationRequest orderRequest, PersonDetails personDetails) {
         if(!customerService.verifyCustomerForOrder(orderRequest)) {
-            throw new IllegalArgumentException("You have not necessary amount of experience(in years)");
+            throw new CategoryExperienceVerificationException("You have not necessary amount of experience.");
         }
 
         if (!carService.verifyCarForOrder(orderRequest)) {
-            throw new IllegalArgumentException("Car is booked for this period");
+            throw new CarUnavailableException("Car is booked for this period");
         }
 
-//        TODO refactor if statement or rebase it to order service create method to get oll orders of customer
-//        if (carOrderRepository.isCustomerHasOverlapOrder(carOrderDTO.getCustomer().getId(),
-//                carSchedule.getStartDate(),
-//                carSchedule.getEndDate()))
-//            throw new IllegalArgumentException("You have another order for this period.");
+        if (carOrderService.isCustomerHasOverlapOrder(customerService.getAuthenticatedCustomer().getId(), orderRequest.getStartDate(), orderRequest.getEndDate()))
+            throw new InvalidOrderException("You have another order for this period.");
 
     }
 }

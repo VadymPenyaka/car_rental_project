@@ -36,4 +36,7 @@ public class Location {
     private String longitude;
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     private Set<Car> cars;
+
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    private Set<Admin> admins;
 }

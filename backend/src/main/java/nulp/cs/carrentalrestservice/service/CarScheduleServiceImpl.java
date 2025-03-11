@@ -2,8 +2,13 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
+import nulp.cs.carrentalrestservice.exception.CarUnavailableException;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
+import nulp.cs.carrentalrestservice.model.CarDTO;
 import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
@@ -57,20 +62,21 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     }
 
     @Override
-    public CarScheduleDTO createCarSchedule(CarScheduleDTO carSchedule) {
-        loggingService.logInfo(
-                "Creating car schedule for car:"
-                + carSchedule.getCar()
-                + " ("+carSchedule.getStartDate()
-                + "-"+carSchedule.getEndDate()+")");
+    public CarScheduleDTO createCarScheduleForCarOrder(OrderCreationRequest orderRequest) {
+
+        CarScheduleDTO schedule = CarScheduleDTO.builder()
+                        .car(CarDTO.builder().id(orderRequest.getCarId()).build())
+                        .status(ScheduleStatus.BOOKED)
+                        .startDate(orderRequest.getStartDate())
+                        .endDate(orderRequest.getEndDate()).build();
 
 
-        if (isCarBooked(carSchedule, null)){
-            throw new IllegalArgumentException("Car already booked for this period!");
+        if (isCarBooked(schedule, null)){
+            throw new CarUnavailableException("Car already booked for this period!");
         }
 
         return carScheduleMapper.carScheduleToCarScheduleDTO(carScheduleRepository
-                .save(carScheduleMapper.carScheduleDtoToCarSchedule(carSchedule)));
+                .save(carScheduleMapper.carScheduleDtoToCarSchedule(schedule)));
     }
 
     @Override

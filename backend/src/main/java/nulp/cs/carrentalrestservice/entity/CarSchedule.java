@@ -35,3 +35,6 @@ public class CarSchedule {
     @OneToOne(mappedBy = "schedule")
     private CarMaintenance carMaintenance;
 }
+
+
+

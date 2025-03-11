@@ -2,8 +2,12 @@ package nulp.cs.carrentalrestservice.service;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
+import nulp.cs.carrentalrestservice.entity.Location;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
+import nulp.cs.carrentalrestservice.mapper.LocationMapper;
 import nulp.cs.carrentalrestservice.model.AdminDTO;
+import nulp.cs.carrentalrestservice.model.LocationDTO;
 import nulp.cs.carrentalrestservice.model.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
@@ -20,17 +24,17 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
     private final PersonService personService;
     private final LoggingService loggingService;
-
+    private final LocationMapper locationMapper;
 
     @Override
-    public AdminDTO createAdmin(AdminDTO adminDTO) {
+    public void createAdmin(AdminDTO adminDTO) {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
         PersonDTO person = adminDTO.getPerson();
         person.setRole(Role.ADMIN);
         personService.createPerson(adminDTO.getPerson());
 
-        return adminMapper.adminToAdminDto(adminRepository
-                        .save(adminMapper.adminDtoToAdmin(adminDTO)));
+        adminMapper.adminToAdminDto(adminRepository
+                .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }
 
 //    TODO add fields to update
@@ -75,12 +79,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Optional<AdminDTO> getAdminWithFewestOrders() {
+    public AdminDTO getAdminForOrderByLocation(LocationDTO locationDTO) {
         loggingService.logInfo("Getting admin with fewest orders");
-        List<Admin> admins =  adminRepository.findAll();
-        Collections.sort(admins);
+        Location location = locationMapper.locationDtoToLocation(locationDTO);
 
-        return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)));
+        List<Admin> admins = new ArrayList<>(adminRepository.findAll().stream()
+                .filter(a -> !a.isOnVocation() && a.getLocation().equals(location))
+                .sorted(Comparator.comparingInt(a -> a.getCarOrders().size()))
+                .toList());
+
+        return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)))
+                .orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
     }
-
 }

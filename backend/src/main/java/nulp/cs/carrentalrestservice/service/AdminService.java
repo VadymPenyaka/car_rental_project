@@ -1,13 +1,14 @@
 package nulp.cs.carrentalrestservice.service;
 
 import nulp.cs.carrentalrestservice.model.AdminDTO;
+import nulp.cs.carrentalrestservice.model.LocationDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface AdminService {
-    AdminDTO createAdmin (AdminDTO adminDTO);
+    void createAdmin (AdminDTO adminDTO);
 
     Optional<AdminDTO> updateAdminById (UUID id, AdminDTO admin);
 
@@ -17,6 +18,6 @@ public interface AdminService {
 
     Boolean deleteAdminByID(UUID id);
 
-    Optional<AdminDTO> getAdminWithFewestOrders();
+    AdminDTO getAdminForOrderByLocation(LocationDTO location);
 
 }

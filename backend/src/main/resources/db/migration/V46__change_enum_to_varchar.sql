@@ -1,0 +1,13 @@
+ALTER TABLE car_orders
+    ALTER COLUMN status TYPE VARCHAR(36);
+
+ALTER TABLE car_schedule
+    ALTER COLUMN status TYPE VARCHAR(36);
+
+DROP TYPE IF EXISTS schedule_status CASCADE;
+DROP TYPE IF EXISTS car_class_enum CASCADE;
+DROP TYPE IF EXISTS car_order_status_enum CASCADE;
+DROP TYPE IF EXISTS drive_type_enum CASCADE;
+DROP TYPE IF EXISTS fuel_type_enum CASCADE;
+DROP TYPE IF EXISTS gearbox_type_enum CASCADE;
+DROP TYPE IF EXISTS role_enum CASCADE;

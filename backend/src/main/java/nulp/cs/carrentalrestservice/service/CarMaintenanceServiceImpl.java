@@ -8,7 +8,6 @@ import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -38,11 +37,11 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         return result;
     }
 
+
     @Override
     public CarMaintenanceDTO createCarMaintenance(CarMaintenanceDTO carMaintenanceDTO) {
         loggingService.logInfo("Creating maintenance: " + carMaintenanceDTO.getDescription());
 
-        carScheduleService.createCarSchedule(carMaintenanceDTO.getSchedule());
         CarMaintenanceDTO savedMaintenance = carMaintenanceMapper.carMaintenanceToCarMaintenanceDTO(
                 carMaintenanceRepository.save(
                         carMaintenanceMapper.carMaintenanceDTOToCarMaintenance(carMaintenanceDTO))

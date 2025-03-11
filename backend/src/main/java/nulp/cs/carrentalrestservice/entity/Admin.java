@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import nulp.cs.carrentalrestservice.model.LocationDTO;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -29,6 +30,11 @@ public class Admin implements Comparable<Admin>{
     private String position;
     @Column(columnDefinition = "varchar(50)")
     private String department;
+    @Column
+    private boolean isOnVocation;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "location_id")
+    private Location location;
 
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders = new HashSet<>();
