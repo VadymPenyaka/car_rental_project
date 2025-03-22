@@ -6,7 +6,6 @@ import './globals.css'
 
 import { PageNotFound } from './components/PageNotFound'
 import { LoginPage } from './components/LoginPage'
-import { Header } from './components/header/Header.tsx'
 
 const router = createBrowserRouter([
 	{
@@ -23,7 +22,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<Header />
 		<RouterProvider router={router} />
 	</StrictMode>,
 )

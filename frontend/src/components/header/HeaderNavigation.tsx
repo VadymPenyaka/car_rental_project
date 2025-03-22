@@ -12,71 +12,79 @@ import {
 
 const CarParkComponents: { title: string; href: string; description: string }[] = [
     {
-        title: "Оренда авто в Києві",
+        title: "Car Rental in Kyiv",
         href: "/services/rentals/kyiv",
         description:
-            "Оренда автомобілів у Києві. Широкий вибір транспортних засобів за доступними цінами.",
+            "Car rental in Kyiv. A wide selection of vehicles at affordable prices.",
     },
     {
-        title: "Оренда кросоверів",
+        title: "SUV Rental",
         href: "/services/rentals/suvs",
         description:
-            "Оренда кросоверів для комфортних подорожей по місту та за його межами.",
+            "SUV rental for comfortable trips around the city and beyond.",
     },
     {
-        title: "Оренда електромобілів",
+        title: "Electric Car Rental",
         href: "/services/rentals/electric",
         description:
-            "Зелена альтернатива - оренда електромобілів для екологічних подорожей.",
+            "A green alternative - rent an electric car for eco-friendly travel.",
     },
     {
-        title: "Оренда авто в Львові",
+        title: "Car Rental in Lviv",
         href: "/services/rentals/lviv",
         description:
-            "Оренда автомобілів у Львові. Зручні умови та великий вибір авто на будь-який смак.",
+            "Car rental in Lviv. Convenient conditions and a wide selection of cars for every taste.",
     },
     {
-        title: "Оренда мінівенів",
+        title: "Minivan Rental",
         href: "/services/rentals/minivans",
         description:
-            "Оренда просторих мінівенів для поїздок великою компанією або сім'єю.",
+            "Spacious minivan rental for trips with a large group or family.",
     },
     {
-        title: "Оренда автомобілів класу люкс",
+        title: "Luxury Car Rental",
         href: "/services/rentals/luxury",
         description:
-            "Оренда автомобілів преміум-класу для тих, хто цінує комфорт і стиль.",
+            "Premium-class car rental for those who appreciate comfort and style.",
     },
 ];
 
 const AdditionalServiceComponents: { title: string; href: string; description: string }[] = [
     {
-        title: "Довгострокова оренда авто",
+        title: "Long-term Car Rental",
         href: "/services/long-term-rental",
         description:
-            "Вигідні умови для довгострокової оренди автомобілів на термін від місяця.",
+            "Favorable conditions for long-term car rental for a period of one month or more.",
     },
     {
-        title: "Оренда авто з водієм",
+        title: "Car Rental with Driver",
         href: "/services/rentals/with-driver",
         description:
-            "Оренда автомобіля з водієм для особливих подій, ділових зустрічей або туристичних поїздок.",
+            "Car rental with a driver for special events, business meetings, or tourist trips.",
     },
 ];
 
-const onlyTitleButtonsText: string[] = ["Лізинг Авто", "Для Бізнесу", "Умови Оренди", "Контакти", "Про нас", "Відгуки", "Блог"]
+const onlyTitleButtonsText: string[] = [
+    "Car Leasing",
+    "For Business",
+    "Rental Terms",
+    "Contacts",
+    "About Us",
+    "Reviews",
+    "Blog"
+];
 
 export const HeaderNavigation = () => {
     return (
         <NavigationMenu className="w-full mt-10">
             <NavigationMenuList className="w-full">
                 <NavigationMenuItem>
-                    <ListItem title="Головна" key={"Головна"}></ListItem>
+                    <ListItem title="Home" key={"home"}></ListItem>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-l">Автопарк</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="text-l">Car Park</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-1 lg:w-[600px] ">
+                        <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-1 lg:w-[600px]">
                             {CarParkComponents.map((component) => (
                                 <ListItem
                                     key={component.title}
@@ -90,9 +98,9 @@ export const HeaderNavigation = () => {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-l">Інші послуги</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="text-l">Other Services</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-1 lg:w-[600px] ">
+                        <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-1 lg:w-[600px]">
                             {AdditionalServiceComponents.map((component) => (
                                 <ListItem
                                     key={component.title}
@@ -105,7 +113,7 @@ export const HeaderNavigation = () => {
                         </ul>
                     </NavigationMenuContent>
                 </NavigationMenuItem>
-                {onlyTitleButtonsText.map((title:string) =>
+                {onlyTitleButtonsText.map((title: string) =>
                     <NavigationMenuItem key={title}>
                         <ListItem title={title} key={title}></ListItem>
                     </NavigationMenuItem>)
