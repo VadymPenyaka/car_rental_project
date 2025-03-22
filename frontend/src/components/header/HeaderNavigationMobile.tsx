@@ -1,89 +1,65 @@
-import * as React from "react"
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { NavigationButton } from "./NavigationButton"
+import { Link } from 'react-router'
 
-import { cn } from "@/lib/utils"
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "../ui/sheet";
-import { NavigationButton } from "./NavigationButton";
-
-const CarParkComponents: { title: string; href: string; description: string }[] = [
-    {
-        title: "Оренда авто в Києві",
-        href: "/services/rentals/kyiv",
-        description:
-            "Оренда автомобілів у Києві. Широкий вибір транспортних засобів за доступними цінами.",
-    },
-    {
-        title: "Оренда кросоверів",
-        href: "/services/rentals/suvs",
-        description:
-            "Оренда кросоверів для комфортних подорожей по місту та за його межами.",
-    },
-    {
-        title: "Оренда електромобілів",
-        href: "/services/rentals/electric",
-        description:
-            "Зелена альтернатива - оренда електромобілів для екологічних подорожей.",
-    },
-    {
-        title: "Оренда авто в Львові",
-        href: "/services/rentals/lviv",
-        description:
-            "Оренда автомобілів у Львові. Зручні умови та великий вибір авто на будь-який смак.",
-    },
-    {
-        title: "Оренда мінівенів",
-        href: "/services/rentals/minivans",
-        description:
-            "Оренда просторих мінівенів для поїздок великою компанією або сім'єю.",
-    },
-    {
-        title: "Оренда автомобілів класу люкс",
-        href: "/services/rentals/luxury",
-        description:
-            "Оренда автомобілів преміум-класу для тих, хто цінує комфорт і стиль.",
-    },
+const carParkComponents = [
+    { title: "Car Rental in Kyiv", href: "/services/rentals/kyiv" },
+    { title: "SUV Rental", href: "/services/rentals/suvs" },
+    { title: "Electric Car Rental", href: "/services/rentals/electric" },
+    { title: "Car Rental in Lviv", href: "/services/rentals/lviv" },
+    { title: "Minivan Rental", href: "/services/rentals/minivans" },
+    { title: "Luxury Car Rental", href: "/services/rentals/luxury" },
 ];
 
-const AdditionalServiceComponents: { title: string; href: string; description: string }[] = [
-    {
-        title: "Довгострокова оренда авто",
-        href: "/services/long-term-rental",
-        description:
-            "Вигідні умови для довгострокової оренди автомобілів на термін від місяця.",
-    },
-    {
-        title: "Оренда авто з водієм",
-        href: "/services/rentals/with-driver",
-        description:
-            "Оренда автомобіля з водієм для особливих подій, ділових зустрічей або туристичних поїздок.",
-    },
+const additionalServiceComponents = [
+    { title: "Long-term Car Rental", href: "/services/long-term-rental" },
+    { title: "Car Rental with Driver", href: "/services/rentals/with-driver" },
 ];
 
-const onlyTitleButtonsText: string[] = ["Лізинг Авто", "Для Бізнесу", "Умови Оренди", "Контакти", "Про нас", "Відгуки", "Блог"]
+const onlyTitleButtonsText = ["Car Leasing", "For Business", "Rental Terms", "Contacts", "About Us", "Reviews", "Blog"];
 
 export const HeaderNavigationMobile = () => {
     return (
         <Sheet>
-            <SheetTrigger >
+            <SheetTrigger>
                 <NavigationButton />
             </SheetTrigger>
-            <SheetContent side={"left"}>
+            <SheetContent side="left" className="w-64 p-4">
                 <SheetHeader>
-                    <SheetTitle>
-                        Navigation
-                    </SheetTitle>
+                    <SheetTitle>Navigation</SheetTitle>
                 </SheetHeader>
-                <div className="">
-                    {onlyTitleButtonsText.map(el => <p key={el}>{el}</p>)}
-                </div>
+                <nav className="flex flex-col gap-4 mt-4">
+                    {onlyTitleButtonsText.map((text) => (
+                        <Link key={text} to="#" className="text-lg font-medium hover:underline">
+                            {text}
+                        </Link>
+                    ))}
+                    <div>
+                        <h3 className="text-lg font-semibold mt-4">Car Park</h3>
+                        <ul className="ml-2 mt-2 space-y-2">
+                            {carParkComponents.map(({ title, href }) => (
+                                <li key={title}>
+                                    <Link to={href} className="text-sm text-gray-700 hover:text-black">
+                                        {title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-semibold mt-4">Other Services</h3>
+                        <ul className="ml-2 mt-2 space-y-2">
+                            {additionalServiceComponents.map(({ title, href }) => (
+                                <li key={title}>
+                                    <Link to={href} className="text-sm text-gray-700 hover:text-black">
+                                        {title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </nav>
             </SheetContent>
         </Sheet>
-    )
-}
+    );
+};
