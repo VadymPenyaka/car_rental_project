@@ -4,15 +4,37 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format, isBefore } from "date-fns";
+import { sendSearchRequest } from "./request";
+import { sendRequest } from "@/lib/utils";
 
 export default function CarRentalForm() {
-    const [pickupDate, setPickupDate] = useState<Date>(new Date());
-    const [returnDate, setReturnDate] = useState<Date>(new Date());
-    const [selectedCity, setSelectedCity] = useState<string | undefined>();
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const [endDate, setEndDate] = useState<Date>(new Date());
+    const [location, setLocation] = useState<string>("");
     const cities = ["Київ", "Львів", "Одеса", "Дніпро", "Харків"];
 
-    const handleSearchButtonClick = () => {
-        console.log("States:", pickupDate, returnDate, selectedCity);
+    const handleSearchButtonClick = async () => {
+        // const requestData = {
+        //     startDate,
+        //     endDate,
+        //     location,
+        // }
+
+        const requestData = {
+            carClass: "BUSINESS"
+        }
+
+        let response: { data: any } = await sendRequest({
+            url: '/api/v1/cars',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(requestData),
+        })
+        
+        return response.data
+        // sendSearchRequest(requestData)
     }
 
     return (
@@ -23,7 +45,7 @@ export default function CarRentalForm() {
                 <div>
                     <label className="text-sm font-medium">Місто видачі</label>
                     <div className="relative mt-1">
-                        <Select onValueChange={setSelectedCity}>
+                        <Select onValueChange={setLocation}>
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Оберіть місто" />
                             </SelectTrigger>
@@ -41,11 +63,11 @@ export default function CarRentalForm() {
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button variant="outline" className="w-full flex justify-between">
-                                {pickupDate ? format(pickupDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
+                                {startDate ? format(startDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <Calendar mode="single" selected={pickupDate} onSelect={(date) => date && setPickupDate(date)} />
+                            <Calendar mode="single" selected={startDate} onSelect={(date) => date && setStartDate(date)} />
                         </PopoverContent>
                     </Popover>
                 </div>
@@ -55,19 +77,19 @@ export default function CarRentalForm() {
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button variant="outline" className="w-full flex justify-between">
-                                {returnDate ? format(returnDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
+                                {endDate ? format(endDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <Calendar
                                 mode="single"
-                                selected={returnDate}
+                                selected={endDate}
                                 onSelect={(date) => {
                                     if (!date) return;
-                                    if (pickupDate && isBefore(date, pickupDate)) return;
-                                    setReturnDate(date);
+                                    if (startDate && isBefore(date, startDate)) return;
+                                    setEndDate(date);
                                 }}
-                                disabled={(date) => pickupDate ? isBefore(date, pickupDate) : false}
+                                disabled={(date) => startDate ? isBefore(date, startDate) : false}
                             />
                         </PopoverContent>
                     </Popover>
