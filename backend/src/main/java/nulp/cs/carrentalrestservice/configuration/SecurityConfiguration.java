@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests( authorizeRequest -> authorizeRequest
                         .requestMatchers("/api/v1"+"/**").permitAll()
                         .requestMatchers("/sys_admin/data").permitAll()
+                        .requestMatchers("/admin/cars").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

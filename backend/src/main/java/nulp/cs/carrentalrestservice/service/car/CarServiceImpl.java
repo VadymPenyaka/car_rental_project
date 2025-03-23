@@ -15,7 +15,9 @@ import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.S3Service;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,22 +27,30 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
+    private final S3Service s3Service;
     private final CarRepository carRepository;
     private final CarPricingRepository carPricingRepository;
     private final CarMapper carMapper;
     private final CarScheduleService scheduleService;
     private final LoggingService loggingService;
 
-//TODO delete creating car pricing creation
+    //TODO delete creating car pricing creation
     @Override
-    public CarDTO createCar(CarDTO carDTO) {
+    public CarDTO createCar(CarDTO carDTO, MultipartFile[] files) {
         Car car = carMapper.carDtoToCar(carDTO);
-        CarPricing carPricing = car.getCarPricing();
-        car.setCarPricing(carPricingRepository.save(carPricing));
+//        CarPricing carPricing = car.getCarPricing();
+//        car.setCarPricing(carPricingRepository.save(carPricing));
 
-        return carMapper.carToCarDto(carRepository
-                .save(car));
+        Car savedCar = carRepository
+                .save(car);
+        int fileNumber = 0;
 
+        for (MultipartFile file: files) {
+            String fileName = car.getId() + "_" + fileNumber;
+            s3Service.saveFileToServer(file, fileName);
+        }
+
+        return carMapper.carToCarDto(savedCar);
     }
 
     @Override

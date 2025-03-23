@@ -30,18 +30,15 @@ public class S3Config {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .endpointProvider(
-                        S3EndpointProvider.defaultProvider()
-                )
-                .serviceConfiguration(S3Configuration.builder()
-                        .pathStyleAccessEnabled(true)
-                        .build()
-                )
                 .credentialsProvider(
                         StaticCredentialsProvider.create(AwsBasicCredentials.create(doSpaceKey, doSpaceSecret))
                 )
                 .region(Region.of(doSpaceRegion))
-                .endpointOverride(URI.create(doSpaceEndpoint))
+                .endpointOverride(URI.create(doSpaceEndpoint)) // Важливий момент для DO Spaces
+                .serviceConfiguration(S3Configuration.builder()
+                        .pathStyleAccessEnabled(true) // DigitalOcean використовує path-style доступ
+                        .build()
+                )
                 .build();
     }
 }
