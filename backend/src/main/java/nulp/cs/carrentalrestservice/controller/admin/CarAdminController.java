@@ -1,6 +1,5 @@
 package nulp.cs.carrentalrestservice.controller.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
@@ -9,7 +8,6 @@ import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -18,26 +16,15 @@ import java.util.UUID;
 @RequestMapping(CarAdminController.BASE_PATH)
 public class CarAdminController {
     private final CarService carService;
-    private final ObjectMapper objectMapper;
     private final LoggingService loggingService;
     public static final String BASE_PATH = "/admin/cars";
 
 
     @PostMapping
-    public ResponseEntity<?> createCar (@RequestParam("car") String carJson, @RequestParam MultipartFile[] multipartFiles) {
-        try {
-            CarDTO car = objectMapper.readValue(carJson, CarDTO.class); // Конвертація JSON у об'єкт
-            carService.createCar(car, multipartFiles);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating car: " + e.getMessage());
-        }
-    }
+    public ResponseEntity<?> createCar (@RequestBody CarDTO car) {
+        carService.createCar(car);
 
-    @GetMapping("/{id}")
-    public CarDTO getCarFulInfoById (@PathVariable("id") UUID id) {
-        return carService.getCarFullDetailsById(id)
-                .orElseThrow(() -> new NotFoundException("Car not found"));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

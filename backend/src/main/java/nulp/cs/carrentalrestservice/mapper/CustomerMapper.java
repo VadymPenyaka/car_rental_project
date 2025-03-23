@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.Customer;
-import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

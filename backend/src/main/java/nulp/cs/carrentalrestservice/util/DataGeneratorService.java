@@ -14,7 +14,7 @@ public class DataGeneratorService {
     private final CarRepository carRepository;
     private final CarGenerator carGenerator;
     private final BrandRepository brandRepository;
-//    TODO refactor saving brands
+
     public void generateCars (int size) {
         carRepository.deleteAll();
         List<Car> cars = carGenerator.generateCarList(size);

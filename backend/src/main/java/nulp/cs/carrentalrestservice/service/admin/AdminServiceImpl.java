@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
@@ -6,11 +6,12 @@ import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.mapper.LocationMapper;
-import nulp.cs.carrentalrestservice.model.AdminDTO;
-import nulp.cs.carrentalrestservice.model.LocationDTO;
-import nulp.cs.carrentalrestservice.model.PersonDTO;
+import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
+import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
+import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
+import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 

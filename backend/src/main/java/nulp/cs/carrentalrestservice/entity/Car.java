@@ -68,7 +68,7 @@ public class Car {
     @Column(nullable = false)
     private int trunkCapacity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(columnDefinition = "varchar(36)")
     private Model model;
 
@@ -79,7 +79,7 @@ public class Car {
     @Column(nullable = false, columnDefinition = "int default 1")
     private int requiredExperience;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(nullable = false)
     private Location location;
 

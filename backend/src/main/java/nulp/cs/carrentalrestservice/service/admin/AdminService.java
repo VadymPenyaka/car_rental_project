@@ -1,7 +1,7 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.service.admin;
 
-import nulp.cs.carrentalrestservice.model.AdminDTO;
-import nulp.cs.carrentalrestservice.model.LocationDTO;
+import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
+import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 
 import java.util.List;
 import java.util.Optional;

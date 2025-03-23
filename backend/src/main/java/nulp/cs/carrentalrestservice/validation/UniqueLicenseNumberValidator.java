@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniqueDriverLicenseNumber;
-import nulp.cs.carrentalrestservice.service.DriverLicenseService;
+import nulp.cs.carrentalrestservice.service.document.DriverLicenseService;
 
 @RequiredArgsConstructor
 public class UniqueLicenseNumberValidator implements ConstraintValidator <UniqueDriverLicenseNumber, String> {

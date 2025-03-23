@@ -34,4 +34,6 @@ public class DriverLicensesDTO {
     @NotBlank(message = "Password ID is mandatory!")
     @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String documentNumber;
+
+    private Document document;
 }

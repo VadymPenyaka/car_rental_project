@@ -1,6 +1,6 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.service.car;
 
-import nulp.cs.carrentalrestservice.model.CarPricingDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 
 import java.util.Optional;

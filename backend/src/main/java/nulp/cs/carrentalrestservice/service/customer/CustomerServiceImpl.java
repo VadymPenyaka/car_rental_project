@@ -1,6 +1,5 @@
 package nulp.cs.carrentalrestservice.service.customer;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
@@ -11,11 +10,9 @@ import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
-import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
-import nulp.cs.carrentalrestservice.service.document.PassportService;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -36,7 +33,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
-    private final PassportService passportService;
     private final PersonService personService;
     private final CarOrderMapper carOrderMapper;
     private final CarService carService;
@@ -57,13 +53,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
-        CustomerDTO customerDTO = CustomerDTO.builder()
-                .passport(customerRequest.getPassport())
-                .person(personService.getAuthenticatedPerson())
-                .driverLicenses(customerRequest.getDriverLicenses())
-                .build();
-
+    public CustomerDTO createCustomerFullInfo(CustomerDTO customerDTO) {
+        loggingService.logInfo("Creating customer full information for id: "+ customerDTO.getId());
+        customerDTO.setPerson(personService
+                .getPersonByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new UsernameNotFoundException("You should log in")));
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
     }
@@ -94,10 +88,22 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
     public CustomerDTO getAuthenticatedCustomer() {
-        UUID personId = personService.getAuthenticatedPerson().getId();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("You should log in");
+        }
+
+        if (!(authentication.getPrincipal() instanceof UserDetails userDetails)) {
+            throw new IllegalArgumentException("Invalid authentication principal");
+        }
+
+        PersonDTO personOpt = personService.getPersonByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found by email: " + userDetails.getUsername()));
+
+        loggingService.logInfo("get Authenticated Customer ");
+        UUID personId = personOpt.getId();
         return customerRepository.findCustomerByPersonId(personId)
                 .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
     }

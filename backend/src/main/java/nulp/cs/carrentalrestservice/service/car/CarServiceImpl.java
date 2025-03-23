@@ -1,11 +1,8 @@
 package nulp.cs.carrentalrestservice.service.car;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.entity.CarPricing;
-import nulp.cs.carrentalrestservice.entity.Model;
-import nulp.cs.carrentalrestservice.event.SaveCarPicturesEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
@@ -18,10 +15,7 @@ import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
-import nulp.cs.carrentalrestservice.util.S3Service;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,24 +25,22 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
-    private final ApplicationEventPublisher eventPublisher;
     private final CarRepository carRepository;
-    private final ModelService modelService;
+    private final CarPricingRepository carPricingRepository;
     private final CarMapper carMapper;
     private final CarScheduleService scheduleService;
     private final LoggingService loggingService;
 
+//TODO delete creating car pricing creation
     @Override
-    @Transactional
-    public CarDTO createCar(CarDTO carDTO, MultipartFile[] files) {
-        carDTO.setModel(modelService.createIfNotExist(carDTO.getModel()));
+    public CarDTO createCar(CarDTO carDTO) {
+        Car car = carMapper.carDtoToCar(carDTO);
+        CarPricing carPricing = car.getCarPricing();
+        car.setCarPricing(carPricingRepository.save(carPricing));
 
-        Car savedCar = carRepository
-                .save(carMapper.carDtoToCar(carDTO));
+        return carMapper.carToCarDto(carRepository
+                .save(car));
 
-        eventPublisher.publishEvent(new SaveCarPicturesEvent(this, savedCar.getId(), files));
-
-        return carMapper.carToCarDto(savedCar);
     }
 
     @Override

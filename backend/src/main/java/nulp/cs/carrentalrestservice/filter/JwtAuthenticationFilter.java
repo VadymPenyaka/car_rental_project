@@ -1,12 +1,12 @@
-package nulp.cs.carrentalrestservice.security.filter;
+package nulp.cs.carrentalrestservice.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
-import nulp.cs.carrentalrestservice.security.JwtService;
+import nulp.cs.carrentalrestservice.service.security.CustomUserDetailsService;
+import nulp.cs.carrentalrestservice.service.security.JwtService;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

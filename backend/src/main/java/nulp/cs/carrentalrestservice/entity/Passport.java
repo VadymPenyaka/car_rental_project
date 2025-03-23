@@ -20,9 +20,9 @@ import java.util.UUID;
 @Table(name = "passports")
 public class Passport {
     @Id
-    @JdbcTypeCode(SqlTypes.VARCHAR)
     @GeneratedValue
-    @Column(updatable = false, nullable = false, unique = true)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
     @Column(nullable = false)
@@ -44,7 +44,7 @@ public class Passport {
     private String taxIdentificationNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, name = "document_id")
+    @JoinColumn(nullable = false)
     private Document document;
 
     @OneToOne(mappedBy = "passport")

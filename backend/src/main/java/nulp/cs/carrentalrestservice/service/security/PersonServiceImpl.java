@@ -4,10 +4,6 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.repository.PersonRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -81,21 +77,5 @@ public class PersonServiceImpl implements PersonService {
         );
 
         return atomicReference.get();
-    }
-
-    @Override
-    public PersonDTO getAuthenticatedPerson() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new UsernameNotFoundException("You should log in");
-        }
-
-        if (!(authentication.getPrincipal() instanceof UserDetails userDetails)) {
-            throw new IllegalArgumentException("Invalid authentication principal");
-        }
-
-        return getPersonByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found by email: " + userDetails.getUsername()));
     }
 }

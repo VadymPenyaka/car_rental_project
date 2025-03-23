@@ -2,15 +2,18 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.service.customer.CustomerService;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
-import nulp.cs.carrentalrestservice.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -49,12 +52,18 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("#customerDTO.person.id==authentication.principal.id")
+    @PreAuthorize("#id==authentication.principal.id")
     public ResponseEntity<?> updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
         if(customerService.updateCustomerById(id, customerDTO).isEmpty())
             throw new NotFoundException();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}/orders")
+    @PreAuthorize("#id==authentication.principal.id")
+    public List<CarOrderDTO> getAllCustomerOrders (@PathVariable UUID id) {
+        return customerService.getAllCustomerOrders(id);
     }
 
 

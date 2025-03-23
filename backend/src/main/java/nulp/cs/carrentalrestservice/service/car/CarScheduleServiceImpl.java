@@ -1,12 +1,10 @@
-package nulp.cs.carrentalrestservice.service;
+package nulp.cs.carrentalrestservice.service.car;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
-import nulp.cs.carrentalrestservice.exception.CarUnavailableException;
-import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
-import nulp.cs.carrentalrestservice.model.CarDTO;
-import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
@@ -71,10 +69,6 @@ public class CarScheduleServiceImpl implements CarScheduleService {
                         .endDate(orderRequest.getEndDate()).build();
 
 
-        if (isCarBooked(schedule, null)){
-            throw new CarUnavailableException("Car already booked for this period!");
-        }
-
         return carScheduleMapper.carScheduleToCarScheduleDTO(carScheduleRepository
                 .save(carScheduleMapper.carScheduleDtoToCarSchedule(schedule)));
     }
@@ -92,7 +86,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-//    TODO refactore to use start end amd carId
+//    TODO refactor to use start end amd carId
     @Override
     public boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("

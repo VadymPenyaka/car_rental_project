@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.model.CarPricingDTO;
-import nulp.cs.carrentalrestservice.model.LocationDTO;
-import nulp.cs.carrentalrestservice.model.ModelDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
+import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
+import nulp.cs.carrentalrestservice.model.dto.ModelDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.*;
 
 import java.util.UUID;
