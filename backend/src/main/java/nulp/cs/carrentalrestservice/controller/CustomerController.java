@@ -7,11 +7,13 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
+import nulp.cs.carrentalrestservice.util.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;

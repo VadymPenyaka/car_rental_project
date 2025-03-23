@@ -21,7 +21,7 @@ public class Model {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(columnDefinition = "varchar(50)", name = "brand_name")
     private Brand brandName;
 
