@@ -5,8 +5,7 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
-import nulp.cs.carrentalrestservice.service.CarService;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.service.car.CarService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +20,8 @@ public class CarController {
 
     @PostMapping
     public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto carDTO) {
+        for (CarCardResponse c:carService.getAllCarsByCriteria(carDTO))
+            System.out.println(c);
         return carService.getAllCarsByCriteria(carDTO);
     }
 

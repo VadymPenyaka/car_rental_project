@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.Location;
-import nulp.cs.carrentalrestservice.model.LocationDTO;
+import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 import org.mapstruct.Mapper;
 
 @Mapper

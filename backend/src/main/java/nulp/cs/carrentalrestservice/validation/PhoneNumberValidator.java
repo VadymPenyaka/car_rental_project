@@ -12,7 +12,7 @@ public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumbe
 
     private Pattern pattern;
     private static final String PHONE_PATTERN =
-            "^\\+?[0-9]\\d{1,14}$";
+            "^\\+380\\d{9}$";
 
     @Override
     public void initialize(ValidPhoneNumber constraintAnnotation) {

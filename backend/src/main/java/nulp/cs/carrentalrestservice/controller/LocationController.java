@@ -2,8 +2,8 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.LocationDTO;
-import nulp.cs.carrentalrestservice.service.LocationService;
+import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
+import nulp.cs.carrentalrestservice.service.location.LocationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

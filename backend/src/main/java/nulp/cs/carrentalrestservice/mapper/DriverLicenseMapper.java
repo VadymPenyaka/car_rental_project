@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.DriverLicense;
-import nulp.cs.carrentalrestservice.model.DriverLicensesDTO;
+import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

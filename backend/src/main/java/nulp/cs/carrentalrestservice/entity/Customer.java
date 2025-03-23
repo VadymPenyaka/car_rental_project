@@ -22,10 +22,10 @@ public class Customer {
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @OneToOne
-    @JoinColumn(nullable = false, name = "passport_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private Passport passport;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private DriverLicense driverLicense;
 
