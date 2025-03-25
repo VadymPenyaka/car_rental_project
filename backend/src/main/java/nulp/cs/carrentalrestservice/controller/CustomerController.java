@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.service.customer.CustomerService;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
@@ -43,7 +44,7 @@ public class CustomerController {
     }
 
     @PostMapping("/personalInfo")
-    public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerDTO customer, BindingResult bindingResult) {
+    public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerFullInfoRequest customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }

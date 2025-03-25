@@ -23,7 +23,7 @@ public class ModelService {
         if (!modelRepository.existsByModelNameAndBrandName(model.getModelName(), model.getBrandName())) {
             Brand newBrand = brandMapper.brandDtoToBrand(brandService.createIfNotExist(modelDTO.getBrandName()));
             model.setBrandName(newBrand);
-            return modelMapper.modelToModelDto(modelRepository.saveAndFlush(model));
+            return modelMapper.modelToModelDto(modelRepository.save(model));
         }
 
         return modelMapper.modelToModelDto(modelRepository

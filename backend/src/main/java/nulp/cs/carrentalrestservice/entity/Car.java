@@ -68,7 +68,7 @@ public class Car {
     @Column(nullable = false)
     private int trunkCapacity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(columnDefinition = "varchar(36)")
     private Model model;
 
