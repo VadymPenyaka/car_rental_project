@@ -13,4 +13,5 @@ public interface PersonService {
     Optional<PersonDTO> getPersonById (UUID id);
     Optional<PersonDTO> getPersonByEmail (String email);
     Optional<PersonDTO> updatePersonById (UUID id, PersonDTO personDTO);
+    PersonDTO getAuthenticatedPerson ();
 }

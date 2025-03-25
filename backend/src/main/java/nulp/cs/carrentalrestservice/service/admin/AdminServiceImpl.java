@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.mapper.LocationMapper;
 import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
 import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.repository.AdminRepository;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
@@ -84,10 +85,13 @@ public class AdminServiceImpl implements AdminService {
         loggingService.logInfo("Getting admin with fewest orders");
         Location location = locationMapper.locationDtoToLocation(locationDTO);
 
-        List<Admin> admins = new ArrayList<>(adminRepository.findAll().stream()
-                .filter(a -> !a.isOnVocation() && a.getLocation().equals(location))
-                .sorted(Comparator.comparingInt(a -> a.getCarOrders().size()))
-                .toList());
+        List<Admin> admins = adminRepository.findAll().stream()
+                .filter(a -> !a.isOnVocation() && Objects.equals(a.getLocation(), location))
+                .sorted(Comparator.comparingInt(a -> (int) a.getCarOrders().stream()
+                        .filter(o -> o.getStatus().equals(OrderStatus.IN_USE) || o.getStatus().equals(OrderStatus.PAID))
+                        .count()))
+                .toList();
+
 
         return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)))
                 .orElseThrow(() -> new NotFoundException("No appropriate admin was found."));

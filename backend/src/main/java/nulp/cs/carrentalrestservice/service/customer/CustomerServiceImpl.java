@@ -10,6 +10,7 @@ import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
+import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
@@ -53,11 +54,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO createCustomerFullInfo(CustomerDTO customerDTO) {
-        loggingService.logInfo("Creating customer full information for id: "+ customerDTO.getId());
-        customerDTO.setPerson(personService
-                .getPersonByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new UsernameNotFoundException("You should log in")));
+    public CustomerDTO createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .passport(customerRequest.getPassport())
+                .person(personService.getAuthenticatedPerson())
+                .driverLicenses(customerRequest.getDriverLicenses())
+                .build();
+
         return customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
     }
@@ -89,21 +92,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getAuthenticatedCustomer() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID personId = personService.getAuthenticatedPerson().getId();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new UsernameNotFoundException("You should log in");
-        }
-
-        if (!(authentication.getPrincipal() instanceof UserDetails userDetails)) {
-            throw new IllegalArgumentException("Invalid authentication principal");
-        }
-
-        PersonDTO personOpt = personService.getPersonByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found by email: " + userDetails.getUsername()));
-
-        loggingService.logInfo("get Authenticated Customer ");
-        UUID personId = personOpt.getId();
         return customerRepository.findCustomerByPersonId(personId)
                 .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
     }
