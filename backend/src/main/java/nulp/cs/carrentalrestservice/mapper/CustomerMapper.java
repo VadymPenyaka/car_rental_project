@@ -8,8 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface CustomerMapper {
     @Mapping(source = "person", target = "person")
+    @Mapping(source = "passport", target = "passport")
     Customer customerDtoToCustomer (CustomerDTO customerDTO);
 
     @Mapping(source = "person", target = "person")
+    @Mapping(source = "passport", target = "passport")
     CustomerDTO customerToCustomerDto (Customer customer);
 }

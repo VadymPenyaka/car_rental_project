@@ -84,11 +84,12 @@ public class AdminServiceImpl implements AdminService {
     public AdminDTO getAdminForOrderByLocation(LocationDTO locationDTO) {
         loggingService.logInfo("Getting admin with fewest orders");
         Location location = locationMapper.locationDtoToLocation(locationDTO);
-
+//TODO use flat map
         List<Admin> admins = adminRepository.findAll().stream()
                 .filter(a -> !a.isOnVocation() && Objects.equals(a.getLocation(), location))
                 .sorted(Comparator.comparingInt(a -> (int) a.getCarOrders().stream()
-                        .filter(o -> o.getStatus().equals(OrderStatus.IN_USE) || o.getStatus().equals(OrderStatus.PAID))
+                        .filter(o -> o.getStatus().equals(OrderStatus.IN_USE)
+                                || o.getStatus().equals(OrderStatus.PAID))
                         .count()))
                 .toList();
 

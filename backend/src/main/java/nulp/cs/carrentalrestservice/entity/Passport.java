@@ -17,12 +17,11 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "passports")
 public class Passport {
     @Id
     @GeneratedValue
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    @Column(updatable = false, nullable = false, unique = true)
     private UUID id;
 
     @Column(nullable = false)
@@ -42,10 +41,6 @@ public class Passport {
     @Column
     @Convert(converter = SensitiveDataConverter.class)
     private String taxIdentificationNumber;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
-    private Document document;
 
     @OneToOne(mappedBy = "passport")
     private Customer customer;

@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cars")
 @Getter
 @Setter
 @Builder

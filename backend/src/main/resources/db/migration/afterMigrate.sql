@@ -1,11 +1,36 @@
-delete from admins;
-delete from locations;
-delete from customers;
-delete from persons;
-delete from passports;
-delete from driver_licenses;
+truncate table public.car_order cascade;
 
-INSERT INTO locations (id, location_name, region, city, address, latitude, longitude)
+truncate table public.admin cascade;
+
+truncate table public.customer cascade;
+
+truncate table public.car_maintenance cascade;
+
+truncate table public.car_schedule cascade;
+
+truncate table public.car cascade;
+
+truncate table public.car_pricing cascade;
+
+truncate table public.location cascade;
+
+truncate table public.person cascade;
+
+truncate table public.passport cascade;
+
+truncate table public.model cascade;
+
+truncate table public.brand cascade;
+
+truncate table public.driver_license_category cascade;
+
+truncate table public.driver_license cascade;
+
+truncate table public.document cascade;
+
+
+
+INSERT INTO location (id, location_name, region, city, address, latitude, longitude)
 VALUES ('9d56f035-becb-4f1f-80a7-1be5cf85b0de',
         'Central Railway Station',
         'Kyiv Oblast', 'Kyiv',
@@ -13,7 +38,7 @@ VALUES ('9d56f035-becb-4f1f-80a7-1be5cf85b0de',
         '50.4501',
         '30.5003');
 
-INSERT INTO persons (id, role, username, password, sure_name, first_name, phone_number)
+INSERT INTO person (id, role, username, password, sure_name, first_name, phone_number)
 VALUES
     ('d7c9f4d7-82b5-4c5f-9096-9c1c875cb0a4',
      'SYS_ADMIN',
@@ -32,7 +57,7 @@ VALUES
      'KKI2trtJPaY+9gIL8mOM8g==')
 ;
 
-INSERT INTO admins (id, person_id, position, department, is_on_vocation, location_id)
+INSERT INTO admin (id, person_id, position, department, is_on_vocation, location_id)
 VALUES ('da8dcb8e-b692-4ac2-8b58-b9eaaf381edb',
         'd7c9f4d7-82b5-4c5f-9096-9c1c875cb0a4',
         'System admin',

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.EmailEvent;
+import nulp.cs.carrentalrestservice.exception.InvalidOrderException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
@@ -41,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @VerifyOrder
     public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest) {
+
+        if (isCustomerHasOverlapOrder(customerService.getAuthenticatedCustomer().getId(), orderRequest.getStartDate(), orderRequest.getEndDate())) {
+            throw new InvalidOrderException("You have another order for this period.");
+        }
+
         CarScheduleDTO schedule = scheduleService.createCarScheduleForCarOrder(orderRequest);
 
         CarOrderDTO carOrderDTO = CarOrderDTO.builder()

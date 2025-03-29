@@ -18,7 +18,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "driver_licenses")
 public class DriverLicense {
 
     @Id
@@ -41,13 +40,9 @@ public class DriverLicense {
     @Convert(converter = SensitiveDataConverter.class)
     private String documentNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "document_id")
-    private Document document;
-
     @OneToOne(mappedBy = "driverLicense")
     private Customer customer;
 
-    @OneToMany(mappedBy = "license")
-    private Set<DriverLicenseCategories> categories;
+    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    private Set<DriverLicenseCategory> categories;
 }

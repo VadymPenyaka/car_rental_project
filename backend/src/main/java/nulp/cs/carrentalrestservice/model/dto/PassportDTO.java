@@ -34,6 +34,4 @@ public class PassportDTO {
     @NotBlank(message = "Tax identification number is mandatory!")
     @Size(min = 10, max = 10, message = "Must be 10 digit length!")
     private String taxIdentificationNumber;
-
-    private Document document;
 }

@@ -19,10 +19,8 @@ public class CarController {
     private final CarService carService;
 
     @PostMapping
-    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto carDTO) {
-        for (CarCardResponse c:carService.getAllCarsByCriteria(carDTO))
-            System.out.println(c);
-        return carService.getAllCarsByCriteria(carDTO);
+    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto searchRequest) {
+        return carService.getAllCarsByCriteria(searchRequest);
     }
 
     @GetMapping("/{id}")

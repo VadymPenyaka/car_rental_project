@@ -15,7 +15,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "documents")
 public class Document {
     @Id
     @JdbcTypeCode(SqlTypes.VARCHAR)
@@ -33,10 +32,4 @@ public class Document {
 
     @Column(nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
-
-    @OneToOne(mappedBy = "document")
-    private DriverLicense driverLicense;
-
-    @OneToOne(mappedBy = "document")
-    private Passport passport;
 }
