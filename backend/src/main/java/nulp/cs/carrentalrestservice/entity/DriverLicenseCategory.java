@@ -13,8 +13,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "driver_license_categories")
-public class DriverLicenseCategories {
+public class DriverLicenseCategory {
 
     @EmbeddedId
     private DriverLicenseCategoryId id;

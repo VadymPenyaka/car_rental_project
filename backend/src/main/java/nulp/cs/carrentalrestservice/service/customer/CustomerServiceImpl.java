@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service.customer;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
@@ -14,6 +15,7 @@ import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
+import nulp.cs.carrentalrestservice.service.document.PassportService;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -34,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
+    private final PassportService passportService;
     private final PersonService personService;
     private final CarOrderMapper carOrderMapper;
     private final CarService carService;
@@ -91,6 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerDTO getAuthenticatedCustomer() {
         UUID personId = personService.getAuthenticatedPerson().getId();
 

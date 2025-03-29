@@ -24,7 +24,7 @@ public class CarAdminController {
 
 
     @PostMapping
-    public ResponseEntity<?> createCar ( @RequestParam("car") String carJson, @RequestParam MultipartFile[] multipartFiles) {
+    public ResponseEntity<?> createCar (@RequestParam("car") String carJson, @RequestParam MultipartFile[] multipartFiles) {
         try {
             CarDTO car = objectMapper.readValue(carJson, CarDTO.class); // Конвертація JSON у об'єкт
             carService.createCar(car, multipartFiles);

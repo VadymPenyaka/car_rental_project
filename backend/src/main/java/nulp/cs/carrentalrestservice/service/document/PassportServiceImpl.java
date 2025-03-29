@@ -21,6 +21,13 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
+    public Optional<PassportDTO> getPassportByCustomerId(UUID customerId) {
+        return Optional.ofNullable(passportMapper
+                .passportToPassportDto(passportRepository
+                        .findByCustomerId(customerId)));
+    }
+
+    @Override
     public Optional<PassportDTO> getPassportById(UUID id) {
         return Optional.ofNullable(passportMapper.passportToPassportDto(passportRepository.findById(id).orElse(null)));
     }

@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface CustomerRepository extends JpaRepository <Customer, UUID> {
-    @Query("SELECT c FROM customers c WHERE c.person.id = :personId")
+    @Query("SELECT c FROM customer c WHERE c.person.id = :personId")
     Optional<Customer> findCustomerByPersonId (@Param("personId") UUID personId);
 
     @Query("SELECT o FROM CarOrder o WHERE o.customer.id = :customerId")
