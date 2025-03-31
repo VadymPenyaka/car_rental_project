@@ -7,9 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface PassportMapper {
-    @Mapping(source = "document", target = "document")
     Passport passportDtoToPassport (PassportDTO passportDTO);
 
-    @Mapping(source = "document", target = "document")
     PassportDTO passportToPassportDto (Passport passport);
 }

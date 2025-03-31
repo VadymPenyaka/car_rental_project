@@ -36,6 +36,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1"+"/**").permitAll()
                         .requestMatchers("/sys_admin/data").permitAll()
                         .requestMatchers("/admin/cars").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

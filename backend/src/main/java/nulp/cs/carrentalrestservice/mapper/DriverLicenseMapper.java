@@ -7,8 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface DriverLicenseMapper {
-    @Mapping(source = "document", target = "document")
     DriverLicense driverLicensesDtoToDriverLicenses (DriverLicensesDTO driverLicensesDTO);
-    @Mapping(source = "document", target = "document")
     DriverLicensesDTO driverLicensesToDriverLIcensesDto (DriverLicense driverLicense);
 }
