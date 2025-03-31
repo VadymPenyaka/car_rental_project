@@ -107,17 +107,15 @@ public class OrderServiceImpl implements OrderService {
         return atomicReference.get();
     }
 
-    //todo make work with person
     @Override
     public boolean isOwner(UUID orderId, String username) {
         loggingService.logInfo("Checking ownership for order ID: " + orderId + " and username: " + username);
-//        boolean isOwner = carOrderRepository.findById(orderId)
-//                .map(order -> order.getCustomer().getEmail().equals(username))
-//                .orElse(false);
+        boolean isOwner = orderRepository.findById(orderId)
+                .map(order -> order.getCustomer().getPerson().getUsername().equals(username))
+                .orElse(false);
 
-//        loggingService.logInfo("Ownership check result: " + isOwner);
-//        return isOwner;
-        return true;
+        loggingService.logInfo("Ownership check result: " + isOwner);
+        return isOwner;
     }
 
     @Override

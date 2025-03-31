@@ -1,4 +1,0 @@
-ALTER TABLE admins
-    ALTER COLUMN password TYPE VARCHAR(100);
-ALTER TABLE customers
-    ALTER COLUMN password TYPE VARCHAR(100);
