@@ -24,10 +24,10 @@ public class CarAdminController {
 
 
     @PostMapping
-    public ResponseEntity<?> createCar (@RequestParam("car") String carJson, @RequestParam MultipartFile[] multipartFiles) {
+    public ResponseEntity<?> createCar (@RequestHeader("car") String car, @RequestParam MultipartFile[] multipartFiles) {
         try {
-            CarDTO car = objectMapper.readValue(carJson, CarDTO.class); // Конвертація JSON у об'єкт
-            carService.createCar(car, multipartFiles);
+            CarDTO carDTO = objectMapper.readValue(car, CarDTO.class);
+            carService.createCar(carDTO, multipartFiles);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating car: " + e.getMessage());

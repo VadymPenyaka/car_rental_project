@@ -39,15 +39,27 @@ public class AdminServiceImpl implements AdminService {
                 .save(adminMapper.adminDtoToAdmin(adminDTO)));
     }
 
-//    TODO add fields to update
     @Override
     public Optional<AdminDTO> updateAdminById(UUID id, AdminDTO admin) {
         AtomicReference<Optional<AdminDTO>> atomicReference = new AtomicReference<>();
         loggingService.logInfo("Update admin for ID: " + id);
-        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> atomicReference.set(Optional.of(adminMapper
-                .adminToAdminDto(adminRepository.save(foundAdmin)))), () -> {
-            loggingService.logInfo("Admin with ID: " + id + " not found");
-            atomicReference.set(Optional.empty());
+
+        adminRepository.findById(id).ifPresentOrElse(foundAdmin -> {
+            foundAdmin.setOnVocation(admin.isOnVocation());
+            if (admin.getDepartment() != null) {
+                foundAdmin.setDepartment(admin.getDepartment());
+            }
+            if (admin.getPosition() != null) {
+                foundAdmin.setPosition(admin.getPosition());
+            }
+            if (admin.getLocation() != null) {
+                foundAdmin.setLocation(adminMapper.adminDtoToAdmin(admin).getLocation());
+            }
+
+            atomicReference.set(Optional.of(adminMapper
+                .adminToAdminDto(adminRepository.save(foundAdmin))));
+                }, () -> { loggingService.logInfo("Admin with ID: " + id + " not found");
+                atomicReference.set(Optional.empty());
         });
         loggingService.logInfo("Admin is updated successfully");
         return atomicReference.get();
@@ -84,17 +96,14 @@ public class AdminServiceImpl implements AdminService {
     public AdminDTO getAdminForOrderByLocation(LocationDTO locationDTO) {
         loggingService.logInfo("Getting admin with fewest orders");
         Location location = locationMapper.locationDtoToLocation(locationDTO);
-//TODO use flat map
-        List<Admin> admins = adminRepository.findAll().stream()
+
+        Admin admin = adminRepository.findAll().stream()
                 .filter(a -> !a.isOnVocation() && Objects.equals(a.getLocation(), location))
-                .sorted(Comparator.comparingInt(a -> (int) a.getCarOrders().stream()
-                        .filter(o -> o.getStatus().equals(OrderStatus.IN_USE)
-                                || o.getStatus().equals(OrderStatus.PAID))
-                        .count()))
-                .toList();
+                .min(Comparator.comparingLong(a -> a.getCarOrders().stream()
+                        .filter(o -> o.getStatus() == OrderStatus.IN_USE || o.getStatus() == OrderStatus.PAID)
+                        .count())).orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
 
 
-        return Optional.ofNullable(adminMapper.adminToAdminDto(admins.get(0)))
-                .orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
+        return adminMapper.adminToAdminDto(admin);
     }
 }
