@@ -86,7 +86,6 @@ public class CarScheduleServiceImpl implements CarScheduleService {
         return false;
     }
 
-//    TODO refactor to use start end amd carId
     @Override
     public boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("
