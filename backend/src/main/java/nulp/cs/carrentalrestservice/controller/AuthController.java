@@ -10,6 +10,7 @@ import nulp.cs.carrentalrestservice.service.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.service.security.JwtService;
 import nulp.cs.carrentalrestservice.model.dto.PersonDetails;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
+import nulp.cs.carrentalrestservice.service.security.PersonServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,7 +61,6 @@ public class AuthController {
                     .role(role)
                     .token(token)
                     .build();
-
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             throw new UsernameNotFoundException("Invalid credentials!");

@@ -53,15 +53,27 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequestDto carDTO) {
+        List<Car> foundCars = carRepository.findAllCarsByCriteria(
+                                                                    carDTO.getStartDate(),
+                                                                    carDTO.getEndDate(),
+                                                                    carDTO.getCarClass(),
+                                                                    carDTO.getGearboxType(),
+                                                                    carDTO.getFuelType(),
+                                                                    carDTO.getBrand());
 
-        loggingService.logInfo("Getting cars by criteria");
-        if(carDTO.getId() == null && carDTO.getLocation() == null && carDTO.getCarClass()==null && carDTO.getBrand() == null && carDTO.getGearboxType() == null && carDTO.getFuelType() == null && carDTO.getStartDate() == null && carDTO.getEndDate() == null) {
-            return carRepository.findAll().stream().map(carMapper::carToCarCardDto).toList();
-        }
 
-        UUID locationId = carDTO.getLocation() != null ? carDTO.getLocation().getId() : null;
-        return carRepository.findAllCarsByCriteria(carDTO.getId(), locationId, carDTO.getCarClass(), carDTO.getBrand(), carDTO.getGearboxType(), carDTO.getFuelType(), carDTO.getStartDate(), carDTO.getEndDate()).stream()
-                .map(carMapper::carToCarCardDto).toList();
+        return foundCars.stream()
+                .filter(car -> {
+                    double price = car.getCarPricing().getMoreThenMonth();
+                    boolean matchesPrice = (carDTO.getMinPrice() == null || price >= carDTO.getMinPrice()) &&
+                            (carDTO.getMaxPrice() == null || price <= carDTO.getMaxPrice());
+
+                    boolean matchesCity = carDTO.getCity() == null || car.getLocation().getCity().equals(carDTO.getCity());
+
+                    return matchesPrice && matchesCity;
+                })
+                .map(carMapper::carToCarCardDto)
+                .toList();
     }
 
     @Override

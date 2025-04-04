@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nulp.cs.carrentalrestservice.model.dto.BrandDTO;
 import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
@@ -17,12 +18,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarSearchRequestDto {
-    private UUID id;
-    private CarClass carClass;
-    private FuelType fuelType;
-    private String brand;
+    private String city;
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocationDTO location;
+    private CarClass carClass;
     private GearboxType gearboxType;
+    private FuelType fuelType;
+    private String brand;
+    private Double minPrice;
+    private Double maxPrice;
 }
