@@ -23,15 +23,9 @@ CREATE TABLE public.admin (
                               location_id character varying(36)
 );
 
-
-ALTER TABLE public.admin OWNER TO postgres;
-
 CREATE TABLE public.brand (
                               name character varying(50) NOT NULL
 );
-
-
-ALTER TABLE public.brand OWNER TO postgres;
 
 CREATE TABLE public.car (
                             fuel_consumption integer NOT NULL,
@@ -55,18 +49,12 @@ CREATE TABLE public.car (
                             model_id character varying(36)
 );
 
-
-ALTER TABLE public.car OWNER TO postgres;
-
 CREATE TABLE public.car_maintenance (
                                         id character varying(36) NOT NULL,
                                         schedule_id character varying(36) NOT NULL,
                                         description character varying(100) NOT NULL,
                                         price double precision NOT NULL
 );
-
-
-ALTER TABLE public.car_maintenance OWNER TO postgres;
 
 CREATE TABLE public.car_order (
                                   admin_id character varying(36) NOT NULL,
@@ -78,9 +66,6 @@ CREATE TABLE public.car_order (
                                   schedule_id character varying(36) NOT NULL
 );
 
-
-ALTER TABLE public.car_order OWNER TO postgres;
-
 CREATE TABLE public.car_pricing (
                                     more_then_month double precision NOT NULL,
                                     pledge double precision NOT NULL,
@@ -90,9 +75,6 @@ CREATE TABLE public.car_pricing (
                                     id character varying(36) NOT NULL
 );
 
-
-ALTER TABLE public.car_pricing OWNER TO postgres;
-
 CREATE TABLE public.car_schedule (
                                      id character varying(36) NOT NULL,
                                      car_id character varying(36) NOT NULL,
@@ -101,9 +83,6 @@ CREATE TABLE public.car_schedule (
                                      status character varying(36) NOT NULL
 );
 
-
-ALTER TABLE public.car_schedule OWNER TO postgres;
-
 CREATE TABLE public.customer (
                                  id character varying(36) NOT NULL,
                                  person_id character varying(36) NOT NULL,
@@ -111,18 +90,12 @@ CREATE TABLE public.customer (
                                  driver_license_id character varying(36)
 );
 
-
-ALTER TABLE public.customer OWNER TO postgres;
-
 CREATE TABLE public.document (
                                  id character varying(36) NOT NULL,
                                  type character varying(50) NOT NULL,
                                  file_path character varying(255) NOT NULL,
                                  created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
-
-
-ALTER TABLE public.document OWNER TO postgres;
 
 CREATE TABLE public.driver_license (
                                        id character varying(36) NOT NULL,
@@ -132,17 +105,11 @@ CREATE TABLE public.driver_license (
                                        document_number character varying(10) NOT NULL
 );
 
-
-ALTER TABLE public.driver_license OWNER TO postgres;
-
 CREATE TABLE public.driver_license_category (
                                                 license_id character varying(36) NOT NULL,
                                                 category character varying(5) NOT NULL,
                                                 issue_date date NOT NULL
 );
-
-
-ALTER TABLE public.driver_license_category OWNER TO postgres;
 
 CREATE TABLE public.location (
                                  id character varying(36) NOT NULL,
@@ -154,9 +121,6 @@ CREATE TABLE public.location (
                                  longitude character varying(50) NOT NULL
 );
 
-
-ALTER TABLE public.location OWNER TO postgres;
-
 CREATE TABLE public.model (
                               id character varying(36) NOT NULL,
                               brand_name character varying(50) NOT NULL,
@@ -164,9 +128,6 @@ CREATE TABLE public.model (
                               description character varying(256) NOT NULL,
                               year integer NOT NULL
 );
-
-
-ALTER TABLE public.model OWNER TO postgres;
 
 CREATE TABLE public.passport (
                                  id character varying(36) NOT NULL,
@@ -177,9 +138,6 @@ CREATE TABLE public.passport (
                                  tax_identification_number character varying(255)
 );
 
-
-ALTER TABLE public.passport OWNER TO postgres;
-
 CREATE TABLE public.person (
                                phone_number character varying(255) NOT NULL,
                                first_name character varying(255) NOT NULL,
@@ -189,9 +147,6 @@ CREATE TABLE public.person (
                                role character varying(36) NOT NULL,
                                id character varying(36) NOT NULL
 );
-
-
-ALTER TABLE public.person OWNER TO postgres;
 
 ALTER TABLE ONLY public.admin
     ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
