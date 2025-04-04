@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
-import nulp.cs.carrentalrestservice.model.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import org.mapstruct.Mapper;
 
 @Mapper

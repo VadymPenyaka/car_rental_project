@@ -7,9 +7,9 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
-@Entity(name = "cars_maintenance")
 @Getter
 @Setter
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

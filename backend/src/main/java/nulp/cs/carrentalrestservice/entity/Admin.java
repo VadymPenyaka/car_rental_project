@@ -1,12 +1,7 @@
 package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import nulp.cs.carrentalrestservice.annotation.ValidEmail;
-import nulp.cs.carrentalrestservice.annotation.ValidPassword;
-import nulp.cs.carrentalrestservice.annotation.ValidPhoneNumber;
-import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -15,7 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "admins")
 @Setter
 @Getter
 @Builder
@@ -27,6 +21,19 @@ public class Admin implements Comparable<Admin>{
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
+    @OneToOne
+    @JoinColumn
+    private Person person;
+    @Column(columnDefinition = "varchar(50)")
+    private String position;
+    @Column(columnDefinition = "varchar(50)")
+    private String department;
+    @Column
+    private boolean isOnVocation;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "location_id")
+    private Location location;
+
     @OneToMany(mappedBy = "admin", cascade =  CascadeType.ALL)
     private Set<CarOrder> carOrders = new HashSet<>();
 

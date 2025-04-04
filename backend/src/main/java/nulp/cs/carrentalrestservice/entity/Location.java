@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "locations")
 @Setter
 @Getter
 @Builder
@@ -36,4 +35,7 @@ public class Location {
     private String longitude;
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     private Set<Car> cars;
+
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    private Set<Admin> admins;
 }

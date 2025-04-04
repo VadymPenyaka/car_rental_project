@@ -1,10 +1,8 @@
 package nulp.cs.carrentalrestservice.event;
 
 import lombok.Getter;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.Customer;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.CustomerDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
