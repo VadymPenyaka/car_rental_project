@@ -137,4 +137,8 @@ public class CarServiceImpl implements CarService {
         return !scheduleService.isCarBooked(scheduleDTO, null);
     }
 
+    @Override
+    public boolean isVinUsed(String vin) {
+        return carRepository.existsByVin(vin);
+    }
 }

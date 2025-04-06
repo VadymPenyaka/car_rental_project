@@ -31,4 +31,6 @@ public interface CarRepository extends JpaRepository <Car, UUID> {
                                     @Param("gearboxType") GearboxType gearboxType,
                                     @Param("fuelType") FuelType fuelType,
                                     @Param("brand") String brand);
+
+    boolean existsByVin (String vin);
 }

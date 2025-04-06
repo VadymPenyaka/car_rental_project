@@ -25,4 +25,6 @@ public interface CarService {
     Optional<CarDTO> getCarFullDetailsById(UUID id);
 
     boolean verifyCarForOrder (OrderCreationRequest orderCreationRequest);
+
+    boolean isVinUsed (String vin);
 }

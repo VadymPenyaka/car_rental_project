@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.controller.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
@@ -18,16 +19,14 @@ import java.util.UUID;
 @RequestMapping(CarAdminController.BASE_PATH)
 public class CarAdminController {
     private final CarService carService;
-    private final ObjectMapper objectMapper;
     private final LoggingService loggingService;
     public static final String BASE_PATH = "/admin/cars";
 
 
     @PostMapping
-    public ResponseEntity<?> createCar (@RequestHeader("car") String car, @RequestParam MultipartFile[] multipartFiles) {
+    public ResponseEntity<?> createCar (@RequestHeader("car") @Valid CarDTO car, @RequestParam MultipartFile[] multipartFiles) {
         try {
-            CarDTO carDTO = objectMapper.readValue(car, CarDTO.class);
-            carService.createCar(carDTO, multipartFiles);
+            carService.createCar(car, multipartFiles);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating car: " + e.getMessage());
