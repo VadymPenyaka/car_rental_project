@@ -7,12 +7,15 @@ import ring_phone from '../../assets/phone_2.svg'
 import account from '../../assets/account.svg'
 import { AddresSelect } from './AddresSelect'
 import { Button } from '../ui/button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 export const HeaderInformation = () => {
+	const navigate = useNavigate()
 	return (
 		<div className='justify-between items-center mt-6 hidden lg:flex'>
-			<Logo />
+			<div onClick={() => navigate('/')} className='cursor-pointer'>
+				<Logo />
+			</div>
 			<AddresSelect />
 			<div className='flex items-center'>
 				<Logo

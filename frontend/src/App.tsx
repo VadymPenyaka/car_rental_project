@@ -2,14 +2,14 @@ import { CarMainCategoriesPanel } from "./components/CarMainCategoriesPanel/CarM
 import { Header } from "./components/header/Header"
 import Hero from "./components/Hero/Hero"
 
-function App() {
-  return (
-    <>
-      <Header />
-      <Hero />
-      <CarMainCategoriesPanel />
-    </>
-  )
+const App = () => {
+	return (
+		<>
+			<Header />
+			<Hero />
+			<CarMainCategoriesPanel />
+		</>
+	)
 }
 
 export default App
