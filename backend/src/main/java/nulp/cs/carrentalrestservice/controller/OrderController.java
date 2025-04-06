@@ -19,16 +19,15 @@ public class OrderController {
     public final static String BASE_PATH = "/api/v1/carOrders";
 
     @PostMapping(BASE_PATH)
-//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest) {
         orderService.createCarOrder(orderRequest);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //    TODO make check if user is the owner id order
     @GetMapping(BASE_PATH +"/{id}")
-    @PreAuthorize("hasRole('ADMIN') ")
+    @PreAuthorize("hasRole('ADMIN') AND @orderServiceImpl.isOwner(#id, #principal.username)")
     public CarOrderDTO getCarOrderById (@PathVariable("id") UUID id) {
         return orderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }

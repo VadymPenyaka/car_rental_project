@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests( authorizeRequest -> authorizeRequest
-                        .requestMatchers("/api/v1"+"/**").permitAll()
+                        .requestMatchers("/api/v1/**").permitAll()
                         .requestMatchers("/sys_admin/data/**").permitAll()
                         .requestMatchers("/admin/cars").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/swagger-resources/**").permitAll()

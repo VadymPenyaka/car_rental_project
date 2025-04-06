@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.model.dto.BrandDTO;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
@@ -27,6 +28,5 @@ public class CarController {
     public CarCustomerDetailsResponse getCarById (@PathVariable UUID id) {
         return carService.getCarCustomerDetailsById(id).orElseThrow(NotFoundException::new);
     }
-
 
 }

@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.repository;
 
+import nulp.cs.carrentalrestservice.entity.Brand;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
@@ -13,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-//TODO refactor query
 @Repository
 public interface CarRepository extends JpaRepository <Car, UUID> {
     @Query("SELECT c FROM Car c WHERE " +

@@ -25,9 +25,9 @@ public class BrandService {
                 .orElseThrow((() -> new NotFoundException("Brand not found!"))));
     }
 
-    public List<BrandDTO> getAllBrands () {
-        return brandRepository.findAll().stream()
-                .map(brandMapper::brandToBrandDto).toList();
+    public List<String> getAllAvailableBrands() {
+        return brandRepository.getAllAvailableBrands().stream()
+                .map(brandMapper::brandToBrandDto).map(b->b.getName()).toList();
     }
 
     public boolean deleteBrandByName (String name) {
