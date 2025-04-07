@@ -16,21 +16,5 @@ import java.util.UUID;
 
 @Repository
 public interface CarRepository extends JpaRepository <Car, UUID> {
-    @Query("SELECT c FROM Car c WHERE " +
-            "(:carClass IS NULL OR c.carClass = :carClass) AND " +
-            "(:gearboxType IS NULL OR c.gearboxType = :gearboxType) AND " +
-            "(:fuelType IS NULL OR c.fuelType = :fuelType) AND " +
-            ":brand IS NULL OR c.model.brandName.name = :brand AND" +
-            "((:startDate IS NULL AND :endDate IS NULL) OR " +
-            "NOT EXISTS (SELECT s FROM CarSchedule s WHERE s.car.id = c.id AND" +
-            "(:startDate IS NULL OR s.endDate >= :startDate) AND " +
-            "(:endDate IS NULL OR s.startDate <= :endDate)))" )
-    List<Car> findAllCarsByCriteria(@Param("startDate") LocalDate startDate,
-                                    @Param("endDate") LocalDate endDate,
-                                    @Param("carClass") CarClass carClass,
-                                    @Param("gearboxType") GearboxType gearboxType,
-                                    @Param("fuelType") FuelType fuelType,
-                                    @Param("brand") String brand);
-
     boolean existsByVin (String vin);
 }

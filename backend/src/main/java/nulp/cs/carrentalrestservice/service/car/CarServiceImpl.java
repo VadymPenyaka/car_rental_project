@@ -3,22 +3,20 @@ package nulp.cs.carrentalrestservice.service.car;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
-import nulp.cs.carrentalrestservice.entity.CarPricing;
-import nulp.cs.carrentalrestservice.entity.Model;
 import nulp.cs.carrentalrestservice.event.SaveCarPicturesEvent;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
-import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
-import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
+import nulp.cs.carrentalrestservice.repository.CarCustomRepository;
+import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
-import nulp.cs.carrentalrestservice.util.S3Service;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +35,7 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
     private final CarScheduleService scheduleService;
     private final LoggingService loggingService;
+    private final CarJdbcRepository carJdbcRepository;
 
     @Override
     @Transactional
@@ -52,26 +51,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequestDto carDTO) {
-        List<Car> foundCars = carRepository.findAllCarsByCriteria(
-                                                                    carDTO.getStartDate(),
-                                                                    carDTO.getEndDate(),
-                                                                    carDTO.getCarClass(),
-                                                                    carDTO.getGearboxType(),
-                                                                    carDTO.getFuelType(),
-                                                                    carDTO.getBrand());
+    public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carDTO) {
 
-
-        return foundCars.stream()
-                .filter(car -> {
-                    double price = car.getCarPricing().getMoreThenMonth();
-                    boolean matchesPrice = (carDTO.getMinPrice() == null || price >= carDTO.getMinPrice()) &&
-                            (carDTO.getMaxPrice() == null || price <= carDTO.getMaxPrice());
-
-                    boolean matchesCity = carDTO.getCity() == null || car.getLocation().getCity().equals(carDTO.getCity());
-
-                    return matchesPrice && matchesCity;
-                })
+        return carJdbcRepository.getAllCarsByCriteria(carDTO).stream()
                 .map(carMapper::carToCarCardDto)
                 .toList();
     }

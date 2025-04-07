@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.service.car;
 
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
-import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface CarService {
     CarDTO createCar (CarDTO carDTO, MultipartFile[] files);
 
-    List<CarCardResponse> getAllCarsByCriteria(CarSearchRequestDto carDto);
+    List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carDto);
 
     Boolean deleteCarById (UUID id);
 

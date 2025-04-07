@@ -2,8 +2,7 @@ package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.model.dto.BrandDTO;
-import nulp.cs.carrentalrestservice.model.request.CarSearchRequestDto;
+import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.service.car.CarService;
@@ -20,7 +19,7 @@ public class CarController {
     private final CarService carService;
 
     @PostMapping
-    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequestDto searchRequest) {
+    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequest searchRequest) {
         return carService.getAllCarsByCriteria(searchRequest);
     }
 
