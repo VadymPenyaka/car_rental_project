@@ -1,8 +1,7 @@
 package nulp.cs.carrentalrestservice.event;
 
 import lombok.Getter;
-import nulp.cs.carrentalrestservice.model.CarMaintenanceDTO;
-import nulp.cs.carrentalrestservice.model.CarOrderDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import org.springframework.context.ApplicationEvent;
 
 @Getter

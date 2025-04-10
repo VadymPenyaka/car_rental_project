@@ -10,6 +10,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 @Configuration
 @EnableAspectJAutoProxy
 public class EventAspectConfiguration {
+
     @Bean(name = "applicationEventMulticaster")
     public ApplicationEventMulticaster applicationEventMulticaster() {
         SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
@@ -18,5 +19,4 @@ public class EventAspectConfiguration {
 
         return eventMulticaster;
     }
-
 }

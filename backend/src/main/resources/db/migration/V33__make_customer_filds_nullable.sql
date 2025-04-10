@@ -1,4 +1,0 @@
-ALTER TABLE customers
-ALTER COLUMN passport_id DROP NOT NULL,
-ALTER COLUMN passport_expiry_date DROP NOT NULL,
-ALTER COLUMN birth_date DROP NOT NULL;

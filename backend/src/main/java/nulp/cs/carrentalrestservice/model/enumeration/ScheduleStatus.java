@@ -1,5 +1,5 @@
 package nulp.cs.carrentalrestservice.model.enumeration;
 
 public enum ScheduleStatus {
-    BOOKED, UNDER_SERVICE;
+    BOOKED, UNDER_SERVICE
 }

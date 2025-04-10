@@ -1,2 +1,0 @@
-ALTER TABLE cars_maintenance
-    ALTER COLUMN id TYPE VARCHAR(36);

@@ -1,2 +1,0 @@
-ALTER TABLE customers
-    ADD COLUMN email VARCHAR(50) NOT NULL;

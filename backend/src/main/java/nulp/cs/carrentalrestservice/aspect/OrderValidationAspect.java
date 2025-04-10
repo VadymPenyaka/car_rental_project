@@ -1,10 +1,12 @@
 package nulp.cs.carrentalrestservice.aspect;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
-import nulp.cs.carrentalrestservice.entity.CarSchedule;
-import nulp.cs.carrentalrestservice.repository.CarOrderRepository;
-import nulp.cs.carrentalrestservice.repository.CarScheduleRepository;
+import nulp.cs.carrentalrestservice.exception.CarUnavailableException;
+import nulp.cs.carrentalrestservice.exception.CategoryExperienceVerificationException;
+import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
+import nulp.cs.carrentalrestservice.service.order.OrderService;
+import nulp.cs.carrentalrestservice.service.car.CarService;
+import nulp.cs.carrentalrestservice.service.customer.CustomerService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -13,21 +15,18 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OrderValidationAspect {
-    private final CarScheduleRepository carScheduleRepository;
-    private final CarOrderRepository carOrderRepository;
+    private final CustomerService customerService;
+    private final OrderService orderService;
+    private final CarService carService;
 
-    @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.CheckOrderAvailability) && args(carOrderDTO)")
-    public void checkOrderAvailability(CarOrder carOrderDTO) {
-        CarSchedule carSchedule = carOrderDTO.getSchedule();
-        boolean isAvailable = carScheduleRepository.isCarBooked(carSchedule.getCar().getId(), carSchedule.getStartDate(), carSchedule.getEndDate().plusDays(1), null);
-
-        if(!isAvailable) {
-            throw new IllegalArgumentException("The car is not available for the selected period.");
+    @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest)", argNames = "orderRequest")
+    public void validateOrder(OrderCreationRequest orderRequest) {
+        if(!customerService.verifyCustomerForOrder(orderRequest)) {
+            throw new CategoryExperienceVerificationException("You have not necessary amount of experience.");
         }
 
-        if (carOrderRepository.isCustomerHasOverlapOrder(carOrderDTO.getCustomer().getId(),
-                carSchedule.getStartDate(),
-                carSchedule.getEndDate()))
-            throw new IllegalArgumentException("You have another order for this period.");
+        if (!carService.verifyCarForOrder(orderRequest)) {
+            throw new CarUnavailableException("Car is booked for this period");
+        }
     }
 }
