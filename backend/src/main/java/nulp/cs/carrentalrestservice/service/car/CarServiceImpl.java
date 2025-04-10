@@ -51,11 +51,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carDTO) {
+    public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carSearchRequest) {
 
-        return carJdbcRepository.getAllCarsByCriteria(carDTO).stream()
-                .map(carMapper::carToCarCardDto)
-                .toList();
+        return carJdbcRepository.getAllCarsByCriteria(carSearchRequest);
     }
 
     @Override

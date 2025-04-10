@@ -1,12 +1,15 @@
 package nulp.cs.carrentalrestservice.validation;
 
+import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.service.car.CarService;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+@Component
 @RequiredArgsConstructor
 public class CarValidator implements Validator {
 
