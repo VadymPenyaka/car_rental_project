@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
@@ -19,7 +20,7 @@ public class CarController {
     private final CarService carService;
 
     @PostMapping
-    public List<CarCardResponse> getAllCarsByCriteria(@RequestBody CarSearchRequest searchRequest) {
+    public List<CarCardResponse> getAllCarsByCriteria(@Valid @RequestBody CarSearchRequest searchRequest) {
         return carService.getAllCarsByCriteria(searchRequest);
     }
 

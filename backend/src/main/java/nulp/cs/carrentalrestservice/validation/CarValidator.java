@@ -1,6 +1,5 @@
 package nulp.cs.carrentalrestservice.validation;
 
-import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.service.car.CarService;

@@ -13,7 +13,6 @@ import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
-import nulp.cs.carrentalrestservice.repository.CarCustomRepository;
 import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -21,6 +20,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,9 +49,19 @@ public class CarServiceImpl implements CarService {
 
         return carMapper.carToCarDto(savedCar);
     }
-
     @Override
     public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carSearchRequest) {
+        if (carSearchRequest.getStartDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Start date can't be in the past");
+        }
+
+        if (carSearchRequest.getStartDate().isAfter(LocalDate.now().plusMonths(3))) {
+            throw new IllegalArgumentException("Start date can't be more than 3 months in the future");
+        }
+
+        if (carSearchRequest.getEndDate().isAfter(carSearchRequest.getStartDate().plusMonths(3))) {
+            throw new IllegalArgumentException("Maximum booking duration is 3 months");
+        }
 
         return carJdbcRepository.getAllCarsByCriteria(carSearchRequest);
     }
