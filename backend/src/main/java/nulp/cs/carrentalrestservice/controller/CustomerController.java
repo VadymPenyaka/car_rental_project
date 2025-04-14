@@ -2,19 +2,20 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
+import nulp.cs.carrentalrestservice.service.customer.BankIdService;
 import nulp.cs.carrentalrestservice.service.customer.CustomerService;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
-import nulp.cs.carrentalrestservice.util.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class CustomerController {
     public static final String BASE_PATH = "/api/v1/customers";
     private final CustomerService customerService;
+    private final BankIdService bankIdService;
 
 //    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping("/{id}")
@@ -44,7 +46,7 @@ public class CustomerController {
     }
 
     @PostMapping("/personalInfo")
-    public ResponseEntity<?> createCustomer (@Valid @RequestBody CustomerFullInfoRequest customer, BindingResult bindingResult) {
+    public ResponseEntity<?> addCustomerPersonalInfo(@Valid @RequestBody CustomerFullInfoRequest customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
@@ -53,6 +55,15 @@ public class CustomerController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @GetMapping("/personalInfo/bank_id")
+    public ResponseEntity<?> addCustomerPersonalBankIdInfo() {
+        CustomerFullInfoRequest customer = bankIdService.getDataFromApi();
+        customerService.createCustomerFullInfo(customer);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @PutMapping("/{id}")
     @PreAuthorize("#id==authentication.principal.id")

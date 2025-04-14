@@ -19,10 +19,6 @@ import nulp.cs.carrentalrestservice.service.document.PassportService;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,14 +32,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
-    private final PassportService passportService;
     private final PersonService personService;
     private final CarOrderMapper carOrderMapper;
     private final CarService carService;
     private final LoggingService loggingService;
 
     @Override
-    public PersonDTO registerCustomer(CustomerRegistrationRequest customerData) {
+    public void registerCustomer(CustomerRegistrationRequest customerData) {
         PersonDTO personDTO = PersonDTO.builder()
                 .phoneNumber(customerData.getPhoneNumber())
                 .firstName(customerData.getFirstName())
@@ -53,18 +48,20 @@ public class CustomerServiceImpl implements CustomerService {
                 .role(Role.USER)
                 .build();
 
-        return personService.createPerson(personDTO);
+        personService.createPerson(personDTO);
     }
 
     @Override
-    public CustomerDTO createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
+    @Transactional
+    public void createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
+        System.out.println(customerRequest);
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .passport(customerRequest.getPassport())
                 .person(personService.getAuthenticatedPerson())
-                .driverLicenses(customerRequest.getDriverLicenses())
+                .driverLicense(customerRequest.getDriverLicense())
                 .build();
 
-        return customerMapper.customerToCustomerDto(customerRepository
+        customerMapper.customerToCustomerDto(customerRepository
                 .save(customerMapper.customerDtoToCustomer(customerDTO)));
     }
 
@@ -108,7 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
         if (
-                customerDTO.getDriverLicenses() == null ||
+                customerDTO.getDriverLicense() == null ||
                 customerDTO.getPassport() == null
         ) {
             throw new IllegalArgumentException("You did not provide all the required data.");
@@ -117,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
         CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest
                 .getCarId()).orElseThrow(()->new NotFoundException("Car not found."));
 
-        customerDTO.getDriverLicenses().getCategory()
+        customerDTO.getDriverLicense().getCategory()
                 .stream()
                 .filter(category -> category.equals(carDTO.getLicenseCategory().toString()))
                 .findFirst()
@@ -125,7 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
                         new CategoryVerificationException("You have not necessary category."));
 
         return customerDTO
-                .getDriverLicenses()
+                .getDriverLicense()
                 .getIssueDate()
                 .isBefore(LocalDate.now()
                         .minusYears(carDTO

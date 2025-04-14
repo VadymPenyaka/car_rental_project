@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service.document;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.PassportMapper;
 import nulp.cs.carrentalrestservice.model.dto.PassportDTO;
@@ -15,6 +16,7 @@ public class PassportServiceImpl implements PassportService {
     private final PassportMapper passportMapper;
 
     @Override
+    @Transactional
     public PassportDTO createPassport(PassportDTO passportDTO) {
         return passportMapper.passportToPassportDto(passportRepository
                 .save(passportMapper.passportDtoToPassport(passportDTO)));

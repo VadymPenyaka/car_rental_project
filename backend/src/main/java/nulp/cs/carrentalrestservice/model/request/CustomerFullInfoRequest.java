@@ -19,5 +19,5 @@ public class CustomerFullInfoRequest {
     private PassportDTO passport;
     @Valid
     @NotNull(message = "Driver license credentials is required!")
-    private DriverLicensesDTO driverLicenses;
+    private DriverLicensesDTO driverLicense;
 }

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface CustomerMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "passport", target = "passport")
+    @Mapping(source = "driverLicense", target = "driverLicense")
     Customer customerDtoToCustomer (CustomerDTO customerDTO);
 
     @Mapping(source = "person", target = "person")
