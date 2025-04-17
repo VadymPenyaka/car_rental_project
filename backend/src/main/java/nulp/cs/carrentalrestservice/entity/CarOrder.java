@@ -31,11 +31,13 @@ public class CarOrder {
     private OrderStatus status;
     @Column(nullable = false)
     private double totalPrice;
+    @OneToOne
+    private Payment payment;
+
     @Column(columnDefinition = "varchar(100)")
     private String comment;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, name = "schedule_id")
+    @JoinColumn(nullable = false)
     private CarSchedule schedule;
-
 }
 
