@@ -91,10 +91,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
             foundOrder.setStatus(carOrderDTO.getStatus());
             publisher.publishEvent(new EmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
-
-            CarScheduleDTO scheduleDTO = carOrderDTO.getSchedule();
-//            foundOrder.setSchedule(carScheduleMapper.carScheduleDtoToCarSchedule(carScheduleService
-//                    .updateCarScheduleById(scheduleDTO, scheduleDTO.getId()).get()));
+            
             CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
             atomicReference.set(Optional.of(updatedOrder));
 

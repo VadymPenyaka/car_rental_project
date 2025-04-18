@@ -13,8 +13,6 @@ public interface CarScheduleService {
 
     CarScheduleDTO createCarScheduleForCarOrder(OrderCreationRequest orderRequest);
 
-    boolean deleteCarScheduleById(UUID id);
-
     boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId);
 
 }

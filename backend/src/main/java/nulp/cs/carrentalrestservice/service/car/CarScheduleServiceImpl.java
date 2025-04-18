@@ -74,19 +74,6 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     }
 
     @Override
-    public boolean deleteCarScheduleById(UUID id) {
-        loggingService.logInfo("Deleting car schedule for ID: " + id);
-//TODO delete method or update to delete car order or maintenance with it
-        if (carScheduleRepository.existsById(id)) {
-            carScheduleRepository.deleteById(id);
-            loggingService.logInfo("Schedule deleted successfully");
-            return true;
-        }
-        loggingService.logInfo("Schedule not found for ID: " + id);
-        return false;
-    }
-
-    @Override
     public boolean isCarBooked(CarScheduleDTO carSchedule, UUID excludeScheduleId) {
         loggingService.logInfo("Checking if car("
                 + carSchedule.getCar().getId()
