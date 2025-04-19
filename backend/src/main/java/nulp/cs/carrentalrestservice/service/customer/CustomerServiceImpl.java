@@ -2,19 +2,18 @@ package nulp.cs.carrentalrestservice.service.customer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.DriverLicense;
 import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.mapper.CustomerMapper;
-import nulp.cs.carrentalrestservice.model.dto.CarDTO;
-import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
-import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.model.dto.*;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
+import nulp.cs.carrentalrestservice.service.document.DriverLicenseService;
 import nulp.cs.carrentalrestservice.service.document.PassportService;
 import nulp.cs.carrentalrestservice.service.security.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
@@ -33,6 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
     private final PersonService personService;
+    private final DriverLicenseService licenseService;
     private final CarOrderMapper carOrderMapper;
     private final CarService carService;
     private final LoggingService loggingService;
@@ -54,11 +54,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
-        System.out.println(customerRequest);
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .passport(customerRequest.getPassport())
                 .person(personService.getAuthenticatedPerson())
-                .driverLicense(customerRequest.getDriverLicense())
+                .driverLicense(licenseService.createDriverLicense(customerRequest.getDriverLicense()))
                 .build();
 
         customerMapper.customerToCustomerDto(customerRepository
@@ -114,7 +113,7 @@ public class CustomerServiceImpl implements CustomerService {
         CarDTO carDTO = carService.getCarFullDetailsById(orderCreationRequest
                 .getCarId()).orElseThrow(()->new NotFoundException("Car not found."));
 
-        customerDTO.getDriverLicense().getCategory()
+        customerDTO.getDriverLicense().getCategories()
                 .stream()
                 .filter(category -> category.equals(carDTO.getLicenseCategory().toString()))
                 .findFirst()

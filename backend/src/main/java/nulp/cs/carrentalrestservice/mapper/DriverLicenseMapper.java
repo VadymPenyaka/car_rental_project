@@ -1,12 +1,19 @@
 package nulp.cs.carrentalrestservice.mapper;
 
 import nulp.cs.carrentalrestservice.entity.DriverLicense;
+import nulp.cs.carrentalrestservice.entity.DriverLicenseCategory;
+import nulp.cs.carrentalrestservice.model.dto.DriverLicenseCategoryDTO;
 import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import nulp.cs.carrentalrestservice.model.enumeration.LicenseCategory;
+import org.mapstruct.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper
 public interface DriverLicenseMapper {
-    DriverLicense driverLicensesDtoToDriverLicenses (DriverLicensesDTO driverLicensesDTO);
-    DriverLicensesDTO driverLicensesToDriverLIcensesDto (DriverLicense driverLicense);
+    DriverLicense driverLicensesDtoToDriverLicenses(DriverLicensesDTO dto);
+
+    DriverLicensesDTO driverLicensesToDriverLicensesDto(DriverLicense entity);
+
 }

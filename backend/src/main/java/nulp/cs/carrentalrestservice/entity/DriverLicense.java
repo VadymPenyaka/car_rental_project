@@ -19,7 +19,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DriverLicense {
-
     @Id
     @GeneratedValue
     @JdbcTypeCode(SqlTypes.CHAR)
@@ -43,6 +42,6 @@ public class DriverLicense {
     @OneToOne(mappedBy = "driverLicense")
     private Customer customer;
 
-    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "license")
     private Set<DriverLicenseCategory> categories;
 }

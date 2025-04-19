@@ -22,7 +22,7 @@ import java.util.UUID;
 public class DriverLicensesDTO {
     private UUID id;
     @NotNull(message = "Category is mandatory!")
-    private Set<String> category;
+    private Set<DriverLicenseCategoryDTO> categories;
     @NotNull(message = "Issue date is mandatory!")
     private LocalDate issueDate;
     @ValidExpiryDate

@@ -25,7 +25,7 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "passport_id", referencedColumnName = "id")
     private Passport passport;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private DriverLicense driverLicense;
 
