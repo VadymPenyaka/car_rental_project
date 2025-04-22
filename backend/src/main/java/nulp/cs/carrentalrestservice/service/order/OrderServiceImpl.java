@@ -65,8 +65,6 @@ public class OrderServiceImpl implements OrderService {
         return savedOrder;
     }
 
-
-
     @Override
     public Optional<CarOrderDTO> getCarOrderByID(UUID id) {
         loggingService.logInfo("Updating car order by ID: " + id);

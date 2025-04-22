@@ -26,7 +26,7 @@ public class Payment {
     private UUID id;
 
     @Column(nullable = false)
-    private double amount;
+    private long amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -39,6 +39,22 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime paymentDate = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "payment")
-    private CarOrder carOrder;
+    @Column(nullable = false, unique = true)
+    private String paymentIntentId;
+
+    @Column
+    private String cardBrand;
+
+    @Column(length = 4)
+    private String cardLastDigits;
+
+    @Column
+    private Integer cardExpMonth;
+
+    @Column
+    private Integer cardExpYear;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private CarOrder order;
 }

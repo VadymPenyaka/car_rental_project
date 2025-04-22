@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,12 +28,12 @@ public class CarOrder {
     @JoinColumn( nullable = false)
     private Customer customer;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "status")
+    @Column(nullable = false)
     private OrderStatus status;
     @Column(nullable = false)
-    private double totalPrice;
-    @OneToOne
-    private Payment payment;
+    private long totalPrice;
+    @OneToMany(mappedBy = "order")
+    private Set<Payment> payments;
 
     @Column(columnDefinition = "varchar(100)")
     private String comment;
