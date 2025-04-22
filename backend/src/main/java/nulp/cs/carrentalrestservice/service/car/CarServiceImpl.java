@@ -50,21 +50,8 @@ public class CarServiceImpl implements CarService {
         return carMapper.carToCarDto(savedCar);
     }
 
-//    TODO refactore method
     @Override
     public List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carSearchRequest) {
-        if (carSearchRequest.getStartDate()!=null && carSearchRequest.getStartDate().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Start date can't be in the past");
-        }
-
-        if (carSearchRequest.getStartDate().isAfter(LocalDate.now().plusMonths(3))) {
-            throw new IllegalArgumentException("Start date can't be more than 3 months in the future");
-        }
-
-        if (carSearchRequest.getEndDate()!=null  && carSearchRequest.getEndDate().isAfter(carSearchRequest.getStartDate().plusMonths(3))) {
-            throw new IllegalArgumentException("Maximum booking duration is 3 months");
-        }
-
         return carJdbcRepository.getAllCarsByCriteria(carSearchRequest);
     }
 

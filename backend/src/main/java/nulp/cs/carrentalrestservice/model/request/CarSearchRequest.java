@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.annotation.ValidDateRange;
+import nulp.cs.carrentalrestservice.annotation.ValidOrderPeriod;
 import nulp.cs.carrentalrestservice.model.enumeration.CarClass;
 import nulp.cs.carrentalrestservice.model.enumeration.FuelType;
 import nulp.cs.carrentalrestservice.model.enumeration.GearboxType;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@ValidDateRange
+@ValidOrderPeriod
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarSearchRequest {

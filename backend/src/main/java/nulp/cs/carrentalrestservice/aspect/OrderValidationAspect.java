@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderValidationAspect {
     private final CustomerService customerService;
-    private final OrderService orderService;
     private final CarService carService;
 
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest)", argNames = "orderRequest")
