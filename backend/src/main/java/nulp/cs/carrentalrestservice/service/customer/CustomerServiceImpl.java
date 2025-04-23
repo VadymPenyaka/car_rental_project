@@ -93,7 +93,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerDTO getAuthenticatedCustomer() {
         UUID personId = personService.getAuthenticatedPerson().getId();
-
         return customerRepository.findCustomerByPersonId(personId)
                 .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -115,7 +114,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerDTO.getDriverLicense().getCategories()
                 .stream()
-                .filter(category -> category.equals(carDTO.getLicenseCategory().toString()))
+                .map(DriverLicenseCategoryDTO::getCategory)
+                .filter(category -> category.equals(carDTO.getLicenseCategory()))
                 .findFirst()
                 .orElseThrow(() ->
                         new CategoryVerificationException("You have not necessary category."));

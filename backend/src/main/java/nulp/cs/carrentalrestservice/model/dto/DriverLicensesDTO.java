@@ -12,6 +12,7 @@ import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
 import nulp.cs.carrentalrestservice.entity.Document;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ import java.util.UUID;
 public class DriverLicensesDTO {
     private UUID id;
     @NotNull(message = "Category is mandatory!")
-    private Set<DriverLicenseCategoryDTO> categories;
+    private Set<DriverLicenseCategoryDTO> categories = new HashSet<>();
     @NotNull(message = "Issue date is mandatory!")
     private LocalDate issueDate;
     @ValidExpiryDate

@@ -10,6 +10,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,6 +43,6 @@ public class DriverLicense {
     @OneToOne(mappedBy = "driverLicense")
     private Customer customer;
 
-    @OneToMany(mappedBy = "license")
-    private Set<DriverLicenseCategory> categories;
+    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    private Set<DriverLicenseCategory> categories = new HashSet<>();
 }
