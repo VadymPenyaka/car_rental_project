@@ -33,7 +33,6 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final ModelService modelService;
     private final CarMapper carMapper;
-    private final CarScheduleService scheduleService;
     private final LoggingService loggingService;
     private final CarJdbcRepository carJdbcRepository;
 
@@ -98,22 +97,6 @@ public class CarServiceImpl implements CarService {
     public Optional<CarDTO> getCarFullDetailsById(UUID id) {
         return Optional.ofNullable(carMapper.carToCarDto(carRepository
                 .findById(id).orElse(null)));
-    }
-
-    @Override
-    public boolean verifyCarForOrder(OrderCreationRequest orderCreationRequest) {
-        CarDTO carDTO = carMapper.carToCarDto(carRepository
-                .findById(orderCreationRequest
-                        .getCarId()).orElseThrow(() -> new NotFoundException("Car not found")));
-
-        CarScheduleDTO scheduleDTO = CarScheduleDTO.builder()
-                .car(carDTO)
-                .startDate(orderCreationRequest.getStartDate())
-                .endDate(orderCreationRequest.getEndDate())
-                .status(ScheduleStatus.BOOKED)
-                .build();
-
-        return !scheduleService.isCarBooked(scheduleDTO, null);
     }
 
     @Override

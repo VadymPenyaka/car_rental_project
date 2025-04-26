@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Admin;
+import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.AdminMapper;
@@ -26,7 +27,6 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
     private final PersonService personService;
     private final LoggingService loggingService;
-    private final LocationMapper locationMapper;
 
     @Override
     public void createAdmin(AdminDTO adminDTO) {
@@ -95,15 +95,21 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminDTO getAdminForOrderByLocation(LocationDTO locationDTO) {
         loggingService.logInfo("Getting admin with fewest orders");
-        Location location = locationMapper.locationDtoToLocation(locationDTO);
+        UUID locationId = locationDTO.getId();
+        List<Admin> allAdmins = adminRepository.findAll();
 
-        Admin admin = adminRepository.findAll().stream()
-                .filter(a -> !a.isOnVocation() && Objects.equals(a.getLocation(), location))
-                .min(Comparator.comparingLong(a -> a.getCarOrders().stream()
-                        .filter(o -> o.getStatus() == OrderStatus.IN_USE || o.getStatus() == OrderStatus.PAID)
-                        .count())).orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
+        Admin admin = allAdmins.stream()
+                .filter(a -> !a.isOnVocation() && a.getLocation() != null && Objects.equals(a.getLocation().getId(), locationId))
+                .min(Comparator.comparingLong(a -> {
+                    Set<CarOrder> orders = a.getCarOrders();
+                    if (orders == null) return 0L;
+                    return orders.stream()
+                            .filter(o -> o.getStatus() == OrderStatus.IN_USE || o.getStatus() == OrderStatus.PAID)
+                            .count();
+                }))
+                .orElseThrow(() -> new NotFoundException("No appropriate admin was found."));
 
-
+        loggingService.logInfo("Admin was found");
         return adminMapper.adminToAdminDto(admin);
     }
 }

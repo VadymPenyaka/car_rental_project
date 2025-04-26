@@ -54,7 +54,16 @@ VALUES
      '$2a$10$1pwUxYuSNG139KIhYYKeCerRZSNP/yGa7WZjox8rV20yDMLEqCesC',
      'JJUUOGHuZcT5UiN62eI1dg==',
      'ijhIXe+7O/5Cx9EVaM/48Q==',
-     'KKI2trtJPaY+9gIL8mOM8g==')
+     'KKI2trtJPaY+9gIL8mOM8g=='),
+
+    ('cdb059ee-a7f3-4c6a-9799-5cc9fe165979',
+     'ADMIN',
+     'XjupPvD+xwUQHn25PdjFxJIq9kQyVBjz9WohQ5aS7UE=',
+     '$2a$10$DBx6N6hVCTeUuzBZU8g09..S/6ohQ0i2uW5/bJjd52Rlqts7IjFsq',
+     'tDly87I2tXo5wt7faWrRPQ==',
+     'YIZ793b+gFXNT5PfYnL+2g==',
+     'ig5wanE5FK3CDVaBApNfFg==')
+
 ;
 
 INSERT INTO admin (id, person_id, position, department, is_on_vocation, location_id)
@@ -63,4 +72,12 @@ VALUES ('da8dcb8e-b692-4ac2-8b58-b9eaaf381edb',
         'System admin',
         'Admin',
         false,
-        '9d56f035-becb-4f1f-80a7-1be5cf85b0de');
+        '9d56f035-becb-4f1f-80a7-1be5cf85b0de'),
+
+       ('1bbc25c2-b373-46df-be0d-77df17261118',
+        'cdb059ee-a7f3-4c6a-9799-5cc9fe165979',
+        'Admin',
+        'Admin',
+        false,
+        '9d56f035-becb-4f1f-80a7-1be5cf85b0de')
+;

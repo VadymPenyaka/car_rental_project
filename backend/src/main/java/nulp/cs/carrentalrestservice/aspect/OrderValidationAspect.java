@@ -3,10 +3,16 @@ package nulp.cs.carrentalrestservice.aspect;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.CarUnavailableException;
 import nulp.cs.carrentalrestservice.exception.CategoryExperienceVerificationException;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.model.dto.CarDTO;
+import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
+import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
 import nulp.cs.carrentalrestservice.service.order.OrderService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.service.customer.CustomerService;
+import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -17,6 +23,8 @@ import org.springframework.stereotype.Component;
 public class OrderValidationAspect {
     private final CustomerService customerService;
     private final CarService carService;
+    private final CarScheduleService scheduleService;
+    private final LoggingService loggingService;
 
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest)", argNames = "orderRequest")
     public void validateOrder(OrderCreationRequest orderRequest) {
@@ -24,7 +32,17 @@ public class OrderValidationAspect {
             throw new CategoryExperienceVerificationException("You have not necessary amount of experience.");
         }
 
-        if (!carService.verifyCarForOrder(orderRequest)) {
+        CarDTO carDTO = carService.getCarFullDetailsById(orderRequest.getCarId())
+                .orElseThrow(() -> new NotFoundException("Car not found"));
+
+        CarScheduleDTO scheduleDTO = CarScheduleDTO.builder()
+                .car(carDTO)
+                .startDate(orderRequest.getStartDate())
+                .endDate(orderRequest.getEndDate())
+                .status(ScheduleStatus.BOOKED)
+                .build();
+
+        if (scheduleService.isCarBooked(scheduleDTO, null)) {
             throw new CarUnavailableException("Car is booked for this period");
         }
     }

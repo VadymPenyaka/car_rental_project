@@ -42,11 +42,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @VerifyOrder
     public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest) {
-
         if (isCustomerHasOverlapOrder(customerService.getAuthenticatedCustomer().getId(), orderRequest.getStartDate(), orderRequest.getEndDate())) {
             throw new InvalidOrderException("You have another order for this period.");
         }
-
         CarScheduleDTO schedule = scheduleService.createCarScheduleForCarOrder(orderRequest);
 
         CarOrderDTO carOrderDTO = CarOrderDTO.builder()

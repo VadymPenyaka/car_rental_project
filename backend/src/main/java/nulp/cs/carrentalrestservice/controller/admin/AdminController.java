@@ -27,7 +27,7 @@ public class AdminController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('SYS_ADMIN')")
+//    @PreAuthorize("hasRole('SYS_ADMIN')")
     public ResponseEntity<?> createAdmin (@Valid @RequestBody AdminDTO admin, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());

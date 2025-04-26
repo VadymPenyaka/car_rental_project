@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/cars").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service.customer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.entity.DriverLicense;
 import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
@@ -92,7 +93,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerDTO getAuthenticatedCustomer() {
+        loggingService.logDebug("getAuthenticatedCustomer");
         UUID personId = personService.getAuthenticatedPerson().getId();
+
         return customerRepository.findCustomerByPersonId(personId)
                 .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
     }

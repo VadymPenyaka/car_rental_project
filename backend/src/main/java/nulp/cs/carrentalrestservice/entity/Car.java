@@ -78,7 +78,7 @@ public class Car {
     @Column(nullable = false, columnDefinition = "int default 1")
     private int requiredExperience;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Location location;
 

@@ -21,7 +21,7 @@ public class Admin implements Comparable<Admin>{
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Person person;
     @Column(columnDefinition = "varchar(50)")
