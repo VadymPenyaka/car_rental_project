@@ -37,7 +37,7 @@ public class CarOrder {
 
     @Column(columnDefinition = "varchar(100)")
     private String comment;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(nullable = false)
     private CarSchedule schedule;
 }
