@@ -1,14 +1,18 @@
 package nulp.cs.carrentalrestservice.service.ai;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.model.dto.CarDTO;
+import lombok.SneakyThrows;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
+import nulp.cs.carrentalrestservice.model.request.UserChatRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
+import nulp.cs.carrentalrestservice.model.response.ChatSearchResponse;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -23,10 +27,15 @@ public class ChatService {
 
     @Value("${openai.key}")
     private String key;
+    private final ObjectMapper objectMapper;
 
-    public HttpResponse<String> getResponse (String userMessage) throws IOException, InterruptedException {
-        String systemContent = "You are a car rental assistant. The user will provide a list of available car models with their IDs.Based on the user's request, select 1-2 cars that best match the request. Return only the selected cars IDs.";
-        String requestBody = buildRequestBody(userMessage, systemContent);
+    @SneakyThrows
+    public List<ChatSearchResponse> getResponse (UserChatRequest userRequest) {
+        String systemContent = "You are a car rental assistant. The user will provide a list of available car models with their IDs.Based on the user's request, select 1 or 2 cars that best match the request. Return the car IDs along with a one sentence brief explanation of the selection for each. Return the response in the following JSON format: {\"cars\": [{\"id\": \"<Car ID>\", \"explanation\": \"<Brief Explanation>\"}]}";
+        String messageWithAvailableCars = userRequest.getMessage() +
+                getAvailableCars(userRequest.getStart(), userRequest.getEnd());
+
+        String requestBody = buildRequestBody(messageWithAvailableCars, systemContent);
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -37,10 +46,27 @@ public class ChatService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+        return parseResponse(client.send(request, HttpResponse.BodyHandlers.ofString()));
     }
 
 
+    private List<ChatSearchResponse> parseResponse (HttpResponse<String> httpResponse) {
+        String response = httpResponse.body();
+
+        JsonNode rootNode = null;
+        try {
+            rootNode = objectMapper.readTree(response);
+            JsonNode messageContentNode = rootNode.path("choices").get(0).path("message").path("content");
+            String messageContent = messageContentNode.asText();
+            JsonNode carsNode = objectMapper.readTree(messageContent).path("cars");
+            return objectMapper.readValue(carsNode.toString(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, ChatSearchResponse.class));
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private String buildRequestBody(String userContent, String systemContent) {
         return """
@@ -69,14 +95,17 @@ public class ChatService {
         List<CarCardResponse> cars = carService.getAllCarsByCriteria(searchRequest);
 
         StringBuilder sb = new StringBuilder();
+        sb.append("; Available cars:");
 
         for (CarCardResponse car:cars) {
             sb.append(car.getBrandName())
                     .append(" ")
                     .append(car.getModelName())
-                    .append(" id: ")
+                    .append(" fuel consumption: ")
+                    .append(car.getFuelConsumption())
+                    .append(", id: ")
                     .append(car.getId())
-                    .append("\n");
+                    .append(";");
         }
 
         return sb.toString();

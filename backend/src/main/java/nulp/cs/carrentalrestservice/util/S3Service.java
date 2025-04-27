@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
@@ -28,7 +30,6 @@ public class S3Service {
                 .acl("public-read")
                 .build();
 
-
         s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize()));    }
 
 
@@ -38,6 +39,19 @@ public class S3Service {
                 .key(key)
                 .build()
         );
+    }
+
+    public void getFileMetadataFromServer(String key) {
+        try {
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                    .bucket(doSpaceBucket)
+                    .key(key)
+                    .build();
+
+            s3Client.headObject(headObjectRequest);
+        } catch (NoSuchKeyException e) {
+            throw new RuntimeException("File not found in S3: " + key);
+        }
     }
 
 }

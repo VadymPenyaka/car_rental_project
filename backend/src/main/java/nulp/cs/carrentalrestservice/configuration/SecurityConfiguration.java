@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.configuration;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.controller.ChatController;
 import nulp.cs.carrentalrestservice.filter.JwtAuthenticationFilter;
 import nulp.cs.carrentalrestservice.service.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/cars").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers(ChatController.BASE_PATH).permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
