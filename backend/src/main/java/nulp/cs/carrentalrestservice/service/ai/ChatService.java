@@ -97,17 +97,19 @@ public class ChatService {
         StringBuilder sb = new StringBuilder();
         sb.append("; Available cars:");
 
-        for (CarCardResponse car:cars) {
-            sb.append(car.getBrandName())
-                    .append(" ")
-                    .append(car.getModelName())
-                    .append(" fuel consumption: ")
-                    .append(car.getFuelConsumption())
-                    .append(", id: ")
-                    .append(car.getId())
-                    .append(";");
+        for (CarCardResponse car : cars) {
+            sb.append(" -ID:").append(car.getId())
+                    .append(" -Model:").append(car.getModelName())
+                    .append(" -Seats:").append(car.getNumberOfSeats())
+                    .append(" -Fuel:").append(car.getFuelType())
+                    .append(" -Fuel consumption:").append(car.getFuelConsumption())
+                    .append(" -Gearbox:").append(car.getGearboxType())
+                    .append(" -Pricing:").append(car.getCarPricing().getUpToThreeDays())
+                    .append("day (Up to 3 days)")
+                    .append(" -Pledge:").append(car.getCarPricing().getPledge())  // Додаємо інформацію про заставу
+                    .append("; ");
         }
-
+        System.out.println(sb+"\n\n\n");
         return sb.toString();
     }
 
