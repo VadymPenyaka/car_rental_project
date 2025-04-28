@@ -14,8 +14,9 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PasswordValidator.class)
 public @interface ValidPassword {
     String message() default "Your password is invalid!" +
-            "It must contain 8 to 18 characters" +
-            "One digit, one special symbol, one small and one capital letter";
+            "It must contain 8 to 18 characters, " +
+            "one digit, one special symbol(!@#$%^&+=), one small " +
+            "and one capital letter.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

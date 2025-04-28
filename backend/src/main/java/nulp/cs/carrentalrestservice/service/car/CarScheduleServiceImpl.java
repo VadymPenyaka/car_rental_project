@@ -65,7 +65,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     public CarScheduleDTO createCarScheduleForCarOrder(OrderCreationRequest orderRequest) {
 
         CarScheduleDTO schedule = CarScheduleDTO.builder()
-                        .car(carService.getCarFullDetailsById(orderRequest.getCarId()).orElseThrow(NotFoundException::new))
+                        .car(carService.getCarFullDetailsById(orderRequest.getCarId()).orElseThrow(()-> new NotFoundException("Car was not found!")))
                         .status(ScheduleStatus.BOOKED)
                         .startDate(orderRequest.getStartDate())
                         .endDate(orderRequest.getEndDate()).build();

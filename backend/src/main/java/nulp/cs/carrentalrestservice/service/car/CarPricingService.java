@@ -13,7 +13,7 @@ public interface CarPricingService {
 
     Boolean deleteCarPricingById (UUID id);
 
-    CarPricingDTO createCarPricing (CarPricingDTO carPricingDTO);
+    void createCarPricing (CarPricingDTO carPricingDTO);
 
     Optional<CarPricingDTO> getCarPricingByCarId (UUID carId);
 

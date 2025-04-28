@@ -109,7 +109,6 @@ public class ChatService {
                     .append(" -Pledge:").append(car.getCarPricing().getPledge())  // Додаємо інформацію про заставу
                     .append("; ");
         }
-        System.out.println(sb+"\n\n\n");
         return sb.toString();
     }
 

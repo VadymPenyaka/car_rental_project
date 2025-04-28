@@ -97,13 +97,12 @@ public class CustomerServiceImpl implements CustomerService {
         UUID personId = personService.getAuthenticatedPerson().getId();
 
         return customerRepository.findCustomerByPersonId(personId)
-                .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("User not found"));
+                .map(customerMapper::customerToCustomerDto).orElseThrow(() -> new NotFoundException("You should provide passport and license data."));
     }
 
     @Override
     public boolean verifyCustomerForOrder(OrderCreationRequest orderCreationRequest) {
         CustomerDTO customerDTO = getAuthenticatedCustomer();
-
 
         if (
                 customerDTO.getDriverLicense() == null ||

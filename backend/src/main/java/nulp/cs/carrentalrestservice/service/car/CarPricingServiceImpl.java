@@ -69,9 +69,9 @@ public class CarPricingServiceImpl implements CarPricingService {
     }
 
     @Override
-    public CarPricingDTO createCarPricing(CarPricingDTO carPricingDTO) {
+    public void createCarPricing(CarPricingDTO carPricingDTO) {
         loggingService.logInfo("Creating car pricing");
-        return carPricingMapper.carPricingToCarPricingDto(carPricingRepository
+        carPricingMapper.carPricingToCarPricingDto(carPricingRepository
                 .save(carPricingMapper.carPricingDtoToCarPricing(carPricingDTO)));
     }
 
