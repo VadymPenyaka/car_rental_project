@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.security;
+package nulp.cs.carrentalrestservice.security;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Person;

@@ -2,8 +2,6 @@ package nulp.cs.carrentalrestservice.service.customer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.Customer;
-import nulp.cs.carrentalrestservice.entity.DriverLicense;
 import nulp.cs.carrentalrestservice.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
@@ -15,8 +13,7 @@ import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import nulp.cs.carrentalrestservice.service.document.DriverLicenseService;
-import nulp.cs.carrentalrestservice.service.document.PassportService;
-import nulp.cs.carrentalrestservice.service.security.PersonService;
+import nulp.cs.carrentalrestservice.security.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.security;
+package nulp.cs.carrentalrestservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

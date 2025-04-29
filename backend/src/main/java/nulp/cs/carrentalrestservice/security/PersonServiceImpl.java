@@ -1,8 +1,6 @@
-package nulp.cs.carrentalrestservice.service.security;
+package nulp.cs.carrentalrestservice.security;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.Person;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.repository.PersonRepository;
