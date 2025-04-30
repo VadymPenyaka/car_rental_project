@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.order;
+package nulp.cs.carrentalrestservice.service.payment;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
