@@ -25,12 +25,6 @@ public class CustomerController {
     public static final String BASE_PATH = "/api/v1/customers";
     private final CustomerService customerService;
     private final BankIdService bankIdService;
-//TODO delete
-//    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
-    @GetMapping("/{id}")
-    public CustomerDTO getCustomerById (@PathVariable UUID id) {
-        return customerService.getCustomerByID(id).orElseThrow(NotFoundException::new);
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest request, BindingResult bindingResult) {
@@ -62,18 +56,8 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //TODO change
-    @PutMapping("/{id}")
-    @PreAuthorize("#id==authentication.principal.id")
-    public ResponseEntity<?> updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {
-        if(customerService.updateCustomerById(id, customerDTO).isEmpty())
-            throw new NotFoundException();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @GetMapping("/{id}/orders")
-    @PreAuthorize("#id==authentication.principal.id")
+    @PreAuthorize("#id==authentication.principal.id or hasRole('ADMIN')")
     public List<CarOrderDTO> getAllCustomerOrders (@PathVariable UUID id) {
         return customerService.getAllCustomerOrders(id);
     }

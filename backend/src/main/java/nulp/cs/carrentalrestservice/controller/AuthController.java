@@ -75,7 +75,7 @@ public class AuthController {
         }
 
         if (personService.updatePersonById(id, personDTO).isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("USer not found!");
         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

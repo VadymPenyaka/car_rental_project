@@ -15,11 +15,6 @@ public interface CustomerService {
 
     void createCustomerFullInfo(CustomerFullInfoRequest customerDTO);
 
-
-    Optional<CustomerDTO> getCustomerByID (UUID id);
-
-    Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO);
-
     CustomerDTO getAuthenticatedCustomer();
 
     boolean verifyCustomerForOrder (OrderCreationRequest orderCreationRequest);

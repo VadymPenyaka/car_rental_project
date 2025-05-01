@@ -63,31 +63,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDTO> getCustomerByID(UUID id) {
-        loggingService.logInfo("Getting customer for ID: " + id);
-        return Optional.ofNullable(customerMapper.customerToCustomerDto(customerRepository
-                .findById(id).orElse(null)));
-    }
-
-    @Override
-    public Optional<CustomerDTO> updateCustomerById(UUID id, CustomerDTO customerDTO) {
-        loggingService.logInfo("Updating customer for ID: " + id);
-        AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
-
-        customerRepository.findById(id).ifPresentOrElse( foundCustomer -> {
-                    atomicReference.set(Optional.ofNullable(customerMapper
-                            .customerToCustomerDto(customerRepository.save(foundCustomer))));
-                    loggingService.logInfo("Customer updated successfully");
-                }, ()-> {
-                    atomicReference.set(Optional.empty());
-                    loggingService.logInfo("Customer not found for ID: "+id);
-                }
-        );
-
-        return atomicReference.get();
-    }
-
-    @Override
     @Transactional
     public CustomerDTO getAuthenticatedCustomer() {
         loggingService.logDebug("getAuthenticatedCustomer");
