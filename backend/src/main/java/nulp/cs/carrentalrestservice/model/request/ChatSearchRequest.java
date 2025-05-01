@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserChatRequest {
+public class ChatSearchRequest {
     private String message;
     private LocalDate start;
     private LocalDate end;

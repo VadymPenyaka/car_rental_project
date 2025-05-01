@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderService {
-    CarOrderDTO createCarOrder (OrderCreationRequest request);
+    void createCarOrder (OrderCreationRequest request);
 
     Optional<CarOrderDTO> getCarOrderByID (UUID id);
 

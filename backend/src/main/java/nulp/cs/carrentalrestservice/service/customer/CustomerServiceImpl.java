@@ -43,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .sureName(customerData.getSureName())
                 .password(customerData.getPassword())
                 .username(customerData.getEmail())
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         personService.createPerson(personDTO);
@@ -98,6 +98,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public boolean verifyCustomerForOrder(OrderCreationRequest orderCreationRequest) {
         CustomerDTO customerDTO = getAuthenticatedCustomer();
 

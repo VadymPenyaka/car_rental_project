@@ -66,6 +66,7 @@ public class AuthController {
         }
     }
 
+//    TODO user can change only certain fields
     @PutMapping("/{id}")
     @PreAuthorize("#id==authentication.principal.person.id")
     public ResponseEntity<?> updatePersonInfo (@PathVariable UUID id, @Valid @RequestBody PersonDTO personDTO, BindingResult bindingResult) {

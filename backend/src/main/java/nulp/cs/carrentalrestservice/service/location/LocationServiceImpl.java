@@ -20,9 +20,9 @@ public class LocationServiceImpl implements LocationService {
     private final LoggingService loggingService;
 
     @Override
-    public LocationDTO createLocation(LocationDTO locationDTO) {
+    public void createLocation(LocationDTO locationDTO) {
         loggingService.logInfo("Creating location with name: " + locationDTO.getLocationName());
-        return mapper.locationToLocationDto(repository.save(mapper
+        mapper.locationToLocationDto(repository.save(mapper
                 .locationDtoToLocation(locationDTO)));
     }
 

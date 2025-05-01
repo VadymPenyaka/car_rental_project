@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.model.dto.BrandDTO;
 import nulp.cs.carrentalrestservice.service.car.BrandService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

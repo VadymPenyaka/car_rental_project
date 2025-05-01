@@ -9,7 +9,7 @@ public interface PersonService {
     boolean isEmailUsed (String email);
     boolean deletePersonById (UUID id);
     boolean isPhoneNumberUsed (String number);
-    PersonDTO createPerson (PersonDTO personDTO);
+    void createPerson (PersonDTO personDTO);
     Optional<PersonDTO> getPersonById (UUID id);
     Optional<PersonDTO> getPersonByEmail (String email);
     Optional<PersonDTO> updatePersonById (UUID id, PersonDTO personDTO);

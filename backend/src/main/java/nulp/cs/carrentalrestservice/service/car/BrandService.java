@@ -27,7 +27,7 @@ public class BrandService {
 
     public List<String> getAllAvailableBrands() {
         return brandRepository.getAllAvailableBrands().stream()
-                .map(brandMapper::brandToBrandDto).map(b->b.getName()).toList();
+                .map(brandMapper::brandToBrandDto).map(BrandDTO::getName).toList();
     }
 
     public boolean deleteBrandByName (String name) {

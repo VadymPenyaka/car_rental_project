@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 //    TODO create method to get authenticated customer+, create method to get schedule with car+,
     @Override
     @VerifyOrder
-    public CarOrderDTO createCarOrder(OrderCreationRequest orderRequest) {
+    public void createCarOrder(OrderCreationRequest orderRequest) {
         if (isCustomerHasOverlapOrder(customerService.getAuthenticatedCustomer().getId(), orderRequest.getStartDate(), orderRequest.getEndDate())) {
             throw new InvalidOrderException("You have another order for this period.");
         }
@@ -60,7 +60,6 @@ public class OrderServiceImpl implements OrderService {
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
 
         loggingService.logInfo("Car order created successfully");
-        return savedOrder;
     }
 
     @Override

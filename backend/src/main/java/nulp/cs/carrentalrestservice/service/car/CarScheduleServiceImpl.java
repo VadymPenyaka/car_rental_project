@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.CarSchedule;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
-import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
@@ -28,7 +27,7 @@ public class CarScheduleServiceImpl implements CarScheduleService {
     public Optional<CarScheduleDTO> getCarScheduleById(UUID id) {
         loggingService.logInfo("Getting car schedule for ID: " + id);
         return Optional.ofNullable(carScheduleMapper
-                .carScheduleToCarScheduleDTO(carScheduleRepository.findById(id).get()));
+                .carScheduleToCarScheduleDTO(carScheduleRepository.findById(id).orElseThrow(()->new NotFoundException("Schedule not found! "))));
     }
 
     @Override

@@ -4,13 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.Car;
 import nulp.cs.carrentalrestservice.event.SaveCarPicturesEvent;
-import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
-import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
-import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
@@ -20,7 +16,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,7 +33,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
-    public CarDTO createCar(CarDTO carDTO, MultipartFile[] files) {
+    public void createCar(CarDTO carDTO, MultipartFile[] files) {
         carDTO.setModel(modelService.createIfNotExist(carDTO.getModel()));
 
         Car savedCar = carRepository
@@ -46,7 +41,7 @@ public class CarServiceImpl implements CarService {
 
         eventPublisher.publishEvent(new SaveCarPicturesEvent(this, savedCar.getId(), files));
 
-        return carMapper.carToCarDto(savedCar);
+        carMapper.carToCarDto(savedCar);
     }
 
     @Override

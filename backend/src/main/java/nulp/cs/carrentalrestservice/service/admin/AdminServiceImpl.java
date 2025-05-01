@@ -30,7 +30,7 @@ public class AdminServiceImpl implements AdminService {
     public void createAdmin(AdminDTO adminDTO) {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
         PersonDTO person = adminDTO.getPerson();
-        person.setRole(Role.ADMIN);
+        person.setRole(Role.ROLE_ADMIN);
         personService.createPerson(adminDTO.getPerson());
 
         adminMapper.adminToAdminDto(adminRepository

@@ -78,7 +78,7 @@ public class CarPricingServiceImpl implements CarPricingService {
     @Override
     public Optional<CarPricingDTO> getCarPricingByCarId(UUID carId) {
         loggingService.logInfo("Getting car pricing for car ID: " + carId);
-        Car car = carRepository.findById(carId).get();
+        Car car = carRepository.findById(carId).orElseThrow(()-> new NotFoundException("Car with this id dont exists! "));
         CarPricingDTO carPricingDTO = carPricingMapper.carPricingToCarPricingDto(car.getCarPricing());
         if (carPricingDTO == null)
             loggingService.logInfo("Car pricing not found for car ID: " + carId);

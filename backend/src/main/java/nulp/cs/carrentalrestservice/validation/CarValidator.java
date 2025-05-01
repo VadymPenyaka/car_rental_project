@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.validation;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.service.car.CarService;
@@ -15,12 +16,12 @@ public class CarValidator implements Validator {
     private final CarService carService;
 
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(@NonNull Class<?> clazz) {
         return CarDTO.class.equals(clazz);
     }
 
     @Override
-    public void validate(Object target, Errors errors) {
+    public void validate(@NonNull Object target, @NonNull Errors errors) {
         CarDTO carDTO = (CarDTO) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "vin", "field.required", "VIN is required");

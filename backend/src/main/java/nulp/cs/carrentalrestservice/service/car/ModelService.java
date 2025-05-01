@@ -5,12 +5,10 @@ import nulp.cs.carrentalrestservice.entity.Brand;
 import nulp.cs.carrentalrestservice.entity.Model;
 import nulp.cs.carrentalrestservice.mapper.BrandMapper;
 import nulp.cs.carrentalrestservice.mapper.ModelMapper;
-import nulp.cs.carrentalrestservice.model.dto.BrandDTO;
 import nulp.cs.carrentalrestservice.model.dto.ModelDTO;
 import nulp.cs.carrentalrestservice.repository.ModelRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

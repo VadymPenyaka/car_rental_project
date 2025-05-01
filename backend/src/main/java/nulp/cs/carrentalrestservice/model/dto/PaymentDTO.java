@@ -1,8 +1,6 @@
 package nulp.cs.carrentalrestservice.model.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
-import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.model.enumeration.PaymentMethod;
 import nulp.cs.carrentalrestservice.model.enumeration.PaymentStatus;
 

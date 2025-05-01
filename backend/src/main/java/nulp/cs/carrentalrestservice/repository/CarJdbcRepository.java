@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.repository;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.*;
 import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.*;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;

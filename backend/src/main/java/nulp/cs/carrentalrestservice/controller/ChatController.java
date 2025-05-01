@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.model.request.UserChatRequest;
+import nulp.cs.carrentalrestservice.model.request.ChatSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.ChatSearchResponse;
 import nulp.cs.carrentalrestservice.service.ai.ChatService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +19,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public List<ChatSearchResponse> searchCar (@RequestBody UserChatRequest request) {
-        return chatService.getResponse(request);
+    public List<ChatSearchResponse> searchCar (@RequestBody ChatSearchRequest request) {
+        return chatService.recommendFromAvailableCars(request);
     }
 }

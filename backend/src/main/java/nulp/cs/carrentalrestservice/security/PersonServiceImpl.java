@@ -44,12 +44,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO createPerson(PersonDTO personDTO) {
+    public void createPerson(PersonDTO personDTO) {
         personDTO.setPassword(passwordEncoder
                 .encode(personDTO.getPassword()));
 
 
-        return personMapper.personToPersonDto(personRepository
+        personMapper.personToPersonDto(personRepository
                 .save(personMapper.personDtoToPerson(personDTO)));
     }
 

@@ -37,9 +37,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         return result;
     }
 
-
+    //TODO alseo create schedule
     @Override
-    public CarMaintenanceDTO createCarMaintenance(CarMaintenanceDTO carMaintenanceDTO) {
+    public void createCarMaintenance(CarMaintenanceDTO carMaintenanceDTO) {
         loggingService.logInfo("Creating maintenance: " + carMaintenanceDTO.getDescription());
 
         CarMaintenanceDTO savedMaintenance = carMaintenanceMapper.carMaintenanceToCarMaintenanceDTO(
@@ -48,9 +48,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         );
 
         loggingService.logInfo("Maintenance created successfully");
-        return savedMaintenance;
     }
 
+    //TODO it will be better to delete and regenerate schedule and maintenance
     @Override
     public Optional<CarMaintenanceDTO> updateCarMaintenanceById(UUID id, CarMaintenanceDTO carMaintenanceDTO) {
         loggingService.logInfo("Updating maintenance for ID: " + id);

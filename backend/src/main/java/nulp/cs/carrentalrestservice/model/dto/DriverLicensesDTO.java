@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniqueDriverLicenseNumber;
 import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
-import nulp.cs.carrentalrestservice.entity.Document;
 
 import java.time.LocalDate;
 import java.util.HashSet;

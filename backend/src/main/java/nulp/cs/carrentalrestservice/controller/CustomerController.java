@@ -2,8 +2,6 @@ package nulp.cs.carrentalrestservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
-import nulp.cs.carrentalrestservice.model.enumeration.Role;
 import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.service.customer.BankIdService;
 import nulp.cs.carrentalrestservice.service.customer.CustomerService;
@@ -27,7 +25,7 @@ public class CustomerController {
     public static final String BASE_PATH = "/api/v1/customers";
     private final CustomerService customerService;
     private final BankIdService bankIdService;
-
+//TODO delete
 //    @PreAuthorize("@customerServiceImpl.isOwner(#id, authentication.name)")
     @GetMapping("/{id}")
     public CustomerDTO getCustomerById (@PathVariable UUID id) {
@@ -64,7 +62,7 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    //TODO change
     @PutMapping("/{id}")
     @PreAuthorize("#id==authentication.principal.id")
     public ResponseEntity<?> updateCustomerById (@PathVariable UUID id,@Valid @RequestBody CustomerDTO customerDTO) {

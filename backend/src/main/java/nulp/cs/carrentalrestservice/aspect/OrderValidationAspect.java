@@ -9,7 +9,6 @@ import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
-import nulp.cs.carrentalrestservice.service.order.OrderService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.service.customer.CustomerService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -24,7 +23,6 @@ public class OrderValidationAspect {
     private final CustomerService customerService;
     private final CarService carService;
     private final CarScheduleService scheduleService;
-    private final LoggingService loggingService;
 
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest)", argNames = "orderRequest")
     public void validateOrder(OrderCreationRequest orderRequest) {

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.DriverLicense;
 import nulp.cs.carrentalrestservice.entity.DriverLicenseCategory;
 import nulp.cs.carrentalrestservice.mapper.DriverLicenseMapper;
-import nulp.cs.carrentalrestservice.model.dto.DriverLicenseCategoryDTO;
 import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
 import nulp.cs.carrentalrestservice.repository.DriverLicensesRepository;
 import nulp.cs.carrentalrestservice.repository.LicenseCategoryRepository;

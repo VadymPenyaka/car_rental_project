@@ -8,7 +8,7 @@ import java.util.UUID;
 
 
 public interface LocationService {
-    LocationDTO createLocation (LocationDTO locationDTO);
+    void createLocation (LocationDTO locationDTO);
 
     Optional<LocationDTO> getLocationByID (UUID id);
 

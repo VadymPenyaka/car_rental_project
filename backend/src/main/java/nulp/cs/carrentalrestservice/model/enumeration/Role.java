@@ -1,5 +1,5 @@
 package nulp.cs.carrentalrestservice.model.enumeration;
 
 public enum Role {
-    USER, ADMIN, SYS_ADMIN
+    ROLE_USER, ROLE_ADMIN, ROLE_SADMIN
 }

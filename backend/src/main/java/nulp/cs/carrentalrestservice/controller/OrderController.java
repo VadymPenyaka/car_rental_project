@@ -17,9 +17,9 @@ import java.util.UUID;
 public class OrderController {
     private final OrderService orderService;
     public final static String BASE_PATH = "/api/v1/carOrders";
-//TODO pre authorize dont work
+//TODO pre authorize dont work problem with role
     @PostMapping(BASE_PATH)
-//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest) {
         orderService.createCarOrder(orderRequest);
 
@@ -32,6 +32,7 @@ public class OrderController {
         return orderService.getCarOrderByID(id).orElseThrow(NotFoundException::new);
     }
 
+    //TODO how to handle with payment, delete schedule also and regenerate another instead
     @PutMapping(BASE_PATH +"/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {

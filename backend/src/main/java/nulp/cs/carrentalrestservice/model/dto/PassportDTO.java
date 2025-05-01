@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniquePassportNumber;
 import nulp.cs.carrentalrestservice.annotation.ValidBirthDate;
 import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
-import nulp.cs.carrentalrestservice.entity.Document;
 
 import java.time.LocalDate;
 import java.util.UUID;
