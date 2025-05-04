@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers(ChatController.BASE_PATH).permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/v1/verify/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

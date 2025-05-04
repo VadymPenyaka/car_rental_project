@@ -14,6 +14,5 @@ public interface PersonService {
     Optional<PersonDTO> getPersonByEmail (String email);
     PersonDTO getAuthenticatedPerson ();
     void updatePerson(UpdatePersonRequest request);
-
     void verifyUpdate(String tokenStr);
 }

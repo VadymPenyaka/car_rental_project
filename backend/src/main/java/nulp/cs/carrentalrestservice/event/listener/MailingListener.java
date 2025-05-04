@@ -27,7 +27,7 @@ public class MailingListener {
 
     @EventListener
     public void handleTokenCreatedEvent(VerificationEmailEvent event) {
-        String confirmationUrl = domain+"/api/verify?token=" + event.getToken();
+        String confirmationUrl = domain+"/api/v1/verify?token=" + event.getToken();
         String message = "You change " +event.getVerificationType().name() +
                 ".\nTo confirm the change click the following link:\n" + confirmationUrl;
 

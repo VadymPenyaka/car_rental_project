@@ -91,21 +91,21 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
-//    TODO refactor change verification for email
     @Override
     public void verifyUpdate(String tokenStr) {
-        PersonDTO person = getAuthenticatedPerson();
-
         VerificationTokenDTO token = tokenService.verifyAndGetToken(UUID.fromString(tokenStr));
-
+        PersonDTO person = token.getPerson();
         if (token.getType().equals(VerificationType.PASSWORD)) {
             person.setPassword(token.getValue());
         }
-        if (token.getType().equals(VerificationType.EMAIL)) {
+        if (token.getType().equals(VerificationType.NEW_EMAIL)) {
             person.setUsername(token.getValue());
         }
         if (token.getType().equals(VerificationType.PHONE)) {
             person.setPhoneNumber(token.getValue());
         }
+
+        personRepository.save(personMapper.personDtoToPerson(person));
     }
+
 }

@@ -10,7 +10,6 @@ import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.dto.VerificationTokenDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
 import nulp.cs.carrentalrestservice.repository.VerificationTokenRepository;
-import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +34,16 @@ public class VerificationTokenService {
 
         VerificationTokenDTO savedToken = mapper
                 .toDto(repository.save(mapper.toEntity(verificationToken)));
+        System.out.println(savedToken);
+        String recipientEmail;
+        if (savedToken.getType() == VerificationType.NEW_EMAIL) {
+            recipientEmail=value;
+        } else {
+            recipientEmail = person.getUsername();
+        }
 
         applicationEventPublisher.publishEvent(
-                new VerificationEmailEvent(this, savedToken.getToken(), person.getUsername(), type)
+                new VerificationEmailEvent(this, savedToken.getToken(), recipientEmail, type)
         );
     }
 
@@ -47,6 +53,9 @@ public class VerificationTokenService {
 
         if (foundToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new VerificationTokenExpiredException("Verification token is expired");
+        }
+        if (foundToken.getType()==VerificationType.EMAIL) {
+            createToken(mapper.toDto(foundToken).getPerson(), foundToken.getValue(), VerificationType.NEW_EMAIL);
         }
 
         repository.deleteById(token);
