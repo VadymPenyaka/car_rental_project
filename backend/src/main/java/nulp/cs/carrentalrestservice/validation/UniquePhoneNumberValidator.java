@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.UniquePhoneNumber;
-import nulp.cs.carrentalrestservice.security.PersonService;
+import nulp.cs.carrentalrestservice.service.person.PersonService;
 
 @RequiredArgsConstructor
 public class UniquePhoneNumberValidator implements ConstraintValidator<UniquePhoneNumber, String> {

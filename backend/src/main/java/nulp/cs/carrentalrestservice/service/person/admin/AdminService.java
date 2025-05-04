@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.admin;
+package nulp.cs.carrentalrestservice.service.person.admin;
 
 import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
 import nulp.cs.carrentalrestservice.model.dto.LocationDTO;

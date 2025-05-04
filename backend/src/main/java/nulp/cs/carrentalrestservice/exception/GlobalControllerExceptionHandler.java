@@ -25,6 +25,11 @@ public class GlobalControllerExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(VerificationTokenExpiredException.class)
+    public ResponseEntity<String> handleVerificationTokenExpiredException (RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.GONE);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException (ConstraintViolationException ex) {
 

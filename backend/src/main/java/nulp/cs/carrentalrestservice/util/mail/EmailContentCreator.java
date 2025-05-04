@@ -1,15 +1,15 @@
 package nulp.cs.carrentalrestservice.util.mail;
 
-import nulp.cs.carrentalrestservice.event.EmailEvent;
+import nulp.cs.carrentalrestservice.event.OrderEmailEvent;
 
 
 public class EmailContentCreator {
-    public static String generateSubjectForStatusEmail(EmailEvent event) {
+    public static String generateSubjectForStatusEmail(OrderEmailEvent event) {
         return "Your order status has been changed to " +
                 event.getCarOrder().getStatus().toString().toLowerCase() + "!";
     }
 
-    public static String generateBodyForStatusEmail(EmailEvent event) {
+    public static String generateBodyForStatusEmail(OrderEmailEvent event) {
         return "Dear " + event.getCustomer().getPerson().getFirstName()
                 + ". The status of your order has been changed to "
                 + event.getCarOrder().getStatus().toString().toLowerCase();

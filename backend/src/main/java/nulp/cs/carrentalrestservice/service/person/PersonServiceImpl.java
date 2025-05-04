@@ -1,8 +1,11 @@
-package nulp.cs.carrentalrestservice.security;
+package nulp.cs.carrentalrestservice.service.person;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.model.dto.VerificationTokenDTO;
+import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
+import nulp.cs.carrentalrestservice.model.request.UpdatePersonRequest;
 import nulp.cs.carrentalrestservice.repository.PersonRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +24,12 @@ public class PersonServiceImpl implements PersonService {
     private final PersonMapper personMapper;
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
+    private final VerificationTokenService tokenService;
 
 
     @Override
     public boolean isEmailUsed(String email) {
         return personRepository.existsByUsername(email);
-    }
-
-    @Override
-    public boolean deletePersonById(UUID id) {
-        if (personRepository.existsById(id)) {
-            personRepository.deleteById(id);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -68,22 +62,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonDTO> updatePersonById(UUID id, PersonDTO personDTO) {
-        AtomicReference<Optional<PersonDTO>> atomicReference = new AtomicReference<>();
-        personRepository.findById(id).ifPresentOrElse( foundPerson -> {
-                foundPerson.setPhoneNumber(personDTO.getPhoneNumber());
-                foundPerson.setUsername(personDTO.getUsername());
-                foundPerson.setPassword(personDTO.getPassword());
-
-                atomicReference.set(Optional.ofNullable(personMapper
-                                .personToPersonDto(personRepository.save(foundPerson))));
-            }, () -> atomicReference.set(Optional.empty())
-        );
-
-        return atomicReference.get();
-    }
-
-    @Override
     public PersonDTO getAuthenticatedPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -97,5 +75,37 @@ public class PersonServiceImpl implements PersonService {
 
         return getPersonByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found by email: " + userDetails.getUsername()));
+    }
+
+    @Override
+    public void updatePerson(UpdatePersonRequest request) {
+        PersonDTO person = getAuthenticatedPerson();
+        if (request.getEmail() != null) {
+            tokenService.createToken(person, request.getEmail(), VerificationType.EMAIL);
+        }
+        if (request.getPhoneNumber() != null) {
+            tokenService.createToken(person, request.getPhoneNumber(), VerificationType.PHONE);
+        }
+        if (request.getPassword() != null) {
+            tokenService.createToken(person, request.getPassword(), VerificationType.PASSWORD);
+        }
+    }
+
+//    TODO refactor change verification for email
+    @Override
+    public void verifyUpdate(String tokenStr) {
+        PersonDTO person = getAuthenticatedPerson();
+
+        VerificationTokenDTO token = tokenService.verifyAndGetToken(UUID.fromString(tokenStr));
+
+        if (token.getType().equals(VerificationType.PASSWORD)) {
+            person.setPassword(token.getValue());
+        }
+        if (token.getType().equals(VerificationType.EMAIL)) {
+            person.setUsername(token.getValue());
+        }
+        if (token.getType().equals(VerificationType.PHONE)) {
+            person.setPhoneNumber(token.getValue());
+        }
     }
 }

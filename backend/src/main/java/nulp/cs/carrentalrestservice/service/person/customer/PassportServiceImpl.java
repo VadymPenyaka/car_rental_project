@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.document;
+package nulp.cs.carrentalrestservice.service.person.customer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

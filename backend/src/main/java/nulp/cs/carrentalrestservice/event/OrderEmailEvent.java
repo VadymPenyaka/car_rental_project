@@ -6,12 +6,12 @@ import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class EmailEvent extends ApplicationEvent {
+public class OrderEmailEvent extends ApplicationEvent {
 
     private final CarOrderDTO carOrder;
     private final CustomerDTO customer;
 
-    public EmailEvent(Object source, CarOrderDTO carOrder, CustomerDTO customer) {
+    public OrderEmailEvent(Object source, CarOrderDTO carOrder, CustomerDTO customer) {
         super(source);
         this.carOrder = carOrder;
         this.customer = customer;

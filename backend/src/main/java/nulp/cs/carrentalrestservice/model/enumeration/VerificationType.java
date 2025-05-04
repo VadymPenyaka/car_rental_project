@@ -1,5 +1,5 @@
 package nulp.cs.carrentalrestservice.model.enumeration;
 
-public enum ChangeType {
+public enum VerificationType {
     EMAIL, PHONE, PASSWORD
 }

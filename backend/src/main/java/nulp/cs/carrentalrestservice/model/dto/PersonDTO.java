@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,11 +19,13 @@ import java.util.UUID;
 public class PersonDTO {
     private UUID id;
     private Role role;
+    @NotNull
     @ValidEmail
     @UniqueEmail
     @NotBlank(message = "Email is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
     private String username;
+    @NotNull
     @ValidPassword
     @NotBlank(message = "Password is mandatory!")
     private String password;
@@ -32,6 +35,7 @@ public class PersonDTO {
     @NotBlank(message = "Name is mandatory!")
     @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
     private String firstName;
+    @NotNull
     @ValidPhoneNumber
     @UniquePhoneNumber
     @NotBlank(message = "Phone number is mandatory!")

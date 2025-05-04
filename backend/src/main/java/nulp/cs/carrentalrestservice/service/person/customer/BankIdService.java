@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.customer;
+package nulp.cs.carrentalrestservice.service.person.customer;
 
 import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import org.springframework.beans.factory.annotation.Value;

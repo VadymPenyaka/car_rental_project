@@ -3,7 +3,7 @@ package nulp.cs.carrentalrestservice.service.order;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
-import nulp.cs.carrentalrestservice.event.EmailEvent;
+import nulp.cs.carrentalrestservice.event.OrderEmailEvent;
 import nulp.cs.carrentalrestservice.exception.InvalidOrderException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
@@ -11,8 +11,8 @@ import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.OrderRepository;
-import nulp.cs.carrentalrestservice.service.customer.CustomerService;
-import nulp.cs.carrentalrestservice.service.admin.AdminService;
+import nulp.cs.carrentalrestservice.service.person.customer.CustomerService;
+import nulp.cs.carrentalrestservice.service.person.admin.AdminService;
 import nulp.cs.carrentalrestservice.service.car.CarPricingService;
 import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
             foundOrder.setStatus(carOrderDTO.getStatus());
-            publisher.publishEvent(new EmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
+            publisher.publishEvent(new OrderEmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
             
             CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
             atomicReference.set(Optional.of(updatedOrder));

@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.request.LoginRequest;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.model.request.UpdatePersonRequest;
 import nulp.cs.carrentalrestservice.model.response.LoginResponse;
 import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
 import nulp.cs.carrentalrestservice.security.JwtService;
 import nulp.cs.carrentalrestservice.model.dto.PersonDetails;
-import nulp.cs.carrentalrestservice.security.PersonService;
+import nulp.cs.carrentalrestservice.service.person.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,17 +67,13 @@ public class AuthController {
         }
     }
 
-//    TODO user can change only certain fields
-    @PutMapping("/{id}")
-    @PreAuthorize("#id==authentication.principal.person.id")
-    public ResponseEntity<?> updatePersonInfo (@PathVariable UUID id, @Valid @RequestBody PersonDTO personDTO, BindingResult bindingResult) {
+    @PutMapping("/update")
+    public ResponseEntity<?> updatePersonInfo (@Valid @RequestBody UpdatePersonRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        if (personService.updatePersonById(id, personDTO).isEmpty()) {
-            throw new NotFoundException("USer not found!");
-        }
+        personService.updatePerson(request);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

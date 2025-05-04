@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.document;
+package nulp.cs.carrentalrestservice.service.person.customer;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.DriverLicense;

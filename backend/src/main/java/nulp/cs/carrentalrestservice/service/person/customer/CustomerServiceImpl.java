@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.customer;
+package nulp.cs.carrentalrestservice.service.person.customer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +12,14 @@ import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
-import nulp.cs.carrentalrestservice.service.document.DriverLicenseService;
-import nulp.cs.carrentalrestservice.security.PersonService;
+import nulp.cs.carrentalrestservice.service.person.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor

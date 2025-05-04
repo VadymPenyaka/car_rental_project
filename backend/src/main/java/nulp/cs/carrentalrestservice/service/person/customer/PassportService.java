@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.service.document;
+package nulp.cs.carrentalrestservice.service.person.customer;
 
 import nulp.cs.carrentalrestservice.model.dto.PassportDTO;
 

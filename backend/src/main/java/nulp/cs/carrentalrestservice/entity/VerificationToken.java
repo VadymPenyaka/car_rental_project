@@ -2,8 +2,7 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nulp.cs.carrentalrestservice.model.enumeration.ChangeType;
-import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
+import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -26,7 +25,7 @@ public class VerificationToken {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ChangeType type;
+    private VerificationType type;
 
     @Column(name = "value", nullable = false)
     private String value;
