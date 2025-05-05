@@ -29,6 +29,16 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
+    public String generateRefreshToken(UserDetails personDetails) {
+        return Jwts.builder()
+                .subject(personDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30))
+                .signWith(getSecretKey())
+                .compact();
+    }
+
+    @Override
     public String extractUsername(String jwt) {
         return getClaim(jwt, Claims::getSubject);
     }
