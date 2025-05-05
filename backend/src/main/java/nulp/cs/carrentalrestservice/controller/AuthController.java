@@ -74,9 +74,6 @@ public class AuthController {
         }
 
         personService.updatePerson(request);
-
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }
