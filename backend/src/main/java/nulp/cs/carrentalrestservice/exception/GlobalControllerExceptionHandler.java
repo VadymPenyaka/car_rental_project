@@ -5,6 +5,9 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,20 +18,6 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
-    @ExceptionHandler(ConversionFailedException.class)
-    public ResponseEntity<String> handleConversionConflict(RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException (RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(VerificationTokenExpiredException.class)
-    public ResponseEntity<String> handleVerificationTokenExpiredException (RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.GONE);
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException (ConstraintViolationException ex) {
@@ -57,6 +46,36 @@ public class GlobalControllerExceptionHandler {
                 errors.put(error.getObjectName(), error.getDefaultMessage()));
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUsernameNotFoundException(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentialsException() {
+        return new ResponseEntity<>("Invalid username or password!", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthException() {
+        return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ConversionFailedException.class)
+    public ResponseEntity<String> handleConversionConflict(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException (RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(VerificationTokenExpiredException.class)
+    public ResponseEntity<String> handleVerificationTokenExpiredException (RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.GONE);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

@@ -110,6 +110,7 @@ public class CarJdbcRepository {
                 .engineCapacity(rs.getDouble("engine_capacity"))
                 .gearboxType(GearboxType.valueOf(rs.getString("gearbox_type")))
                 .carPricing(CarPricingDTO.builder()
+                        .id(UUID.fromString(rs.getString("id")))
                         .upToThreeDays(rs.getDouble("up_to_three_days"))
                         .upToTenDays(rs.getDouble("up_to_ten_days"))
                         .upToMonth(rs.getDouble("up_to_month"))

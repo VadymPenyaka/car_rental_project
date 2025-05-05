@@ -4,7 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Location;
 import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface LocationMapper {
     Location locationDtoToLocation (LocationDTO locationDTO);
 
