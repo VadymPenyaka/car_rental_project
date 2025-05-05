@@ -7,6 +7,9 @@ import App from './App.tsx'
 import { PageNotFound } from './components/PageNotFound'
 import { LoginPage } from './components/LoginPage'
 import { SearchPage } from './components/SearchPage'
+import { CarPage } from './components/CarPage'
+
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -21,6 +24,11 @@ const router = createBrowserRouter([
 	{
 		path: '/search',
 		element: <SearchPage />,
+		errorElement: <PageNotFound />
+	},
+	{
+		path: '/cars/:carId',
+		element: <CarPage />,
 		errorElement: <PageNotFound />
 	}
 ])

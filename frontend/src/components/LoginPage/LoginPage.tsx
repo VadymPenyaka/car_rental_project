@@ -4,8 +4,10 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../ui/card"
 import { sendRequest } from "@/lib/utils"
+import { useNavigate } from "react-router"
 
 export const LoginPage: React.FC = () => {
+	const navigate = useNavigate();
 	const [isLogin, setIsLogin] = useState(true)
 
 	// Shared state
@@ -46,7 +48,7 @@ export const LoginPage: React.FC = () => {
 	
 		try {
 			const response = await sendRequest({
-				url: "/api/v1/auth/login",
+				url: '/api/v1/auth/login',
 				method: "POST",
 				withCredentials: false,
 				headers: {
@@ -56,6 +58,8 @@ export const LoginPage: React.FC = () => {
 			})
 	
 			if (response?.status === 200) {
+				localStorage.setItem("accessToken", response.data.token)
+				navigate('/')
 				alert("Logged in successfully")
 			}
 		} catch (err: any) {
@@ -120,6 +124,7 @@ export const LoginPage: React.FC = () => {
 				data: JSON.stringify({ email, firstName, sureName, phoneNumber, password }),
 			})
 			if (response.status === 201) {
+				setIsLogin(true)
 				alert("Account created successfully")
 			}
 		} catch (err: any) {

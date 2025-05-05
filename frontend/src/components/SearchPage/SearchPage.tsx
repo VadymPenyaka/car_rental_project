@@ -1,5 +1,5 @@
 import { Header } from "../header/Header"
-import { CarCard } from "../carCard/CarCard"
+import { CarCard } from "../CarCard/CarCard"
 import { CarMainCategoriesPanel } from "../CarMainCategoriesPanel/CarMainCategoriesPanel"
 import { useSearchStore } from "@/stores/useSearchStore"
 
