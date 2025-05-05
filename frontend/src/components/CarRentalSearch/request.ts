@@ -1,18 +1,6 @@
 import { sendRequest } from "@/lib/utils";
 
-interface SearchParams {
-	startDate: Date;
-	endDate: Date;
-	location: string;
-}
-
-export const sendSearchRequest = async (searchParams: Partial<SearchParams>) => {
-	// const {
-	// 	startDate,
-	// 	endDate,
-	// 	location
-	// } = searchParams
-
+export const sendSearchRequest = async (searchParams: Object) => {
 	let response: { data: any } = await sendRequest({
 		url: '/api/v1/cars',
 		method: 'POST',
@@ -21,7 +9,7 @@ export const sendSearchRequest = async (searchParams: Partial<SearchParams>) => 
 			'Content-Type': 'application/json',
 		},
 		data: JSON.stringify({
-			
+			searchParams
 		}),
 	})
 

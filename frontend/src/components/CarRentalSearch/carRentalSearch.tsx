@@ -27,14 +27,16 @@ export default function CarRentalSearch() {
 
 	const handleSearchButtonClick = async () => {
 		const requestData = {
-			// 	// startDate: startDate ? formatDate(startDate) : null,
-			// 	// endDate: endDate ? formatDate(endDate) : null,
+			startDate: startDate ? formatDate(startDate) : "",
+			endDate: endDate ? formatDate(endDate) : "",
 		}
 
 		let response = await sendSearchRequest(requestData)
-
-		setLocation("123")
+		// Build query string
+		const queryParams = new URLSearchParams(requestData).toString()
 		setCars(response)
+		console.log("queryParams: ", queryParams);
+
 
 		navigate("/search")
 	}
