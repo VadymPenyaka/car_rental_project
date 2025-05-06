@@ -17,7 +17,7 @@ import java.util.UUID;
 public class OrderController {
     private final OrderService orderService;
     public final static String BASE_PATH = "/api/v1/carOrders";
-//TODO pre authorize dont work problem with role
+
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest) {

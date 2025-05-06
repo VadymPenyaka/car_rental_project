@@ -48,8 +48,7 @@ public class RefreshTokenService {
             return Optional.empty();
         }
 
-        if (!jwtService.isTokenValid(tokenValue, userDetails) ||
-                !userDetails.getUsername().equals(foundToken.getUsername())) {
+        if (!userDetails.getUsername().equals(foundToken.getUsername())) {
             throw new AccessDeniedException("Invalid refresh token owner");
         }
 

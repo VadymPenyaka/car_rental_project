@@ -57,14 +57,14 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshAccessToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
-                                                @RequestParam("username") String username) {
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+
         if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is missing!");
         }
 
-        return new ResponseEntity<>(authService.refreshAccessToken(refreshToken, username), HttpStatus.OK);
+        return new ResponseEntity<>(authService.refreshAccessToken(refreshToken), HttpStatus.OK);
     }
 
     @PutMapping("/update")

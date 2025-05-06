@@ -44,8 +44,9 @@ public class AuthService {
         return new LoginResult(accessToken, refreshToken, role);
     }
 
-    public LoginResponse refreshAccessToken(String refreshToken, String username) {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+    public LoginResponse refreshAccessToken(String refreshToken) {
+        UserDetails userDetails = customUserDetailsService
+                .loadUserByUsername(jwtService.extractUsername(refreshToken));
 
         String newToken = refreshTokenService.refreshAccessToken(refreshToken, userDetails)
                 .orElseThrow(() -> new InvalidRefreshTokenException("Refresh token is expired or invalid!"));
