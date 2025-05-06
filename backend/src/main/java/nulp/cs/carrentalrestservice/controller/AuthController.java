@@ -3,28 +3,23 @@ package nulp.cs.carrentalrestservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.model.dto.LoginResult;
 import nulp.cs.carrentalrestservice.model.request.LoginRequest;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.request.UpdatePersonRequest;
 import nulp.cs.carrentalrestservice.model.response.LoginResponse;
-import nulp.cs.carrentalrestservice.security.CustomUserDetailsService;
-import nulp.cs.carrentalrestservice.security.JwtService;
+import nulp.cs.carrentalrestservice.security.AuthService;
 import nulp.cs.carrentalrestservice.model.dto.PersonDetails;
 import nulp.cs.carrentalrestservice.service.person.PersonService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.time.Duration;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,9 +27,7 @@ import java.util.UUID;
 public class AuthController {
     public static final String BASE_PATH = "/api/v1/auth";
     private final PersonService personService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AuthService authService;
 
     @GetMapping
     public PersonDTO getAuthenticatedPersonInfo (@AuthenticationPrincipal PersonDetails personDetails) {
@@ -44,27 +37,34 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginPerson (@RequestBody LoginRequest loginForm) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginForm.username(), loginForm.password()
-        ));
-        if (authentication.isAuthenticated()) {
-            UserDetails userDetails = customUserDetailsService
-                    .loadUserByUsername(loginForm.username());
+        LoginResult loginResult = authService.authenticateUser(loginForm);
 
-            String token = jwtService.generateToken(userDetails);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", loginResult.refreshToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(Duration.ofDays(7))
+                .sameSite("Strict")
+                .build();
 
-            String role = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst().orElse("USER");
+        LoginResponse response = LoginResponse.builder()
+                .role(loginResult.role())
+                .token(loginResult.accessToken())
+                .build();
 
-            LoginResponse response = LoginResponse.builder()
-                    .role(role)
-                    .token(token)
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            throw new UsernameNotFoundException("Invalid credentials!");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .body(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
+                                                @RequestParam("username") String username) {
+        if (refreshToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is missing!");
         }
+
+        return new ResponseEntity<>(authService.refreshAccessToken(refreshToken, username), HttpStatus.OK);
     }
 
     @PutMapping("/update")

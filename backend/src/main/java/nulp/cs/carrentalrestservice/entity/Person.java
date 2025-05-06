@@ -48,6 +48,4 @@ public class Person {
     private Admin admin;
     @OneToMany(mappedBy = "person")
     private Set<VerificationToken> token = new HashSet<>();
-    @OneToMany(mappedBy = "person")
-    private Set<RefreshToken> refreshTokens = new HashSet<>();
 }

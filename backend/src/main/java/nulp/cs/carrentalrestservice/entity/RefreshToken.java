@@ -21,9 +21,8 @@ public class RefreshToken {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
-    private Person person;
+    @Column
+    private String username;
 
     @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
