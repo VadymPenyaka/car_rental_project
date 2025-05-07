@@ -43,12 +43,6 @@ export function RentalPricingTable({ carPricing }: RentalPricingTableProps) {
 					</TableRow>
 				</TableBody>
 			</Table>
-
-			<p className="text-xs mt-2 text-gray-500">
-				* Read the <span className="text-orange-500 underline">daily car rental terms</span>
-				<br />
-				** Additional insurance is available for rentals of 3 days or more
-			</p>
 		</div>
 	)
 }  
