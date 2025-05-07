@@ -1,5 +1,5 @@
 import lvivPanorama from "../../assets/lvivPanorama.jpg"
-import CarRentalSearch from "../CarRentalSearch/carRentalSearch"
+import CarRentalSearch from "../CarRentalSearch/CarRentalSearch"
 
 export default function Hero() {
 	return (

@@ -7,34 +7,24 @@ import { sendSearchRequest } from "./request";
 import { formatDate, sendRequest } from "@/lib/utils"
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useNavigate } from 'react-router'
+import { FullSearchPopup } from "./FullSearchPopup.tsx/FullSearchPopup";
+import { useState } from "react";
 
 
 
 export default function CarRentalSearch() {
+	const [startDate, setStartDate] = useState<Date | undefined>(undefined)
+	const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+
 	const navigate = useNavigate()
-	const {
-		location,
-		startDate,
-		endDate,
-		cars,
-		setLocation,
-		setStartDate,
-		setEndDate,
-		setCars,
-	} = useSearchStore()
 
 	const cities = ["Київ", "Львів", "Одеса", "Дніпро", "Харків"];
 
 	const handleSearchButtonClick = async () => {
-		const requestData = {
-			startDate: startDate ? formatDate(startDate) : "",
-			endDate: endDate ? formatDate(endDate) : "",
-		}
 
-		let response = await sendSearchRequest(requestData)
+		const requestData = {}
 		// Build query string
 		const queryParams = new URLSearchParams(requestData).toString()
-		setCars(response)
 		console.log("queryParams: ", queryParams);
 
 
@@ -43,12 +33,12 @@ export default function CarRentalSearch() {
 
 	return (
 		<div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-2xl">
-			<h2 className="text-lg font-semibold mb-4">Підібрати авто в прокат</h2>
+			<h2 className="text-lg font-semibold mb-4">Choose a car for rental</h2>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<div>
-					<label className="text-sm font-medium">Місто видачі</label>
+					<label className="text-sm font-medium">Pick-up location</label>
 					<div className="relative mt-1">
-						<Select onValueChange={setLocation}>
+						<Select onValueChange={(value => console.log(value))}>
 							<SelectTrigger className="w-full">
 								<SelectValue placeholder="Оберіть місто" />
 							</SelectTrigger>
@@ -62,11 +52,11 @@ export default function CarRentalSearch() {
 				</div>
 
 				<div>
-					<label className="text-sm font-medium">Дата і час видачі</label>
+					<label className="text-sm font-medium">Pick-up date</label>
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" className="w-full flex justify-between">
-								{startDate ? format(startDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
+								{startDate ? format(startDate, "dd.MM.yyyy") : "dd.MM.yyyy"}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent>
@@ -76,11 +66,11 @@ export default function CarRentalSearch() {
 				</div>
 
 				<div>
-					<label className="text-sm font-medium">Дата і час повернення</label>
+					<label className="text-sm font-medium">Drop-off date</label>
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" className="w-full flex justify-between">
-								{endDate ? format(endDate, "dd.MM.yyyy") : "дд.мм.рррр --:--"}
+								{endDate ? format(endDate, "dd.MM.yyyy") : "dd.MM.yyyy"}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent>
@@ -100,7 +90,7 @@ export default function CarRentalSearch() {
 			</div>
 
 			<div className="mt-4 flex justify-between items-center">
-				<a href="#" className="text-sm text-red-500">+ Більше опцій</a>
+				<FullSearchPopup />
 				<Button className="bg-orange-500 hover:bg-orange-600" onClick={handleSearchButtonClick}>Підібрати авто</Button>
 			</div>
 		</div>

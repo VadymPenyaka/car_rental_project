@@ -2,9 +2,24 @@ import { Header } from "../header/Header"
 import { CarCard } from "../CarCard/CarCard"
 import { CarMainCategoriesPanel } from "../CarMainCategoriesPanel/CarMainCategoriesPanel"
 import { useSearchStore } from "@/stores/useSearchStore"
+import { useEffect, useState } from "react";
+import { set } from "date-fns";
+import { sendSearchRequest } from "../CarRentalSearch/request";
+import { userCar } from "@/interfaces/userCar";
 
 export const SearchPage: React.FC = () => {
-  const { location, cars } = useSearchStore()
+  const [cars, setCars] = useState<userCar[]>([])
+
+
+  useEffect(() => {
+    let initCars = async() => {
+      const requestData = {}
+      
+      let response = await sendSearchRequest(requestData)
+      setCars(response as userCar[])
+    }
+    initCars()
+  }, [])
 
   return (
     <>
