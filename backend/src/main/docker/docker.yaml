@@ -1,36 +1,36 @@
 version: '3.8'
 services:
-    java-app:
-      container_name: java-backend-compose
-      image: "openjdk:17-jdk-slim"
-      restart: always
-      working_dir: /app
-      volumes:
-        - "./1.jar:/app/app.jar"
-      environment:
-        - "ENVIRONMENT=production"
-        - "PORT=9090"
-      ports:
-        - "8181:9090"
-      command: ["java", "-Dspring.profiles.active=test", "-jar", "app.jar"]
-    redis:
-      container_name: redis-compose
-      image: "redis:${REDIS_VERSION}"
-      restart: always
-      ports:
-        - "${REDIS_PORT}:6379"
-    postgres:
-      container_name: postgres-backend-compose
-      image: "postgres:${POSTGRES_VERSION}"
-      restart: always
+  redis:
+    container_name: redis-compose
+    image: "redis:${REDIS_VERSION}"
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+  postgres:
+    container_name: postgres-backend-compose
+    image: "postgres:${POSTGRES_VERSION}"
+    restart: always
     #    volumes:
     #      - "./postgres/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh"
     #      - "./postgres/init-database.sql:/docker-entrypoint-initdb.d/init-database.sql"
-      tmpfs:
-        - "/var/lib/postgresql/data:rw"
-      environment:
-        - "POSTGRES_USER=${POSTGRES_USER}"
-        - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
-        - "POSTGRES_DB=${POSTGRES_DB}"
-      ports:
-        - "${POSTGRES_PORT}:5432"
+    tmpfs:
+      - "/var/lib/postgresql/data:rw"
+    environment:
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=${POSTGRES_DB}"
+    ports:
+      - "${POSTGRES_PORT}:5432"
+  java-app:
+    container_name: java-backend-compose
+    image: "openjdk:17-jdk-slim"
+    restart: always
+    working_dir: /app
+    volumes:
+      - "/Users/vadym/Projects/car_rental/backend/target/car-rental-rest-service-0.0.1-SNAPSHOT.jar:/app/app.jar"
+    environment:
+      - "ENVIRONMENT=docker"
+      - "PORT=9090"
+    ports:
+      - "8181:9090"
+    command: [ "java", "-Dspring.profiles.active=docker", "-jar", "app.jar" ]

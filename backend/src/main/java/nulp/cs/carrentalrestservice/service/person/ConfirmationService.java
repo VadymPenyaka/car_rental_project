@@ -1,60 +1,53 @@
 package nulp.cs.carrentalrestservice.service.person;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.PersonPendingConfirmation;
+import nulp.cs.carrentalrestservice.event.VerificationEmailEvent;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
+import nulp.cs.carrentalrestservice.exception.VerificationTokenExpiredException;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
+import nulp.cs.carrentalrestservice.repository.PersonPendingConfirmationRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ConfirmationService {
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final PersonPendingConfirmationRepository repository;
 
 
-    public void createToken (PersonDTO person, String value, VerificationType type) {
-//        PersonPendingConfirmationDTO verificationToken = PersonPendingConfirmationDTO.builder()
-//                .type(type)
-//                .value(value)
-//                .expiryDate(LocalDateTime.now().plusMinutes(15))
-//                .person(person)
-//                .build();
-//
-//        PersonPendingConfirmationDTO savedToken = mapper
-//                .toDto(repository.save(mapper.toEntity(verificationToken)));
-//        System.out.println(savedToken);
-//        String recipientEmail;
-//        if (savedToken.getType() == VerificationType.NEW_EMAIL) {
-//            recipientEmail=value;
-//        } else {
-//            recipientEmail = person.getUsername();
-//        }
-//
-//        applicationEventPublisher.publishEvent(
-//                new VerificationEmailEvent(this, savedToken.getToken(), recipientEmail, type)
-//        );
+    public void createToken (PersonDTO person, VerificationType type, String email) {
+
+        PersonPendingConfirmation confirmation = PersonPendingConfirmation.builder()
+                .data(person)
+                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .type(type)
+                .username(email)
+                .build();
+
+        PersonPendingConfirmation saved = repository.save(confirmation);
+
+        applicationEventPublisher.publishEvent(
+                new VerificationEmailEvent(this, saved.getId(), email, type)
+        );
     }
 
-    public PersonDTO verifyAndGetTokenPersonData(UUID token) {
+    public PersonPendingConfirmation confirmAndGet (UUID id) {
+        PersonPendingConfirmation confirmation = repository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Token not found"));
 
+        if (confirmation.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new VerificationTokenExpiredException("URL is expired");
+        }
 
-//        VerificationToken foundToken = repository.findById(token)
-//                .orElseThrow(() -> new NotFoundException("Token not found"));
-//
-//        if (foundToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-//            throw new VerificationTokenExpiredException("Verification token is expired");
-//        }
-//        if (foundToken.getType()==VerificationType.EMAIL) {
-//            createToken(mapper.toDto(foundToken).getPerson(), foundToken.getValue(), VerificationType.NEW_EMAIL);
-//        }
-//
-//        repository.deleteById(token);
-//
-//        return mapper.toDto(foundToken);
+        repository.deleteById(confirmation.getId());
 
-        return null;
+        return confirmation;
     }
 
 }

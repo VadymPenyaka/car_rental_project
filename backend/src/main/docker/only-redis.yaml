@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  redis:
+    container_name: redis-compose
+    image: "redis:${REDIS_VERSION}"
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"

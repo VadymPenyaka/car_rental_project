@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.service.person;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.PersonPendingConfirmation;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
@@ -59,7 +60,7 @@ public class PersonServiceImpl implements PersonService {
                 .personToPersonDto(personRepository
                         .findByUsername(email).orElse(null)));
     }
-//TOTO  user should logout after changing credentials
+//TODO  user should logout after changing credentials
     @Override
     public PersonDTO getAuthenticatedPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -79,20 +80,31 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void updatePerson(UpdatePersonRequest request) {
         PersonDTO person = getAuthenticatedPerson();
+        String targetEmail = person.getUsername();
         if (request.getEmail() != null) {
-            tokenService.createToken(person, request.getEmail(), VerificationType.EMAIL);
+            person.setUsername(request.getEmail());
+            tokenService.createToken(person, VerificationType.EMAIL, targetEmail);
         }
         if (request.getPhoneNumber() != null) {
-            tokenService.createToken(person, request.getPhoneNumber(), VerificationType.PHONE);
+            person.setPhoneNumber(request.getPhoneNumber());
+            tokenService.createToken(person, VerificationType.PHONE, targetEmail);
         }
         if (request.getPassword() != null) {
-            tokenService.createToken(person, request.getPassword(), VerificationType.PASSWORD);
+            person.setPassword(request.getPassword());
+            tokenService.createToken(person, VerificationType.PASSWORD, targetEmail);
         }
     }
 
     @Override
     public void verifyUpdate(String tokenStr) {
-        personRepository.save(personMapper.personDtoToPerson(null));
+        PersonPendingConfirmation confirmation = tokenService.confirmAndGet(UUID.fromString(tokenStr));
+        PersonDTO person = confirmation.getData();
+
+        if (confirmation.getType()==VerificationType.EMAIL) {
+            tokenService.createToken(person, VerificationType.NEW_EMAIL, person.getUsername());
+        } else {
+            personRepository.save(personMapper.personDtoToPerson(person));
+        }
     }
 
 }

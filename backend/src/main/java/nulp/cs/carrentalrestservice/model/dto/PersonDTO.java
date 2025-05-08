@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.*;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDTO {
+public class PersonDTO implements Serializable {
     private UUID id;
     private Role role;
     @NotNull

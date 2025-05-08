@@ -29,10 +29,13 @@ public class PersonPendingConfirmation {
     @Column(nullable = false)
     private VerificationType type;
 
-    @Lob
     @Column(nullable = false, columnDefinition = "jsonb")
     @Convert(converter = PersonDTOConverter.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     private PersonDTO data;
+
+    @Column
+    private String username;
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
