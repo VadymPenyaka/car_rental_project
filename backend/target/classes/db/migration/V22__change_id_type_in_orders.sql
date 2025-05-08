@@ -1,0 +1,2 @@
+ALTER TABLE car_orders
+    ALTER COLUMN id TYPE VARCHAR(36);
