@@ -197,7 +197,7 @@ export const LoginPage: React.FC = () => {
 						</CardContent>
 						<CardFooter className="text-center">
 							<p className="text-sm text-gray-600">
-								Don’t have an account?{" "}
+								Don't have an account?{" "}
 								<Button variant="link" onClick={() => setIsLogin(false)} className="text-orange-500">
 									Register
 								</Button>

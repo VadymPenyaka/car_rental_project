@@ -15,7 +15,7 @@ export const PageNotFound: React.FC = () => {
             <code>Page Not Found</code>
           </h2>
           <p className="text-gray-600">
-            We couldn’t find a page at this address. <br />
+            We couldn't find a page at this address. <br />
             It might have been removed or the URL might be incorrect.
           </p>
         </CardContent>
