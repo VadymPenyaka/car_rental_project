@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.security;
 
 import org.springframework.stereotype.Component;
 

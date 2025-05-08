@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
+import nulp.cs.carrentalrestservice.security.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

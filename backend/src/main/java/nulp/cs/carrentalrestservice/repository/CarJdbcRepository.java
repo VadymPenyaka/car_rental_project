@@ -5,28 +5,31 @@ import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.*;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
+import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-
+//TODO refactor move mappers to external class
 @Repository
 @RequiredArgsConstructor
 public class CarJdbcRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<CarCardResponse> getAllCarsByCriteria (CarSearchRequest carSearchRequest) {
-
-        return jdbcTemplate.query(buildQuery(carSearchRequest), buildSource(carSearchRequest), carCardResponseMapper());
+        return jdbcTemplate.query(buildQueryCriteriaQuery(carSearchRequest), buildSource(carSearchRequest), carCardResponseMapper());
     }
 
-    public String buildQuery (CarSearchRequest request) {
+    public String buildQueryCriteriaQuery (CarSearchRequest request) {
         StringBuilder sql = new StringBuilder("SELECT c.*, m.*, l.*, cp.* " +
                 "FROM car c " +
+
                 "LEFT JOIN car_schedule s ON c.id = s.car_id " +
                 "LEFT JOIN model m ON c.model_id = m.id " +
                 "LEFT JOIN location l ON c.location_id = l.id " +
@@ -118,6 +121,37 @@ public class CarJdbcRepository {
                         .pledge(rs.getDouble("pledge"))
                         .build())
                 .build();
+    }
+
+//TODO refactor with rs
+    public List<CategoryPriceRangeResponse> getCategoriesPriceRange() {
+        String sql = "SELECT MIN(p.more_then_month) AS min_price, " +
+                "MAX(p.more_then_month) AS max_price, " +
+                "c.car_class AS car_class " +
+                "FROM car c " +
+                "JOIN car_pricing p ON c.car_pricing_id = p.id " +
+                "GROUP BY c.car_class";
+
+        RowMapper<CategoryPriceRangeResponse> rowMapper = new CategoryPriceRangeMapper();
+
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
+    private static class CategoryPriceRangeMapper implements RowMapper<CategoryPriceRangeResponse> {
+        @Override
+        public CategoryPriceRangeResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
+            CategoryPriceRangeResponse response = new CategoryPriceRangeResponse();
+
+            response.setMin(rs.getDouble("min_price"));
+            response.setMax(rs.getDouble("max_price"));
+
+            String carClassString = rs.getString("car_class");
+            if (carClassString != null) {
+                response.setCarClass(CarClass.valueOf(carClassString));
+            }
+
+            return response;
+        }
     }
 
 }

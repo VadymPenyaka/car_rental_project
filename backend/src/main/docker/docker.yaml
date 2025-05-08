@@ -6,13 +6,19 @@ services:
       restart: always
       working_dir: /app
       volumes:
-        - "/Users/vadim/Downloads/Java/Java practice/car_rental_project/backend/target/car-rental-rest-service-0.0.1-SNAPSHOT.jar:/app/app.jar"
+        - "./1.jar:/app/app.jar"
       environment:
         - "ENVIRONMENT=production"
         - "PORT=9090"
       ports:
-        - "9090:9090"
+        - "8181:9090"
       command: ["java", "-Dspring.profiles.active=test", "-jar", "app.jar"]
+    redis:
+      container_name: redis-compose
+      image: "redis:${REDIS_VERSION}"
+      restart: always
+      ports:
+        - "${REDIS_PORT}:6379"
     postgres:
       container_name: postgres-backend-compose
       image: "postgres:${POSTGRES_VERSION}"

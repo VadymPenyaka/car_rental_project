@@ -2,7 +2,9 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
+import nulp.cs.carrentalrestservice.util.PersonDTOConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -15,25 +17,23 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VerificationToken {
+public class PersonPendingConfirmation {
 
     @Id
     @GeneratedValue
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
-    private UUID token;
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private VerificationType type;
 
-    @Column(name = "value", nullable = false)
-    private String value;
+    @Lob
+    @Column(nullable = false, columnDefinition = "jsonb")
+    @Convert(converter = PersonDTOConverter.class)
+    private PersonDTO data;
 
-    @Column(name = "expiry_date", nullable = false)
-    private LocalDateTime expiryDate;
-
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, columnDefinition = "varchar(36)")
-    private Person person;
+    @Column(name = "expires_at", nullable = false)
+    private LocalDateTime expiresAt;
 }

@@ -4,6 +4,7 @@ import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
+import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.UUID;
 
 public interface CarService {
     void createCar (CarDTO carDTO, MultipartFile[] files);
+
+    List<CategoryPriceRangeResponse> getCarCategoriesPriceRanges();
 
     List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carDto);
 

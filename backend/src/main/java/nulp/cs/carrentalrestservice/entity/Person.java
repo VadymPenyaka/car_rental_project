@@ -3,12 +3,10 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.enumeration.Role;
-import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
+import nulp.cs.carrentalrestservice.security.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -46,6 +44,4 @@ public class Person {
     private Customer customer;
     @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)
     private Admin admin;
-    @OneToMany(mappedBy = "person")
-    private Set<VerificationToken> token = new HashSet<>();
 }

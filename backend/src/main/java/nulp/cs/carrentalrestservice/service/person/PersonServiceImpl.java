@@ -3,7 +3,6 @@ package nulp.cs.carrentalrestservice.service.person;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
-import nulp.cs.carrentalrestservice.model.dto.VerificationTokenDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
 import nulp.cs.carrentalrestservice.model.request.UpdatePersonRequest;
 import nulp.cs.carrentalrestservice.repository.PersonRepository;
@@ -24,7 +23,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonMapper personMapper;
     private final PasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
-    private final VerificationTokenService tokenService;
+    private final ConfirmationService tokenService;
 
 
     @Override
@@ -60,7 +59,7 @@ public class PersonServiceImpl implements PersonService {
                 .personToPersonDto(personRepository
                         .findByUsername(email).orElse(null)));
     }
-
+//TOTO  user should logout after changing credentials
     @Override
     public PersonDTO getAuthenticatedPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -93,19 +92,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void verifyUpdate(String tokenStr) {
-        VerificationTokenDTO token = tokenService.verifyAndGetToken(UUID.fromString(tokenStr));
-        PersonDTO person = token.getPerson();
-        if (token.getType().equals(VerificationType.PASSWORD)) {
-            person.setPassword(token.getValue());
-        }
-        if (token.getType().equals(VerificationType.NEW_EMAIL)) {
-            person.setUsername(token.getValue());
-        }
-        if (token.getType().equals(VerificationType.PHONE)) {
-            person.setPhoneNumber(token.getValue());
-        }
-
-        personRepository.save(personMapper.personDtoToPerson(person));
+        personRepository.save(personMapper.personDtoToPerson(null));
     }
 
 }

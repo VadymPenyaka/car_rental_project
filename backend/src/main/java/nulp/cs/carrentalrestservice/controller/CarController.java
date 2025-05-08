@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
+import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,11 @@ public class CarController {
     @GetMapping("/{id}")
     public CarCustomerDetailsResponse getCarById (@PathVariable UUID id) {
         return carService.getCarCustomerDetailsById(id).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping("/categoryPriceRange")
+    public List<CategoryPriceRangeResponse> getCategoriesPriceRange () {
+        return carService.getCarCategoriesPriceRanges();
     }
 
 }

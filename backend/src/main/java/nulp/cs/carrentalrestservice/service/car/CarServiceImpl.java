@@ -9,9 +9,11 @@ import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
+import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +44,16 @@ public class CarServiceImpl implements CarService {
         eventPublisher.publishEvent(new SaveCarPicturesEvent(this, savedCar.getId(), files));
 
         carMapper.carToCarDto(savedCar);
+    }
+
+    @Override
+    @Cacheable(value = "categoryPricing", key = "'all'")
+    public List<CategoryPriceRangeResponse> getCarCategoriesPriceRanges() {
+        long start = System.currentTimeMillis();
+        List<CategoryPriceRangeResponse> prices = carJdbcRepository.getCategoriesPriceRange();
+        System.out.println(System.currentTimeMillis()-start);
+        return prices;
+
     }
 
     @Override

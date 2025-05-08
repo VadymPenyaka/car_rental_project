@@ -3,7 +3,7 @@ package nulp.cs.carrentalrestservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
-import nulp.cs.carrentalrestservice.util.SensitiveDataConverter;
+import nulp.cs.carrentalrestservice.security.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
