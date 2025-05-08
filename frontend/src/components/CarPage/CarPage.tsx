@@ -7,12 +7,10 @@ import { userCarExtended } from "@/interfaces/userCarExtended"
 import { Header } from "../header/Header"
 import { RentalPricingTable } from "../RentalPricingTable"
 
-
 export const CarPage = () => {
 	const { carId } = useParams()
 
 	const [carData, setCarData] = useState<userCarExtended | null>(null)
-
 
 	useEffect(() => {
 		const fetchCar = async () => {
@@ -31,12 +29,10 @@ export const CarPage = () => {
 	}, [])
 
 	useEffect(() => {
-		console.log("Got car data! - ", carData);
-
+		console.log("Got car data! - ", carData)
 	}, [carData])
 
 	if (!carData) {
-
 		// TODO: write a loading
 		return <div className="p-4">Loading car data...</div>
 	}
@@ -72,11 +68,11 @@ export const CarPage = () => {
 								<select
 									id="city"
 									className="w-full border rounded p-2"
-									defaultValue="Київ"
+									defaultValue="Kyiv"
 								>
-									<option>Київ</option>
-									<option>Львів</option>
-									<option>Одеса</option>
+									<option>Kyiv</option>
+									<option>Lviv</option>
+									<option>Odesa</option>
 								</select>
 							</CardContent>
 						</Card>

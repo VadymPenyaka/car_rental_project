@@ -4,58 +4,54 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { useNavigate } from "react-router"
 
 import slide1 from "../../assets/featuresCarousel/lvivPanorama.jpg"
-import { link } from "fs"
-// Add more slide images as needed
 
 const slides = [
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/",
   },
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/1",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/1",
   },
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/2",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/2",
   },
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/3",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/3",
   },
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/4",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/4",
   },
   {
     img: slide1,
-    title: "До ваших послуг",
-    subtitle: "особистий кабінет",
-    cta: "Детальніше",
-	link: "/5",
+    title: "At your service",
+    subtitle: "personal account",
+    cta: "Learn more",
+    link: "/5",
   },
 ]
 

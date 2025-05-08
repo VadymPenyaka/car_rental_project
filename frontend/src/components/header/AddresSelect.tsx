@@ -12,9 +12,9 @@ import Logo from "../ui/Logo"
 export const AddresSelect = () => {
 
 	const locations = [
-		{ label: "lviv", name: "Львів" },
-		{ label: "kyiv", name: "Київ" },
-		{ label: "ternopil", name: "Тернопіль" },
+		{ label: "lviv", name: "Lviv" },
+		{ label: "kyiv", name: "Kyiv" },
+		{ label: "ternopil", name: "Ternopil" },
 	]
 
 	return (

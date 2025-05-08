@@ -1,16 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { format, isBefore } from "date-fns";
-import { sendSearchRequest } from "./request";
-import { formatDate, sendRequest } from "@/lib/utils"
-import { useSearchStore } from "@/stores/useSearchStore";
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { format, isBefore } from "date-fns"
 import { useNavigate } from 'react-router'
-import { FullSearchPopup } from "./FullSearchPopup.tsx/FullSearchPopup";
-import { useState } from "react";
-
-
+import { FullSearchPopup } from "./FullSearchPopup.tsx/FullSearchPopup"
+import { useState } from "react"
 
 export default function CarRentalSearch() {
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined)
@@ -18,15 +13,12 @@ export default function CarRentalSearch() {
 
 	const navigate = useNavigate()
 
-	const cities = ["Київ", "Львів", "Одеса", "Дніпро", "Харків"];
+	const cities = ["Kyiv", "Lviv", "Odesa", "Dnipro", "Kharkiv"]
 
 	const handleSearchButtonClick = async () => {
-
 		const requestData = {}
-		// Build query string
 		const queryParams = new URLSearchParams(requestData).toString()
-		console.log("queryParams: ", queryParams);
-
+		console.log("queryParams: ", queryParams)
 
 		navigate("/search")
 	}
@@ -40,7 +32,7 @@ export default function CarRentalSearch() {
 					<div className="relative mt-1">
 						<Select onValueChange={(value => console.log(value))}>
 							<SelectTrigger className="w-full">
-								<SelectValue placeholder="Оберіть місто" />
+								<SelectValue placeholder="Select a city" />
 							</SelectTrigger>
 							<SelectContent>
 								{cities.map((city) => (
@@ -78,9 +70,9 @@ export default function CarRentalSearch() {
 								mode="single"
 								selected={endDate || undefined}
 								onSelect={(date) => {
-									if (!date) return;
-									if (startDate && isBefore(date, startDate)) return;
-									setEndDate(date);
+									if (!date) return
+									if (startDate && isBefore(date, startDate)) return
+									setEndDate(date)
 								}}
 								disabled={(date) => startDate ? isBefore(date, startDate) : false}
 							/>
@@ -91,8 +83,10 @@ export default function CarRentalSearch() {
 
 			<div className="mt-4 flex justify-between items-center">
 				<FullSearchPopup />
-				<Button className="bg-orange-500 hover:bg-orange-600" onClick={handleSearchButtonClick}>Підібрати авто</Button>
+				<Button className="bg-orange-500 hover:bg-orange-600" onClick={handleSearchButtonClick}>
+					Find a car
+				</Button>
 			</div>
 		</div>
-	);
+	)
 }

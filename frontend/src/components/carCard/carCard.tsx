@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card"
 import { Button } from "../ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../ui/table"
 import { userCar } from "@/interfaces/userCar"
 import { useState } from "react"
 import { CarCardSkeleton } from "./CarCardSkeleton"
@@ -72,36 +71,35 @@ export const CarCard: React.FC<CarCardProps> = ({ userCar }) => {
 							<div>{engineCapacity.toFixed(2)}L</div>
 							<div>{fuelType}</div>
 							<div>{gearboxType}</div>
-							<div>{numberOfSeats} чол</div>
-							<div>{fuelConsumption} л / 100 км</div>
+							<div>{numberOfSeats} ppl</div>
+							<div>{fuelConsumption} L / 100 km</div>
 						</div>
 
 						<Tabs defaultValue="rental" className="mt-6">
 							<TabsList className="w-full">
 								<TabsTrigger value="rental" className="w-1/2">
-									Прокат без водія
+									Rental without driver
 								</TabsTrigger>
 								<TabsTrigger value="location" className="w-1/2">
-									Адреса подачі
+									Pick-up address
 								</TabsTrigger>
 							</TabsList>
 
 							<RentalPricingTable
 								carPricing={carPricing}
 							/>
-							
+
 							<TabsContent value="location">
-								<p className="text-gray-600 mt-4">Тут буде інформація про адресу подачі авто.</p>
+								<p className="text-gray-600 mt-4">Pick-up address details will be shown here.</p>
 							</TabsContent>
 						</Tabs>
 					</CardContent>
 					<CardFooter className="justify-center">
-						<Button className="bg-orange-500 hover:bg-orange-600 text-white">Замовити</Button>
+						<Button className="bg-orange-500 hover:bg-orange-600 text-white">Book now</Button>
 					</CardFooter>
 				</>
 			)
 			}
-
 		</Card >
 	)
 }
