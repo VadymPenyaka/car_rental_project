@@ -3,6 +3,7 @@ import { CirclePercSection } from "./components/CirclePercSection"
 import { FeaturesCarousel } from "./components/FeaturesCarousel"
 import { Header } from "./components/header/Header"
 import Hero from "./components/Hero/Hero"
+import { InfoReasonsSection } from "./components/InfoReasonsSection"
 import { RentalInfo } from "./components/RentalInfo"
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
 			<FeaturesCarousel />
 			<CirclePercSection />
 			<RentalInfo />
+			<InfoReasonsSection />
 		</>
 	)
 }
