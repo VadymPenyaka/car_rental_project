@@ -1,5 +1,6 @@
 import { CarMainCategoriesPanel } from "./components/CarMainCategoriesPanel/CarMainCategoriesPanel"
 import { CirclePercSection } from "./components/CirclePercSection"
+import { FAQSection } from "./components/FAQSection"
 import { FeaturesCarousel } from "./components/FeaturesCarousel"
 import { Header } from "./components/header/Header"
 import Hero from "./components/Hero/Hero"
@@ -18,6 +19,7 @@ const App = () => {
 			<RentalInfo />
 			<InfoReasonsSection />
 			<TermAndAdvantagesSection />
+			<FAQSection />
 		</>
 	)
 }
