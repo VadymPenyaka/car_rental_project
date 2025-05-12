@@ -1,6 +1,6 @@
 package nulp.cs.carrentalrestservice.mapper;
 
-import nulp.cs.carrentalrestservice.entity.Passport;
+import nulp.cs.carrentalrestservice.entity.bankid.Passport;
 import nulp.cs.carrentalrestservice.model.dto.PassportDTO;
 import org.mapstruct.Mapper;
 

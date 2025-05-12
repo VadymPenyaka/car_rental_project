@@ -1,15 +1,18 @@
-package nulp.cs.carrentalrestservice.entity;
+package nulp.cs.carrentalrestservice.entity.bankid;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nulp.cs.carrentalrestservice.entity.Customer;
 import nulp.cs.carrentalrestservice.security.SensitiveDataConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,32 +20,30 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Passport {
+public class DriverLicense {
     @Id
     @GeneratedValue
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    @Column(updatable = false, nullable = false, unique = true)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
     @Column(nullable = false)
-    private LocalDate dateOfBirth;
+    private LocalDate issueDate;
 
-    @Column(nullable = false, unique = true)
-    @Convert(converter = SensitiveDataConverter.class)
-    private String documentNumber;
+    @Column(nullable = false)
+    private LocalDate expirationDate;
 
     @Column(nullable = false)
     @Convert(converter = SensitiveDataConverter.class)
     private String issuedBy;
 
-    @Column(nullable = false)
-    private LocalDate expirationDate;
-
-    @Column
+    @Column(nullable = false, unique = true)
     @Convert(converter = SensitiveDataConverter.class)
-    private String taxIdentificationNumber;
+    private String documentNumber;
 
-    @OneToOne(mappedBy = "passport")
+    @OneToOne(mappedBy = "driverLicense")
     private Customer customer;
 
+    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    private Set<DriverLicenseCategory> categories = new HashSet<>();
 }

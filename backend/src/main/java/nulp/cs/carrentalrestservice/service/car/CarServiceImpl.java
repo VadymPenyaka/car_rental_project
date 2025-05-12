@@ -13,14 +13,14 @@ import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
 import nulp.cs.carrentalrestservice.util.LoggingService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -35,6 +35,10 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "allCarCards", key = "'allCarCards'"),
+            @CacheEvict(value = "categoryPricing", key = "'pricingRanges'")
+    })
     public void createCar(CarDTO carDTO, MultipartFile[] files) {
         carDTO.setModel(modelService.createIfNotExist(carDTO.getModel()));
 
@@ -47,13 +51,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    @Cacheable(value = "categoryPricing", key = "'all'")
+    @Cacheable(value = "categoryPricing", key = "'pricingRanges'")
     public List<CategoryPriceRangeResponse> getCarCategoriesPriceRanges() {
         long start = System.currentTimeMillis();
         List<CategoryPriceRangeResponse> prices = carJdbcRepository.getCategoriesPriceRange();
         System.out.println(System.currentTimeMillis()-start);
         return prices;
-
     }
 
     @Override
@@ -62,6 +65,20 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Cacheable(value = "allCarCards", key = "'allCarCards'")
+    public List<CarCardResponse> getAll() {
+        List<CarCardResponse> responses = (ArrayList<CarCardResponse>) carRepository.findAll().stream().map(carMapper::carToCarCardDto).toList();
+        Collections.shuffle(responses);
+        return responses;
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(value = "allCarCards", key = "'allCarCards'"),
+            @CacheEvict(value = "carFullDetails", key = "#id"),
+            @CacheEvict(value = "carCustomerDetails", key = "#id"),
+            @CacheEvict(value = "categoryPricing", key = "'pricingRanges'")
+    })
     public Boolean deleteCarById(UUID id) {
         loggingService.logInfo("Deleting car for ID: " + id);
         if (carRepository.existsById(id)) {
@@ -74,6 +91,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "allCarCards", key = "'allCarCards'"),
+            @CacheEvict(value = "carFullDetails", key = "#id"),
+            @CacheEvict(value = "carCustomerDetails", key = "#id"),
+            @CacheEvict(value = "categoryPricing", key = "'pricingRanges'")
+    })
     public Optional<CarDTO> updateCarByID(UUID id, CarDTO carDTO) {
         loggingService.logInfo("Updating car for ID: " + id);
         AtomicReference<Optional<CarDTO>> atomicReference = new AtomicReference<>();
@@ -94,6 +117,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Cacheable(value = "carCustomerDetails", key = "#id")
     public Optional<CarCustomerDetailsResponse> getCarCustomerDetailsById(UUID id) {
         return Optional.ofNullable(carMapper
                 .carToCustomerDetailDto(carRepository
@@ -101,6 +125,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Cacheable(value = "carFullDetails", key = "#id")
     public Optional<CarDTO> getCarFullDetailsById(UUID id) {
         return Optional.ofNullable(carMapper.carToCarDto(carRepository
                 .findById(id).orElse(null)));
@@ -108,6 +133,6 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public boolean isVinUsed(String vin) {
-        return carRepository.existsByVin(vin);
+        return carJdbcRepository.existsByVin(vin);
     }
 }

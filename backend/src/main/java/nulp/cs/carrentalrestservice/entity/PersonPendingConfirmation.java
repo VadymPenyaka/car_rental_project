@@ -37,6 +37,6 @@ public class PersonPendingConfirmation {
     @Column
     private String username;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime expiresAt;
 }

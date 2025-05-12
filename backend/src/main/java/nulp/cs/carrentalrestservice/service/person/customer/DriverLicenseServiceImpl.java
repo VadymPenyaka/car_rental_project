@@ -1,8 +1,8 @@
 package nulp.cs.carrentalrestservice.service.person.customer;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.entity.DriverLicense;
-import nulp.cs.carrentalrestservice.entity.DriverLicenseCategory;
+import nulp.cs.carrentalrestservice.entity.bankid.DriverLicense;
+import nulp.cs.carrentalrestservice.entity.bankid.DriverLicenseCategory;
 import nulp.cs.carrentalrestservice.mapper.DriverLicenseMapper;
 import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
 import nulp.cs.carrentalrestservice.repository.DriverLicensesRepository;

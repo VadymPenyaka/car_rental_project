@@ -34,35 +34,35 @@ public class CarValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "fuelType", "field.required", "Fuel type is required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "location", "field.required", "Location is required");
 
-        if (carDTO.getVin() != null && !carDTO.getVin().matches("[A-HJ-NPR-Z0-9]{17}")) {
+        if (carDTO.getRegistrationInfo().getVin() != null && !carDTO.getRegistrationInfo().getVin().matches("[A-HJ-NPR-Z0-9]{17}")) {
             errors.rejectValue("vin", "field.invalid", "VIN must be a valid 17-character string");
         }
 
-        if (carService.isVinUsed(carDTO.getVin())) {
+        if (carService.isVinUsed(carDTO.getRegistrationInfo().getVin())) {
             errors.rejectValue("vin", "field.invalid", "Car with this VIN is already exists");
         }
 
-        if (carDTO.getNumberOfSeats() <= 0) {
+        if (carDTO.getCarDetails().getNumberOfSeats() <= 0) {
             errors.rejectValue("numberOfSeats", "field.invalid", "Number of seats must be greater than 0");
         }
 
-        if (carDTO.getTrunkCapacity() < 0) {
+        if (carDTO.getCarDetails().getTrunkCapacity() < 0) {
             errors.rejectValue("trunkCapacity", "field.invalid", "Trunk capacity must be non-negative");
         }
 
-        if (carDTO.getFuelConsumption() < 0) {
+        if (carDTO.getCarDetails().getFuelConsumption() < 0) {
             errors.rejectValue("fuelConsumption", "field.invalid", "Fuel consumption must be non-negative");
         }
 
-        if (carDTO.getFuelTankCapacity() < 0) {
+        if (carDTO.getCarDetails().getFuelTankCapacity() < 0) {
             errors.rejectValue("fuelTankCapacity", "field.invalid", "Fuel tank capacity must be non-negative");
         }
 
-        if (carDTO.getEngineCapacity() <= 0) {
+        if (carDTO.getCarDetails().getEngineCapacity() <= 0) {
             errors.rejectValue("engineCapacity", "field.invalid", "Engine capacity must be greater than 0");
         }
 
-        if (carDTO.getRequiredExperience() < 0) {
+        if (carDTO.getCarDetails().getRequiredExperience() < 0) {
             errors.rejectValue("requiredExperience", "field.invalid", "Required experience must be non-negative");
         }
     }

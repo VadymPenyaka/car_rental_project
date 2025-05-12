@@ -2,6 +2,8 @@ package nulp.cs.carrentalrestservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import nulp.cs.carrentalrestservice.entity.bankid.DriverLicense;
+import nulp.cs.carrentalrestservice.entity.bankid.Passport;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

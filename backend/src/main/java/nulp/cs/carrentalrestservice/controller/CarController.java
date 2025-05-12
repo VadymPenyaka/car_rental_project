@@ -21,7 +21,10 @@ public class CarController {
     private final CarService carService;
 
     @PostMapping
-    public List<CarCardResponse> getAllCarsByCriteria(@Valid @RequestBody CarSearchRequest searchRequest) {
+    public List<CarCardResponse> getAllCarsByCriteria(@Valid @RequestBody(required = false) CarSearchRequest searchRequest) {
+        if (searchRequest==null) {
+            carService.getAll();
+        }
         return carService.getAllCarsByCriteria(searchRequest);
     }
 
@@ -30,7 +33,7 @@ public class CarController {
         return carService.getCarCustomerDetailsById(id).orElseThrow(NotFoundException::new);
     }
 
-    @GetMapping("/categoryPriceRange")
+    @GetMapping("/categoriesPriceRange")
     public List<CategoryPriceRangeResponse> getCategoriesPriceRange () {
         return carService.getCarCategoriesPriceRanges();
     }

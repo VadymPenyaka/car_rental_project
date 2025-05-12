@@ -87,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerDTO.getDriverLicense().getCategories()
                 .stream()
                 .map(DriverLicenseCategoryDTO::getCategory)
-                .filter(category -> category.equals(carDTO.getLicenseCategory()))
+                .filter(category -> category.equals(carDTO.getCarDetails().getLicenseCategory()))
                 .findFirst()
                 .orElseThrow(() ->
                         new CategoryVerificationException("You have not necessary category."));
@@ -97,7 +97,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .getIssueDate()
                 .isBefore(LocalDate.now()
                         .minusYears(carDTO
-                                .getRequiredExperience()));
+                                .getCarDetails().getRequiredExperience()));
     }
 
     @Override

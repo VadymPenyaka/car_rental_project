@@ -18,6 +18,8 @@ public interface CarService {
 
     List<CarCardResponse> getAllCarsByCriteria(CarSearchRequest carDto);
 
+    List<CarCardResponse> getAll();
+
     Boolean deleteCarById (UUID id);
 
     Optional<CarDTO> updateCarByID(UUID id, CarDTO carDTO);

@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.entity;
+package nulp.cs.carrentalrestservice.entity.bankid;
 
 import jakarta.persistence.*;
 import lombok.*;

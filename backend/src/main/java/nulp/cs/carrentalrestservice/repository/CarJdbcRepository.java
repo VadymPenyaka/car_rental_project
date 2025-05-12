@@ -1,40 +1,39 @@
 package nulp.cs.carrentalrestservice.repository;
 
 import lombok.RequiredArgsConstructor;
-import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
+import nulp.cs.carrentalrestservice.mapper.CarRowMapper;
 import nulp.cs.carrentalrestservice.model.enumeration.*;
 import nulp.cs.carrentalrestservice.model.request.CarSearchRequest;
 import nulp.cs.carrentalrestservice.model.response.CarCardResponse;
 import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.UUID;
-//TODO refactor move mappers to external class
+import java.util.*;
+
 @Repository
 @RequiredArgsConstructor
 public class CarJdbcRepository {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public List<CarCardResponse> getAllCarsByCriteria (CarSearchRequest carSearchRequest) {
-        return jdbcTemplate.query(buildQueryCriteriaQuery(carSearchRequest), buildSource(carSearchRequest), carCardResponseMapper());
+        return jdbcNamedTemplate.query(buildQueryCriteriaQuery(carSearchRequest), buildSource(carSearchRequest), CarRowMapper.carCardResponseMapper);
     }
 
     public String buildQueryCriteriaQuery (CarSearchRequest request) {
-        StringBuilder sql = new StringBuilder("SELECT c.*, m.*, l.*, cp.* " +
+        StringBuilder sql = new StringBuilder("SELECT c.*, m.*, l.*, cp.*, cd.* " +
                 "FROM car c " +
-
                 "LEFT JOIN car_schedule s ON c.id = s.car_id " +
                 "LEFT JOIN model m ON c.model_id = m.id " +
                 "LEFT JOIN location l ON c.location_id = l.id " +
                 "LEFT JOIN brand b ON m.brand_name = b.name " +
                 "LEFT JOIN car_pricing cp ON c.car_pricing_id = cp.id " +
+                "LEFT JOIN car_details cd ON c.car_details_id = cd.id " +
                 "WHERE 1=1 ");
 
         if (request.getCity() != null) {
@@ -101,57 +100,51 @@ public class CarJdbcRepository {
         return source;
     }
 
-    private RowMapper<CarCardResponse> carCardResponseMapper() {
-        return (rs, rowNum) -> CarCardResponse.builder()
-                .id(UUID.fromString(rs.getString("id")))
-                .modelName(rs.getString("model_name"))
-                .brandName(rs.getString("brand_name"))
-                .numberOfSeats(rs.getInt("number_of_seats"))
-                .fuelType(FuelType.valueOf(rs.getString("fuel_type")))
-                .fuelConsumption(rs.getInt("fuel_consumption"))
-                .driveType(DriveType.valueOf(rs.getString("drive_type")))
-                .engineCapacity(rs.getDouble("engine_capacity"))
-                .gearboxType(GearboxType.valueOf(rs.getString("gearbox_type")))
-                .carPricing(CarPricingDTO.builder()
-                        .id(UUID.fromString(rs.getString("id")))
-                        .upToThreeDays(rs.getDouble("up_to_three_days"))
-                        .upToTenDays(rs.getDouble("up_to_ten_days"))
-                        .upToMonth(rs.getDouble("up_to_month"))
-                        .moreThenMonth(rs.getDouble("more_then_month"))
-                        .pledge(rs.getDouble("pledge"))
-                        .build())
-                .build();
-    }
 
-//TODO refactor with rs
     public List<CategoryPriceRangeResponse> getCategoriesPriceRange() {
-        String sql = "SELECT MIN(p.more_then_month) AS min_price, " +
-                "MAX(p.more_then_month) AS max_price, " +
-                "c.car_class AS car_class " +
-                "FROM car c " +
-                "JOIN car_pricing p ON c.car_pricing_id = p.id " +
-                "GROUP BY c.car_class";
+        String sql = """
+        SELECT c.car_class AS car_class,
+               MIN(p.more_then_month) AS min_price,
+               MAX(p.more_then_month) AS max_price
+        FROM car c
+        LEFT JOIN car_pricing p ON c.car_pricing_id = p.id
+        GROUP BY c.car_class
+        """;
 
-        RowMapper<CategoryPriceRangeResponse> rowMapper = new CategoryPriceRangeMapper();
+        Map<CarClass, CategoryPriceRangeResponse> resultMap = new EnumMap<>(CarClass.class);
 
-        return jdbcTemplate.query(sql, rowMapper);
+        jdbcNamedTemplate.query(sql, rs -> {
+            Optional.ofNullable(rs.getString("car_class"))
+                    .map(CarClass::valueOf)
+                    .ifPresent(carClass -> {
+                        try {
+                            resultMap.put(carClass, CategoryPriceRangeResponse.builder()
+                                    .carClass(carClass)
+                                    .min(rs.getDouble("min_price"))
+                                    .max(rs.getDouble("max_price"))
+                                    .build());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+        });
+
+        Arrays.stream(CarClass.values())
+                .forEach(carClass -> resultMap.putIfAbsent(carClass,
+                        CategoryPriceRangeResponse.builder()
+                                .carClass(carClass)
+                                .min(0.0)
+                                .max(0.0)
+                                .build()));
+
+        return new ArrayList<>(resultMap.values());
     }
 
-    private static class CategoryPriceRangeMapper implements RowMapper<CategoryPriceRangeResponse> {
-        @Override
-        public CategoryPriceRangeResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
-            CategoryPriceRangeResponse response = new CategoryPriceRangeResponse();
+    public boolean existsByVin(String vin) {
+        String query = "SELECT COUNT(*) FROM car_registration_info WHERE vin = ?";
 
-            response.setMin(rs.getDouble("min_price"));
-            response.setMax(rs.getDouble("max_price"));
+        Integer count = jdbcTemplate.queryForObject(query, new Object[] { vin }, Integer.class);
 
-            String carClassString = rs.getString("car_class");
-            if (carClassString != null) {
-                response.setCarClass(CarClass.valueOf(carClassString));
-            }
-
-            return response;
-        }
+        return count != null && count > 0;
     }
-
 }
