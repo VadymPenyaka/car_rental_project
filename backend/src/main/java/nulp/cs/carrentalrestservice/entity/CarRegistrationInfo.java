@@ -30,6 +30,12 @@ public class CarRegistrationInfo {
     @Column(nullable = false, length = 36)
     private String color;
 
+    @Column(nullable = false, length = 36)
+    private String passportId;
+
+    @Column(nullable = false, length = 36)
+    private String insurance_id;
+
     @OneToOne(mappedBy = "registrationInfo")
     private Car car;
 }

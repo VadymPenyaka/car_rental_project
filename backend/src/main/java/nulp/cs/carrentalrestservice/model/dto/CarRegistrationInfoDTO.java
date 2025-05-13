@@ -17,4 +17,6 @@ public class CarRegistrationInfoDTO {
     private String vin;
     private String number;
     private String color;
+    private String passportId;
+    private String insurance_id;
 }

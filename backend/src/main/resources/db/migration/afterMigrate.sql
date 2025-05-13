@@ -138,18 +138,18 @@ VALUES
     ('e54193e7-1b99-4a86-9d27-000000000009', 2.0, 65, 7, 470, 5, 'B', 3, '["ABS", "heated seats"]'),
     ('e54193e7-1b99-4a86-9d27-000000000010', 3.5, 80, 12, 600, 7, 'B', 4, '["autopilot", "panoramic roof", "rain sensor", "heated seats"]');
 
-INSERT INTO car_registration_info (id, vin, number, color)
+INSERT INTO car_registration_info (id, vin, number, color, passport_id, insurance_id)
 VALUES
-    ('9e72f4ae-f001-4af0-9001-000000000001', 'VIN000001', 'AA0001AA', 'Black'),
-    ('9e72f4ae-f001-4af0-9001-000000000002', 'VIN000002', 'AA0002AA', 'Black'),
-    ('9e72f4ae-f001-4af0-9001-000000000003', 'VIN000003', 'AA0003AA', 'Gray'),
-    ('9e72f4ae-f001-4af0-9001-000000000004', 'VIN000004', 'AA0004AA', 'Grey'),
-    ('9e72f4ae-f001-4af0-9001-000000000005', 'VIN000005', 'AA0005AA', 'Blue'),
-    ('9e72f4ae-f001-4af0-9001-000000000006', 'VIN000006', 'AA0006AA', 'White'),
-    ('9e72f4ae-f001-4af0-9001-000000000007', 'VIN000007', 'AA0007AA', 'Blue'),
-    ('9e72f4ae-f001-4af0-9001-000000000008', 'VIN000008', 'AA0008AA', 'Black'),
-    ('9e72f4ae-f001-4af0-9001-000000000009', 'VIN000009', 'AA0009AA', 'White'),
-    ('9e72f4ae-f001-4af0-9001-000000000010', 'VIN000010', 'AA0010AA', 'White');
+    ('9e72f4ae-f001-4af0-9001-000000000001', 'VIN000001', 'AA0001AA', 'Black', 'TP123456', 'INS123456'),
+    ('9e72f4ae-f001-4af0-9001-000000000002', 'VIN000002', 'AA0002AA', 'Black', 'TP123457', 'INS123457'),
+    ('9e72f4ae-f001-4af0-9001-000000000003', 'VIN000003', 'AA0003AA', 'Gray', 'TP123458', 'INS123458'),
+    ('9e72f4ae-f001-4af0-9001-000000000004', 'VIN000004', 'AA0004AA', 'Grey', 'TP123459', 'INS123459'),
+    ('9e72f4ae-f001-4af0-9001-000000000005', 'VIN000005', 'AA0005AA', 'Blue', 'TP123460', 'INS123460'),
+    ('9e72f4ae-f001-4af0-9001-000000000006', 'VIN000006', 'AA0006AA', 'White', 'TP123461', 'INS123461'),
+    ('9e72f4ae-f001-4af0-9001-000000000007', 'VIN000007', 'AA0007AA', 'Blue', 'TP123462', 'INS123462'),
+    ('9e72f4ae-f001-4af0-9001-000000000008', 'VIN000008', 'AA0008AA', 'Black', 'TP123463', 'INS123463'),
+    ('9e72f4ae-f001-4af0-9001-000000000009', 'VIN000009', 'AA0009AA', 'White', 'TP123464', 'INS123464'),
+    ('9e72f4ae-f001-4af0-9001-000000000010', 'VIN000010', 'AA0010AA', 'White', 'TP123465', 'INS123465');
 
 INSERT INTO car (id, location_id, car_class, fuel_type, gearbox_type, drive_type, car_pricing_id, body_type, model_id, registration_info_id, car_details_id)
 VALUES

@@ -143,7 +143,4 @@ public class RentalAgreementService {
         document.add(Chunk.NEWLINE);
     }
 
-    //TODO places for sign
-
-
 }
