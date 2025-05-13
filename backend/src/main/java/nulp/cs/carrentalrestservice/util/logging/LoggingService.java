@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.util.logging;
 
 public interface LoggingService {
     void logInfo(String message);

@@ -16,42 +16,42 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class S3Service {
     private final S3Client s3Client;
 
-    @Value("${do.space.bucket}")
-    private String doSpaceBucket;
-
     @SneakyThrows
-    public void saveFileToServer(MultipartFile multipartFile, String key) {
+    public void savePictureToServer(MultipartFile multipartFile, String key) {
         String contentType = multipartFile.getContentType();
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(doSpaceBucket)
+                .bucket("cars")
                 .key(key)
                 .contentType(contentType)
                 .acl("public-read")
                 .build();
 
-        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize()));    }
+        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize()));
+    }
+
+    @SneakyThrows
+    public void saveDocumentToServer(byte[] fileContent, String key) {
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket("docs")
+                .key(key)
+                .contentType("application/pdf")
+                .acl("public-read")
+                .build();
+
+        s3Client.putObject(
+                putObjectRequest,
+                RequestBody.fromBytes(fileContent)
+        );
+    }
 
 
     public void deleteFileFromServer(String key) {
         s3Client.deleteObject(builder -> builder
-                .bucket(doSpaceBucket)
+                .bucket("cars")
                 .key(key)
                 .build()
         );
-    }
-
-    public void getFileMetadataFromServer(String key) {
-        try {
-            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-                    .bucket(doSpaceBucket)
-                    .key(key)
-                    .build();
-
-            s3Client.headObject(headObjectRequest);
-        } catch (NoSuchKeyException e) {
-            throw new RuntimeException("File not found in S3: " + key);
-        }
     }
 
 }

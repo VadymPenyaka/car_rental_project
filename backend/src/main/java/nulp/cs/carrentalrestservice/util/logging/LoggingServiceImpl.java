@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.util;
+package nulp.cs.carrentalrestservice.util.logging;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

@@ -14,7 +14,7 @@ import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
 import nulp.cs.carrentalrestservice.service.person.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

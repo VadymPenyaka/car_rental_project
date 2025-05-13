@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
+import nulp.cs.carrentalrestservice.security.SensitiveDataConverter;
 import nulp.cs.carrentalrestservice.util.PersonDTOConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -35,6 +36,7 @@ public class PersonPendingConfirmation {
     private PersonDTO data;
 
     @Column
+    @Convert(converter = SensitiveDataConverter.class)
     private String username;
 
     @Column(nullable = false)

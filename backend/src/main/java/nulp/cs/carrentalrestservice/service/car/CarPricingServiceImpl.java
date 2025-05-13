@@ -8,7 +8,7 @@ import nulp.cs.carrentalrestservice.model.dto.CarPricingDTO;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CarPricingRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;

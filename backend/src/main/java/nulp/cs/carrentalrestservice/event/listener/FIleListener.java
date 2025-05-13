@@ -1,6 +1,7 @@
 package nulp.cs.carrentalrestservice.event.listener;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.event.OrderDocumentEvent;
 import nulp.cs.carrentalrestservice.event.SaveCarPicturesEvent;
 import nulp.cs.carrentalrestservice.util.S3Service;
 import org.springframework.context.event.EventListener;
@@ -18,7 +19,7 @@ public class FIleListener {
 
         for (MultipartFile file: event.getMultipartFiles()) {
             String fileName = event.getCarId() + "_" + fileNumber;
-            s3Service.saveFileToServer(file, fileName);
+            s3Service.savePictureToServer(file, fileName);
             fileNumber++;
         }
     }

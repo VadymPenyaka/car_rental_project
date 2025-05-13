@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface DocumentService {
     DocumentDTO createDocument (DocumentDTO documentDTO);
 
+    void createRentalAgreementDocument(UUID orderId);
+
     Optional<DocumentDTO> getDocumentById (UUID id);
 
     Optional<DocumentDTO> updateDocumentById (UUID id, DocumentDTO documentDTO);

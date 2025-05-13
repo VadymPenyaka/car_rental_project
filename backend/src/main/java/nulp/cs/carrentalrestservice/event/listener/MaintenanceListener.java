@@ -7,7 +7,7 @@ import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.service.car.CarMaintenanceService;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

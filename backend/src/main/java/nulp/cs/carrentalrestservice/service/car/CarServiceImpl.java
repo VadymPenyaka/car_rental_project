@@ -12,7 +12,7 @@ import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import nulp.cs.carrentalrestservice.model.response.CategoryPriceRangeResponse;
 import nulp.cs.carrentalrestservice.repository.CarJdbcRepository;
 import nulp.cs.carrentalrestservice.repository.CarRepository;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;

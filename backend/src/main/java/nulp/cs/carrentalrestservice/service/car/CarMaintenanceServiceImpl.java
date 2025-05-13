@@ -6,7 +6,7 @@ import nulp.cs.carrentalrestservice.mapper.CarScheduleMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarMaintenanceDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.repository.CarMaintenanceRepository;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

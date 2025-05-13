@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.mapper.LocationMapper;
 import nulp.cs.carrentalrestservice.model.dto.LocationDTO;
 import nulp.cs.carrentalrestservice.repository.LocationRepository;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

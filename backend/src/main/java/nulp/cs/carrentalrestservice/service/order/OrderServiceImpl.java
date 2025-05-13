@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.service.order;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
+import nulp.cs.carrentalrestservice.event.OrderDocumentEvent;
 import nulp.cs.carrentalrestservice.event.OrderEmailEvent;
 import nulp.cs.carrentalrestservice.exception.InvalidOrderException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
@@ -11,11 +12,12 @@ import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.OrderRepository;
+import nulp.cs.carrentalrestservice.service.document.DocumentService;
 import nulp.cs.carrentalrestservice.service.person.customer.CustomerService;
 import nulp.cs.carrentalrestservice.service.person.admin.AdminService;
 import nulp.cs.carrentalrestservice.service.car.CarPricingService;
 import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +60,10 @@ public class OrderServiceImpl implements OrderService {
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
+        publisher.publishEvent(new OrderDocumentEvent(this, savedOrder.getId()));
 
         loggingService.logInfo("Car order created successfully");
+
     }
 
     @Override

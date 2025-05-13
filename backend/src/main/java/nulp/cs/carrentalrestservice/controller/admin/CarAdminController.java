@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.model.dto.CarDTO;
 import nulp.cs.carrentalrestservice.service.car.CarService;
-import nulp.cs.carrentalrestservice.util.LoggingService;
+import nulp.cs.carrentalrestservice.util.logging.LoggingService;
 import nulp.cs.carrentalrestservice.validation.CarValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
