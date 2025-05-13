@@ -46,7 +46,6 @@ public class DocumentServiceImpl implements DocumentService {
         DocumentDTO documentToSave = DocumentDTO.builder()
                 .createdAt(LocalDateTime.now())
                 .type(DocumentType.AGREEMENT)
-                .filePath("/agreement")
                 .build();
 
         UUID documentId = createDocument(documentToSave).getId();
@@ -67,7 +66,6 @@ public class DocumentServiceImpl implements DocumentService {
         AtomicReference<Optional<DocumentDTO>> atomicReference = new AtomicReference<>();
 
         documentRepository.findById(id).ifPresentOrElse ( foundDocument -> {
-                foundDocument.setFilePath(documentDTO.getFilePath());
                 foundDocument.setType(documentDTO.getType());
                 foundDocument.setCreatedAt(documentDTO.getCreatedAt());
 

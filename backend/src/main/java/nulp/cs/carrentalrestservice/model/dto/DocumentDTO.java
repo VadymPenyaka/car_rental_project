@@ -17,7 +17,7 @@ public class DocumentDTO {
 
     private DocumentType type;
 
-    private String filePath;
+    private Integer documentNumber;
 
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 }
