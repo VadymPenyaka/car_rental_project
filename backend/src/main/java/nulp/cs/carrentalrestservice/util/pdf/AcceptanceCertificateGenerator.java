@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.Map;
 
@@ -13,20 +14,24 @@ public class AcceptanceCertificateGenerator {
     private final Font titleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
     private final Font regularFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
 
-    public void generateCertificate(String filePath, Map<String, String> data) throws Exception {
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
-        document.open();
-
+    public void generateCertificate(Document document, Map<String, String> data) throws Exception {
         addHeader(document, data);
         addPartiesInfo(document, data);
         addVehicleDetails(document, data);
         addDocumentsInfo(document, data);
         addTechnicalCondition(document);
         addSignatures(document);
-
-        document.close();
     }
+
+    public void generateReturnCertificate (Document document, Map<String, String> data) throws Exception {
+        addHeader(document, data);
+        addPartiesInfo(document, data);
+        addVehicleDetailsReturn(document, data);
+        addDocumentsInfo(document, data);
+        addTechnicalCondition(document);
+        addSignatures(document);
+    }
+
 
     private void addHeader(Document document, Map<String, String> data) throws DocumentException {
         Paragraph title = new Paragraph("Acceptance Certificate of Rented Property", titleFont);
@@ -45,21 +50,34 @@ public class AcceptanceCertificateGenerator {
     }
 
     private void addPartiesInfo(Document document, Map<String, String> data) throws DocumentException {
-        String partiesInfo = "The Lessor, " + data.get("lessor_full_name") + " (hereinafter referred to as the \"Lessor\"), " +
-                "a private individual, residing at " + data.get("lessor_address") + ", passport series and number " + data.get("lessor_passport_number") +
-                ", issued by " + data.get("lessor_issuing_authority") + ", on the one hand, and\n" +
-                "the Lessee, " + data.get("lessee_full_name") + " (hereinafter referred to as the \"Lessee\"), " +
-                "a private individual, residing at " + data.get("lessee_address") + ", passport series and number " + data.get("lessee_passport_number") +
-                ", issued by " + data.get("lessee_issuing_authority") + ", on the other hand, by signing this certificate confirm and acknowledge the following:";
-        document.add(new Paragraph(partiesInfo, regularFont));
+        String intro = "This Vehicle Handover Act is an integral part of the Car Rental Agreement between:\n" +
+                "\n" +
+                "Lessor (Company): LLC \"5Cars LLC\"\n" +
+                "Represented by: Director Ivanenko Ivan Ivanovych\n" +
+                "\n" +
+                "Lessee (Individual): " + data.get("lesseeName") + "\n"+
+                "Passport / ID : " + data.get("passportNumber") + "\n" +
+                "Tax ID:" + data.get("taxId") + "\n";
+
+        document.add(new Paragraph(intro, regularFont));
         document.add(Chunk.NEWLINE);
     }
 
     private void addVehicleDetails(Document document, Map<String, String> data) throws DocumentException {
-        String vehicleInfo = "The Lessor has transferred, and the Lessee has accepted into temporary paid use, the property subject to the rental agreement – a vehicle: " +
-                data.get("vehicle_model") + " (" + data.get("vehicle_year") + " year of manufacture), license plate number " +
-                data.get("license_plate") + ", VIN code " + data.get("vin_code") + ", color " + data.get("vehicle_color") +
-                ", with an estimated value of " + data.get("vehicle_value") + " UAH.";
+        String vehicleInfo = "The Lessor has transferred, and the Lessee has accepted into temporary paid use, " +
+                "the property subject to the rental agreement – a vehicle: " +
+                data.get("carBrandModel") + " (year of manufacture: " + data.get("carYear") +
+                "), license plate number " + data.get("carPlate") + ", VIN " + data.get("carVIN") +
+                ", color " + data.get("carColor") +".";
+        document.add(new Paragraph(vehicleInfo, regularFont));
+        document.add(Chunk.NEWLINE);
+    }
+
+    private void addVehicleDetailsReturn (Document document, Map<String, String> data) throws DocumentException {
+        String vehicleInfo = "The Lessee has returned to the Lessor the vehicle previously rented under the rental agreement: " +
+                data.get("carBrandModel") + " (year of manufacture: " + data.get("carYear") +
+                "), license plate number " + data.get("carPlate") + ", VIN " + data.get("carVIN") +
+                ", color " + data.get("carColor") + ".";
         document.add(new Paragraph(vehicleInfo, regularFont));
         document.add(Chunk.NEWLINE);
     }
@@ -67,13 +85,17 @@ public class AcceptanceCertificateGenerator {
     private void addDocumentsInfo(Document document, Map<String, String> data) throws DocumentException {
         String documentsInfo = "Together with the vehicle, the following documents have been provided:\n" +
                 "Certificate of state registration (technical passport) No. " + data.get("registration_number") +
-                ", as well as " + data.get("additional_document") + " for the vehicle.";
+                ", as well as insurance for the vehicle.";
         document.add(new Paragraph(documentsInfo, regularFont));
         document.add(Chunk.NEWLINE);
     }
 
     private void addTechnicalCondition(Document document) throws DocumentException {
-        String technicalCondition = "The technical condition of the vehicle is satisfactory. The Lessee has no claims regarding the condition of the property.";
+        String technicalCondition = "The vehicle is in good technical and visual condition: clean exterior and interior, " +
+                "fully functional lights, engine, and systems. " +
+                "Tires are in proper condition. No visible damage, cracks, or malfunctions detected. " +
+                "All required tools and safety equipment are present.\n" +
+                "A joint visual inspection has been carried out. Photos attached if necessary.";
         document.add(new Paragraph(technicalCondition, regularFont));
         document.add(Chunk.NEWLINE);
     }

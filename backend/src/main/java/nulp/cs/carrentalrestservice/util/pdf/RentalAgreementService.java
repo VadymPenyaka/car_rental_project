@@ -52,9 +52,9 @@ public class RentalAgreementService {
     }
 
     private void addIntro(Document document, Map<String, String> data) throws DocumentException {
-        String intro = data.get("lessorName") + "represented by Director Ivanenko Ivan Ivanovych, " +
+        String intro = "LLC \"5Cars LLC\" represented by Director Ivanenko Ivan Ivanovych, " +
                 "acting on the basis of the Charter (hereinafter referred to as the “Lessor”), " +
-                "on the other hand, citizen of Ukraine, passport "+
+                "on the other hand, citizen of Ukraine " + data.get("lesseeName") + ", passport "+
                  "No. "+data.get("passportNumber") + ", issued by: " + data.get("issuedBy") + ", " +
                 "Tax ID: " + data.get("taxId") +", (hereinafter referred to as the “Lessee“), " +
                 "on the other hand (hereinafter referred to together as the “Parties”, " +
@@ -121,7 +121,7 @@ public class RentalAgreementService {
         document.add(Chunk.NEWLINE);
 
         Paragraph lessorDetails = new Paragraph("LESSOR:\n" +
-                "LLC \"7Cars LLC\"\n" +
+                "LLC \"5Cars LLC\"\n" +
                 "Company Code (EDRPOU): 42750412\n" +
                 "Legal Address: 10 Hryhoriia Skovorody St., Kyiv, Ukraine\n" +
                 "Phone: +380-095-89-15-290\n" +
