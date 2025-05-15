@@ -7,12 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-// ——— Create a single Axios instance ———
 const api = axios.create({
-	withCredentials: true,                     // send HttpOnly cookies (refresh token)
+	withCredentials: true,
 })
 
-// ——— Request interceptor: add access token ———
 api.interceptors.request.use((config) => {
 	const token = localStorage.getItem("accessToken")
 	if (token && config.headers) {
@@ -21,12 +19,10 @@ api.interceptors.request.use((config) => {
 	return config
 })
 
-// ——— Response interceptor: handle 401 → refresh → retry ———
 api.interceptors.response.use(
 	(res) => res,
 	async (error) => {
 		const original = error.config as AxiosRequestConfig & { _retry?: boolean }
-		// if 401, not already retried, and not the refresh endpoint itself
 		if (
 			error.response?.status === 401 &&
 			!original._retry &&
@@ -34,16 +30,13 @@ api.interceptors.response.use(
 		) {
 			original._retry = true
 			try {
-				// call your refresh endpoint
 				const { data } = await api.post("/api/v1/auth/refresh")
 				localStorage.setItem("accessToken", data.accessToken)
-				// update header and retry original
 				if (original.headers) {
 					original.headers.Authorization = `Bearer ${data.accessToken}`
 				}
 				return api(original)
 			} catch (refreshErr) {
-				// refresh failed → force full logout
 				window.location.href = '/login'
 				return Promise.reject(refreshErr)
 			}
@@ -52,7 +45,6 @@ api.interceptors.response.use(
 	}
 )
 
-// ——— sendRequest: same signature, but using our instance ———
 interface RequestOptions extends AxiosRequestConfig {
 	url: string
 	method: "GET" | "POST" | "PUT" | "DELETE"

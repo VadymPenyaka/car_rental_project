@@ -9,7 +9,7 @@ export const sendSearchRequest = async (searchParams: Object) => {
 			'Content-Type': 'application/json',
 		},
 		data: JSON.stringify({
-			searchParams
+			...searchParams
 		}),
 	})
 

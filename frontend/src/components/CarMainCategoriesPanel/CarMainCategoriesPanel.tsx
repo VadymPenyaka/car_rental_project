@@ -1,67 +1,86 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { carCategoryPanel } from "@/interfaces/carCategoryPanel"
+import { sendRequest } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 
-export interface carCategory {
-	categoryName: string
-	imgURL: string
-}
-
-export const categories: carCategory[] = [
+const categories = [
 	{
-		categoryName: "ECONOMY",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/econom.jpg",
+		"min": 35.0,
+		"max": 35.0,
+		"carClass": "ECONOMY"
 	},
 	{
-		categoryName: "MIDDLE",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/middle.jpg",
+		"min": 35.0,
+		"max": 45.0,
+		"carClass": "COMFORT"
 	},
 	{
-		categoryName: "BUSINESS",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/business.jpg",
+		"min": 50.0,
+		"max": 65.0,
+		"carClass": "BUSINESS"
 	},
 	{
-		categoryName: "PREMIUM",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/premium.jpg",
+		"min": 70.0,
+		"max": 70.0,
+		"carClass": "PREMIUM"
 	},
 	{
-		categoryName: "SUV",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/offroad.jpg",
+		"min": 0.0,
+		"max": 0.0,
+		"carClass": "MINIVAN"
 	},
 	{
-		categoryName: "MINIVAN",
-		imgURL: "https://7cars.com.ua/wp-content/uploads/2016/03/minivan.jpg",
-	},
-
+		"min": 0.0,
+		"max": 0.0,
+		"carClass": "SUV"
+	}
 ]
 
 export function CarMainCategoriesPanel() {
+	// const [categories, setCategories] = useState<carCategoryPanel[]>([])
+	const navigate = useNavigate()
+
+	// useEffect(() => {
+	// 	const fetchCategoriesDetails = async () => {
+	// 		let response = await sendRequest({
+	// 			url: `/api/v1/cars/categoriesPriceRange`,
+	// 			method: "GET",
+	// 			withCredentials: false,
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 		})
+
+	// 		setCategories(response.data as carCategoryPanel[])
+	// 	}
+	// 	fetchCategoriesDetails()
+	// }, [])
+
 	return (
-		<ScrollArea className="flex max-w-5xl mx-auto whitespace-nowrap rounded-md border">
-			<div className="max-w-5xl mx-auto flex justify-between p-4">
-				{categories.map((carCategory) => (
-					<figure
-					key={carCategory.categoryName}
+		<div className="max-w-5xl mx-auto flex justify-between p-4">
+			{categories.map(({ min, max, carClass }) => (
+				<figure
+					key={carClass}
 					className="shrink-0 cursor-pointer"
 					onClick={() => {
-						// TODO: Add functionality to navigate to the category page
+						navigate(`/search?carClass=${carClass}`)
 					}}>
-						<div className="overflow-hidden rounded-md w-40 ">
-							<img
-								src={carCategory.imgURL}
-								alt={`Category - ${carCategory.categoryName}`}
-								className="aspect-[4/3] h-fit w-40 object-scale-down mx-auto"
-
-							/>
-						</div>
-						<figcaption className="pt-2 text-xs text-center text-muted-foreground">
-							{" "}
-							<span className="font-semibold text-foreground ">
-								{carCategory.categoryName}
-							</span>
-						</figcaption>
-					</figure>
-				))}
-			</div>
-			<ScrollBar orientation="horizontal" />
-		</ScrollArea>
+					<div className="overflow-hidden rounded-md w-40 ">
+						<img
+							// src={`https://carrental.fra1.digitaloceanspaces.com/cars/category/${carClass}.avif`}
+							src={`https://7cars.com.ua/wp-content/uploads/2016/03/business.jpg`}
+							alt={`Category - ${carClass}`}
+							className="aspect-[4/3] h-fit w-40 object-scale-down mx-auto"
+						/>
+					</div>
+					<figcaption className="pt-2 text-sm text-center text-orange-500 font-semibold">
+						<p className="font-bold text-foreground text-sm">
+							{carClass}
+						</p>
+						{`$${min} - $${max}`}
+					</figcaption>
+				</figure>
+			))}
+		</div>
 	)
 }

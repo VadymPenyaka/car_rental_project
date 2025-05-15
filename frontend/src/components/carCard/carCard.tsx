@@ -27,18 +27,19 @@ export const CarCard: React.FC<CarCardProps> = ({ userCar }) => {
 	const navigate = useNavigate()
 
 	const [imgLoaded, setImgLoaded] = useState(false)
-	const [imgError, setImgError] = useState(false)
 
 	const handleCardClick = () => {
 		navigate(`/cars/${id}`)
 	}
 
 	return (
-		<Card className="w-full sm:w-auto max-w-sm mx-auto" onClick={handleCardClick}>
+		<Card className="w-full md:w-auto max-w-lg mx-auto">
 			{!imgLoaded && (
 				<CarCardSkeleton />
 			)}
-			<CardHeader>
+			<CardHeader
+				onClick={handleCardClick}
+			>
 				<img
 					src={`https://carrental.fra1.digitaloceanspaces.com/cars/${id}_0.avif`}
 					alt={brandName + " " + modelName}
@@ -46,7 +47,6 @@ export const CarCard: React.FC<CarCardProps> = ({ userCar }) => {
 					className="w-full rounded-md object-cover"
 					onLoad={() => setImgLoaded(true)}
 					onError={() => {
-						setImgError(true)
 						setImgLoaded(true) // stop showing skeleton
 					}}
 				/>
@@ -98,8 +98,7 @@ export const CarCard: React.FC<CarCardProps> = ({ userCar }) => {
 						<Button className="bg-orange-500 hover:bg-orange-600 text-white">Book now</Button>
 					</CardFooter>
 				</>
-			)
-			}
+			)}
 		</Card >
 	)
 }
