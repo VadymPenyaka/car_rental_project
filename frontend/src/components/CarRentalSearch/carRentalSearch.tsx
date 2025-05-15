@@ -5,16 +5,35 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { format, isBefore } from "date-fns"
 import { useNavigate } from 'react-router'
 import { FullSearchPopup } from "./FullSearchPopup.tsx/FullSearchPopup"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { sendRequest } from "@/lib/utils"
+import { location } from "@/interfaces/location"
 
 export default function CarRentalSearch() {
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined)
 	const [endDate, setEndDate] = useState<Date | undefined>(undefined)
 	const [location, setLocation] = useState<string | undefined>(undefined)
+	const [cities, setCities] = useState<Array<string>>([])
 
 	const navigate = useNavigate()
 
-	const cities = ["Kyiv", "Lviv", "Odesa", "Dnipro", "Kharkiv"]
+	useEffect(()=> {
+		const fetchCities = async () => {
+					let response = await sendRequest({
+						url: `/api/v1/locations`,
+						method: "GET",
+						withCredentials: false,
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+					let filteredCities = response.data.map((city: location) => city.city)
+					setCities(filteredCities)
+				}
+				fetchCities()
+	}, [])
+
+	// const cities = ["Kyiv", "Lviv", "Odesa", "Dnipro", "Kharkiv"]
 
 	const handleSearchButtonClick = async () => {
 		const requestData = {
@@ -35,7 +54,7 @@ export default function CarRentalSearch() {
 	}
 
 	return (
-		<div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-2xl">
+		<div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl">
 			<h2 className="text-lg font-semibold mb-4">Choose a car for rental</h2>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<div>
