@@ -38,17 +38,23 @@ export function CarMainCategoriesPanel() {
 		<ScrollArea className="flex max-w-5xl mx-auto whitespace-nowrap rounded-md border">
 			<div className="max-w-5xl mx-auto flex justify-between p-4">
 				{categories.map((carCategory) => (
-					<figure key={carCategory.categoryName} className="shrink-0">
-						<div className="overflow-hidden rounded-md w-44">
+					<figure
+					key={carCategory.categoryName}
+					className="shrink-0 cursor-pointer"
+					onClick={() => {
+						// TODO: Add functionality to navigate to the category page
+					}}>
+						<div className="overflow-hidden rounded-md w-40 ">
 							<img
 								src={carCategory.imgURL}
 								alt={`Category - ${carCategory.categoryName}`}
-								className="aspect-[4/3] h-fit w-fit object-scale-down"
+								className="aspect-[4/3] h-fit w-40 object-scale-down mx-auto"
+
 							/>
 						</div>
-						<figcaption className="pt-2 text-xs text-muted-foreground">
+						<figcaption className="pt-2 text-xs text-center text-muted-foreground">
 							{" "}
-							<span className="font-semibold text-foreground">
+							<span className="font-semibold text-foreground ">
 								{carCategory.categoryName}
 							</span>
 						</figcaption>

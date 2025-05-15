@@ -20,7 +20,7 @@ import Logo from "../ui/Logo"
 
 export const Footer = () => (
 	<footer className="bg-gray-800 text-gray-300">
-		<div className="w-full max-w-5xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+		<div className="w-full max-w-5xl mx-auto px-4 py-12 mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
 
 			{/* Column 1: Brand */}
 			<Card className="bg-transparent shadow-none">

@@ -41,7 +41,7 @@ export const RentalInfo = () => {
             </section>
 
             {/* Why Choose Us as an Aside */}
-            <aside className="container mx-auto px-4 py-8">
+            {/* <aside className="container mx-auto px-4 py-8">
                 <h2 className="text-3xl md:text-4xl font-semibold text-center">
                     Why Choose <span className="text-orange-500">5Cars</span>?
                 </h2>
@@ -52,7 +52,7 @@ export const RentalInfo = () => {
                     <li>Wide vehicle selection</li>
                     <li>Trusted service</li>
                 </ol>
-            </aside>
+            </aside> */}
 
             {/* Page Footer */}
             <footer className="container mx-auto px-4 py-8 text-center text-sm text-gray-500">

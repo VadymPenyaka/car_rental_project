@@ -1,25 +1,25 @@
 import { Header } from "../header/Header"
 import { CarCard } from "../CarCard/CarCard"
 import { CarMainCategoriesPanel } from "../CarMainCategoriesPanel/CarMainCategoriesPanel"
-import { useSearchStore } from "@/stores/useSearchStore"
-import { useEffect, useState } from "react";
-import { set } from "date-fns";
-import { sendSearchRequest } from "../CarRentalSearch/request";
-import { userCar } from "@/interfaces/userCar";
+import { useEffect, useState } from "react"
+import { sendSearchRequest } from "../CarRentalSearch/request"
+import { userCar } from "@/interfaces/userCar"
+import { useQueryParams } from "@/hooks/useQueryParams"
 
 export const SearchPage: React.FC = () => {
+  const query = useQueryParams()
   const [cars, setCars] = useState<userCar[]>([])
 
-
   useEffect(() => {
-    let initCars = async() => {
-      const requestData = {}
+    const fetchCars = async () => {
+      console.log(query);
       
-      let response = await sendSearchRequest(requestData)
+      const response = await sendSearchRequest(query)
       setCars(response as userCar[])
     }
-    initCars()
-  }, [])
+
+    fetchCars()
+  }, [JSON.stringify(query)])
 
   return (
     <>

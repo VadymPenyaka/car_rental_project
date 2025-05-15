@@ -61,7 +61,7 @@ export function FeaturesCarousel() {
     <div className="w-full max-w-5xl mx-auto my-8 overflow-hidden rounded-md">
       <Carousel
         className="relative w-full overflow-hidden rounded-lg"
-        plugins={[Autoplay({ delay: 4000, stopOnMouseEnter: true, stopOnInteraction: false })]}
+        plugins={[Autoplay({ delay: 4000, stopOnMouseEnter: true })]}
         opts={{ loop: true, align: "start" }}
       >
         <CarouselContent className="flex">

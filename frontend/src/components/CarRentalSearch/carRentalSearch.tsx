@@ -10,17 +10,28 @@ import { useState } from "react"
 export default function CarRentalSearch() {
 	const [startDate, setStartDate] = useState<Date | undefined>(undefined)
 	const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+	const [location, setLocation] = useState<string | undefined>(undefined)
 
 	const navigate = useNavigate()
 
 	const cities = ["Kyiv", "Lviv", "Odesa", "Dnipro", "Kharkiv"]
 
 	const handleSearchButtonClick = async () => {
-		const requestData = {}
-		const queryParams = new URLSearchParams(requestData).toString()
+		const requestData = {
+			city: location ? location : "",
+			startDate: startDate ? format(startDate, "dd.MM.yyyy") : "",
+			endDate: endDate ? format(endDate, "dd.MM.yyyy") : "",
+		}
+
+		// Filter out empty values
+		const filtered = Object.fromEntries(
+			Object.entries(requestData).filter(([_, value]) => value)
+		)
+
+		const queryParams = new URLSearchParams(filtered).toString()
 		console.log("queryParams: ", queryParams)
 
-		navigate("/search")
+		navigate(`/search?${queryParams}`)
 	}
 
 	return (
@@ -30,7 +41,7 @@ export default function CarRentalSearch() {
 				<div>
 					<label className="text-sm font-medium">Pick-up location</label>
 					<div className="relative mt-1">
-						<Select onValueChange={(value => console.log(value))}>
+						<Select onValueChange={(value) => setLocation(value)}>
 							<SelectTrigger className="w-full">
 								<SelectValue placeholder="Select a city" />
 							</SelectTrigger>

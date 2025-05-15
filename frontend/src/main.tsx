@@ -22,6 +22,7 @@ const router = createBrowserRouter([
 		errorElement: <PageNotFound />
 	},
 	{
+
 		path: '/search',
 		element: <SearchPage />,
 		errorElement: <PageNotFound />
