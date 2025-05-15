@@ -2,6 +2,7 @@ package nulp.cs.carrentalrestservice.service.person;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.entity.PersonPendingConfirmation;
+import nulp.cs.carrentalrestservice.exception.InvalidVerificationTokenException;
 import nulp.cs.carrentalrestservice.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.VerificationType;
@@ -38,14 +39,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void createPerson(PersonDTO personDTO) {
+    public void createPendingPerson(PersonDTO personDTO) {
         personDTO.setPassword(passwordEncoder
                 .encode(personDTO.getPassword()));
 
+        tokenService.createToken(personDTO, VerificationType.REGISTRATION, personDTO.getUsername());
+    }
+
+
+    @Override
+    public void createVerifiedPerson(String tokenStr){
+        PersonPendingConfirmation confirmation = tokenService.confirmAndGet(UUID.fromString(tokenStr));
+        PersonDTO person = confirmation.getData();
+
+        if (confirmation.getType()!=VerificationType.REGISTRATION) {
+            throw new InvalidVerificationTokenException("Invalid token type!");
+        }
 
         personMapper.personToPersonDto(personRepository
-                .save(personMapper.personDtoToPerson(personDTO)));
+                .save(personMapper.personDtoToPerson(person)));
     }
+
 
     @Override
     public Optional<PersonDTO> getPersonById(UUID id) {

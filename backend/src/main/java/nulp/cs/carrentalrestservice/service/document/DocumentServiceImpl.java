@@ -88,11 +88,10 @@ public class DocumentServiceImpl implements DocumentService {
         CarDTO car = schedule.getCar();
         CarRegistrationInfoDTO carRegistrationInfo = car.getRegistrationInfo();
         Map<String, String> data = new HashMap<>();
-//        TODO format pdf to match map
         data.put("contractNumber", "1");
         data.put("city", location.getCity());
         data.put("date", LocalDate.now().toString());
-        //TODO add fill name and address
+        //TODO add full name and address
         data.put("lesseeName", person.getSureName() + " " + person.getFirstName());
         data.put("passportNumber", passport.getDocumentNumber());
         data.put("issuedBy", passport.getIssuedBy());

@@ -43,7 +43,8 @@ public class CustomerServiceImpl implements CustomerService {
                 .role(Role.ROLE_USER)
                 .build();
 
-        personService.createPerson(personDTO);
+
+        personService.createPendingPerson(personDTO);
     }
 
     @Override

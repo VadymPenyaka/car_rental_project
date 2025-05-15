@@ -9,7 +9,10 @@ import java.util.UUID;
 public interface PersonService {
     boolean isEmailUsed (String email);
     boolean isPhoneNumberUsed (String number);
-    void createPerson (PersonDTO personDTO);
+    void createPendingPerson(PersonDTO personDTO);
+
+    void createVerifiedPerson(String tokenStr);
+
     Optional<PersonDTO> getPersonById (UUID id);
     Optional<PersonDTO> getPersonByEmail (String email);
     PersonDTO getAuthenticatedPerson ();

@@ -13,8 +13,15 @@ public class VerificationTokenController {
     public final static String BASE_PATH = "/api/v1/verify";
     private final PersonService personService;
 
-    @GetMapping
-    public ResponseEntity<?> verifyPersonUpdate (@RequestParam String token) {
+    @GetMapping("/change")
+    public ResponseEntity<?> verifyCredentialsChange(@RequestParam String token) {
+        personService.verifyUpdate(token);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/registration")
+    public ResponseEntity<?> verifyRegistration (@RequestParam String token) {
         personService.verifyUpdate(token);
 
         return new ResponseEntity<>(HttpStatus.OK);

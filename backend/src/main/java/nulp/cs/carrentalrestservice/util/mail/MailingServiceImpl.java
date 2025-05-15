@@ -20,7 +20,6 @@ public class MailingServiceImpl implements MailingService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(mailSender);
             message.setTo(receiver);
-//            message.setTo("vadym.penyaka@gmail.com");
             message.setSubject(subject);
             message.setText(text);
           javaMailSender.send(message);

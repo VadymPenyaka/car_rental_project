@@ -1,5 +1,7 @@
 package nulp.cs.carrentalrestservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
@@ -15,7 +17,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,12 +73,18 @@ public class AuthController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updatePersonInfo (@Valid @RequestBody UpdatePersonRequest request, BindingResult bindingResult) {
+    public ResponseEntity<?> updatePersonInfo (@Valid @RequestBody UpdatePersonRequest personRequest, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        personService.updatePerson(request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        personService.updatePerson(personRequest);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        return new ResponseEntity<>(HttpStatus.valueOf(301));
     }
 }

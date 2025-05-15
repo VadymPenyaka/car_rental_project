@@ -31,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
         loggingService.logInfo("Create admin for id: " + adminDTO.getId());
         PersonDTO person = adminDTO.getPerson();
         person.setRole(Role.ROLE_ADMIN);
-        personService.createPerson(adminDTO.getPerson());
+        personService.createPendingPerson(adminDTO.getPerson());
 
         adminMapper.adminToAdminDto(adminRepository
                 .save(adminMapper.adminDtoToAdmin(adminDTO)));
