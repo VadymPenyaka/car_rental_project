@@ -74,7 +74,7 @@ public class PersonServiceImpl implements PersonService {
                 .personToPersonDto(personRepository
                         .findByUsername(email).orElse(null)));
     }
-//TODO  user should logout after changing credentials
+
     @Override
     public PersonDTO getAuthenticatedPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
