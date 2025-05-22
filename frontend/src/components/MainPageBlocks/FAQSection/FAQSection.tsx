@@ -1,5 +1,5 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
-import sideCarImage from '../../assets/josh-berquist-_4sWbzH5fp8-unsplash.jpg'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../ui/accordion'
+import sideCarImage from '../../../assets/josh-berquist-_4sWbzH5fp8-unsplash.jpg'
 
 export const FAQSection = () => {
     return (

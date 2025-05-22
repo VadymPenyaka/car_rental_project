@@ -1,9 +1,9 @@
-import AssistanceIcon from "../../assets/infoCards/assistance.svg"
-import AffordableIcon from "../../assets/infoCards/affordable.svg"
-import BureaucracyIcon from "../../assets/infoCards/bureaucracy.svg"
-import InsuranceIcon from "../../assets/infoCards/insurance.svg"
-import ConditionIcon from "../../assets/infoCards/condition.svg"
-import ReplacementIcon from "../../assets/infoCards/replacement.svg"
+import AssistanceIcon from "../../../assets/infoCards/assistance.svg"
+import AffordableIcon from "../../../assets/infoCards/affordable.svg"
+import BureaucracyIcon from "../../../assets/infoCards/bureaucracy.svg"
+import InsuranceIcon from "../../../assets/infoCards/insurance.svg"
+import ConditionIcon from "../../../assets/infoCards/condition.svg"
+import ReplacementIcon from "../../../assets/infoCards/replacement.svg"
 
 export const InfoReasonsSection = () => {
     const reasons = [

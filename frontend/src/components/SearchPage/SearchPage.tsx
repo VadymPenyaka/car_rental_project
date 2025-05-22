@@ -1,6 +1,6 @@
 import { Header } from "../header/Header"
 import { CarCard } from "../CarCard/CarCard"
-import { CarMainCategoriesPanel } from "../CarMainCategoriesPanel/CarMainCategoriesPanel"
+import { CarMainCategoriesPanel } from "../MainPageBlocks/CarMainCategoriesPanel/CarMainCategoriesPanel"
 import { useEffect, useState } from "react"
 import { sendSearchRequest } from "./request"
 import { userCar } from "@/interfaces/userCar"
@@ -37,5 +37,5 @@ export const SearchPage: React.FC = () => {
 				)}
 			</div>
 		</>
-	);
-};
+	)
+}

@@ -6,8 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../ui/card
 import { sendRequest } from "@/lib/utils"
 import { useNavigate } from "react-router"
 
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
+
 export const LoginPage: React.FC = () => {
-	const navigate = useNavigate();
+	const signIn = useSignIn()
+	const navigate = useNavigate()
 	const [isLogin, setIsLogin] = useState(true)
 
 	// Shared state
@@ -56,11 +59,25 @@ export const LoginPage: React.FC = () => {
 				},
 				data: JSON.stringify({ username: email, password }),
 			})
+			console.log("response: ", response);
+			
 	
-			if (response?.status === 200) {
-				localStorage.setItem("accessToken", response.data.token)
+			if (response?.status == 200) {
+				console.log("1");
+				
+				signIn({
+					auth: {
+						token: response.data.token,
+						type: 'Bearer',
+					},
+					refresh: response.data.token,
+					userState: {
+						role: response.data.role,
+					}
+				})
+				console.log("2");
 				navigate('/')
-				alert("Logged in successfully")
+				console.log("3");
 			}
 		} catch (err: any) {
 			const backendErrors: { [key: string]: string } = {}
@@ -123,9 +140,11 @@ export const LoginPage: React.FC = () => {
 				},
 				data: JSON.stringify({ email, firstName, sureName, phoneNumber, password }),
 			})
+			console.log("response: ", response);
+			
 			if (response.status === 201) {
 				setIsLogin(true)
-				alert("Account created successfully")
+				alert("Account created successfully, now you can login")
 			}
 		} catch (err: any) {
 			// Handle AxiosError

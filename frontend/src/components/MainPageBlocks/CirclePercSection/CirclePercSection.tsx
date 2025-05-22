@@ -1,4 +1,4 @@
-import { AnimatedCircle } from "../ui/AnimatedCircle"
+import { AnimatedCircle } from "../../ui/AnimatedCircle"
 
 const stats = [
 	{ percentage: 89, text: "of customers rated our cars as excellent" },

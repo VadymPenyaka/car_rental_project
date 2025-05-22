@@ -7,7 +7,7 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { useNavigate } from "react-router"
 
-import slide1 from "../../assets/featuresCarousel/lvivPanorama.jpg"
+import slide1 from "../../../assets/featuresCarousel/lvivPanorama.jpg"
 
 const slides = [
   {

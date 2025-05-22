@@ -58,7 +58,7 @@ export const sendRequest = async (options: RequestOptions): Promise<AxiosRespons
 	try {
 		console.log(`Sending ${method} request to ${url} with data:`, data);
 
-		const response = await axios({
+		const response = await api.request({
 			url,
 			method,
 			data,

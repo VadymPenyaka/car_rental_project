@@ -1,13 +1,26 @@
-import lvivPanorama from "../../assets/lvivPanorama.jpg"
-import CarRentalSearch from "../CarRentalSearch/CarRentalSearch"
+import { FC, memo, ReactNode } from "react"
+import clsx from "clsx"
 
-export default function Hero() {
-	return (
-		<div className="bg-cover bg-center h-[535px] flex items-center justify-center"
-			style={{
-				backgroundImage: `url(${lvivPanorama})`,
-			}}>
-			<CarRentalSearch />
-		</div>
-	)
+interface HeroProps {
+	bgImage: string
+	heightClass?: string
+	className?: string
+	children: ReactNode
 }
+
+const Hero: FC<HeroProps> = memo(({ bgImage, className, children }) => (
+	<section
+		role="banner"
+		aria-label="Hero section"
+		className={clsx(
+			"w-full bg-cover bg-center flex items-center justify-center py-20",
+			className
+		)}
+		style={{ backgroundImage: `url(${bgImage})` }}
+	>
+		{children}
+	</section>
+))
+
+Hero.displayName = "Hero"
+export default Hero
