@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
 import nulp.cs.carrentalrestservice.model.dto.PassportDTO;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerFullInfoRequest {
+    private UUID personId;
     @Valid
     @NotNull(message = "Passport credentials is required!")
     private PassportDTO passport;

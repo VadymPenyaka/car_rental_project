@@ -39,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
     private final LoggingService loggingService;
 
 
+    /**
+     * Creates a new car order.
+     * @param orderRequest the request that contains customer id, car id, start date, end date, and total price
+     * @throws InvalidOrderException if the customer has another order for this period
+     */
 //    TODO add method to find admin+, calculate price+, aspect to bank, send pay link to customer
 //    TODO create method to get authenticated customer+, create method to get schedule with car+,
     @Override
@@ -57,14 +62,20 @@ public class OrderServiceImpl implements OrderService {
                 .customer(customerService.getAuthenticatedCustomer())
                 .build();
 
+        // Publish an event to create a maintenance for the car
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
+
+        // Save the order to the database
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
+
+        // Publish an event to create a document for the order
         publisher.publishEvent(new OrderDocumentEvent(this, savedOrder.getId()));
 
         loggingService.logInfo("Car order created successfully");
 
     }
+
 
     @Override
     public Optional<CarOrderDTO> getCarOrderByID(UUID id) {

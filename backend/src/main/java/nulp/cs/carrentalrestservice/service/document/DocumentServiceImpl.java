@@ -1,7 +1,5 @@
 package nulp.cs.carrentalrestservice.service.document;
 
-import com.itextpdf.text.pdf.PdfWriter;
-import com.stripe.model.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import nulp.cs.carrentalrestservice.exception.NotFoundException;
@@ -10,18 +8,18 @@ import nulp.cs.carrentalrestservice.model.dto.*;
 import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
 import nulp.cs.carrentalrestservice.repository.DocumentRepository;
 import nulp.cs.carrentalrestservice.service.order.OrderService;
+import nulp.cs.carrentalrestservice.service.person.PersonService;
+import nulp.cs.carrentalrestservice.service.person.customer.BankIdService;
 import nulp.cs.carrentalrestservice.util.S3Service;
 import nulp.cs.carrentalrestservice.util.pdf.RentalAgreementService;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +29,8 @@ public class DocumentServiceImpl implements DocumentService {
     private final RentalAgreementService rentalAgreementService;
     private final OrderService orderService;
     private final S3Service s3Service;
-
+    private final BankIdService bankIdService;
+    private final PersonService personService;
 
     @Override
     public DocumentDTO createDocument(DocumentDTO documentDTO) {
@@ -55,26 +54,26 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Optional<DocumentDTO> getDocumentById(UUID id) {
+    public Optional<DocumentDTO> getDocumentInfoById(UUID id) {
         return Optional.ofNullable(documentMapper
                 .documentToDocumentDto(documentRepository
                         .findById(id).orElse(null)));
     }
 
+
     @Override
-    public Optional<DocumentDTO> updateDocumentById(UUID id, DocumentDTO documentDTO) {
-        AtomicReference<Optional<DocumentDTO>> atomicReference = new AtomicReference<>();
+    public Optional<byte[]> getDocumentBytesById(UUID id) {
+        return Optional.ofNullable(s3Service
+                .getFile(id.toString(), "docs"));
+    }
 
-        documentRepository.findById(id).ifPresentOrElse ( foundDocument -> {
-                foundDocument.setType(documentDTO.getType());
-                foundDocument.setCreatedAt(documentDTO.getCreatedAt());
-
-                atomicReference.set(Optional.ofNullable(documentMapper
-                        .documentToDocumentDto(documentRepository.save(foundDocument))));
-
-            }, () -> atomicReference.set(Optional.empty()));
-
-        return atomicReference.get();
+    @SneakyThrows
+    @Override
+    public Optional<byte[]> signAgreement(UUID documentId) {
+        UUID personId = personService.getAuthenticatedPerson().getId();
+        byte[] bytes = getDocumentBytesById(documentId).orElseThrow(()
+                -> new NotFoundException("Document not found!"));
+        return Optional.ofNullable(bankIdService.signAgreement(personId, bytes));
     }
 
     private Map<String, String> getDataForGeneration (UUID orderId) {

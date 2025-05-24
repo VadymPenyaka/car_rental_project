@@ -12,6 +12,7 @@ import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.CustomerRepository;
+import nulp.cs.carrentalrestservice.service.person.PersonGraphQlClient;
 import nulp.cs.carrentalrestservice.service.person.PersonService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
 import nulp.cs.carrentalrestservice.util.logging.LoggingService;
@@ -27,10 +28,10 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
     private final PersonService personService;
-    private final DriverLicenseService licenseService;
     private final CarOrderMapper carOrderMapper;
     private final CarService carService;
     private final LoggingService loggingService;
+    private final PersonGraphQlClient personGraphQLClient;
 
     @Override
     public void registerCustomer(CustomerRegistrationRequest customerData) {
@@ -50,14 +51,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void createCustomerFullInfo(CustomerFullInfoRequest customerRequest) {
-        CustomerDTO customerDTO = CustomerDTO.builder()
-                .passport(customerRequest.getPassport())
-                .person(personService.getAuthenticatedPerson())
-                .driverLicense(licenseService.createDriverLicense(customerRequest.getDriverLicense()))
-                .build();
-
-        customerMapper.customerToCustomerDto(customerRepository
-                .save(customerMapper.customerDtoToCustomer(customerDTO)));
+        try {
+            UUID authenticatedPersonId = personService.getAuthenticatedPerson().getId();
+            customerRequest.setPersonId(authenticatedPersonId);
+            personGraphQLClient.createPerson(customerRequest);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Personal data verification failed", e);
+        }
     }
 
     @Override

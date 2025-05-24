@@ -19,6 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PassportDTO {
     private UUID id;
+    @NotBlank(message = "Full name is mandatory!")
+    @Size(min = 3, max = 50, message = "Must be between 3 and 50 characters!")
+    private String fullName;
     @ValidBirthDate
     private LocalDate dateOfBirth;
     @UniquePassportNumber

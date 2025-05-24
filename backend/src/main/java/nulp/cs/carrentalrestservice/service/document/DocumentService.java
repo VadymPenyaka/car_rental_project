@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.service.document;
 
+import lombok.SneakyThrows;
 import nulp.cs.carrentalrestservice.model.dto.DocumentDTO;
 
 import java.util.Optional;
@@ -10,7 +11,9 @@ public interface DocumentService {
 
     void createRentalAgreementDocument(UUID orderId);
 
-    Optional<DocumentDTO> getDocumentById (UUID id);
+    Optional<DocumentDTO> getDocumentInfoById(UUID id);
 
-    Optional<DocumentDTO> updateDocumentById (UUID id, DocumentDTO documentDTO);
+    Optional<byte[]> getDocumentBytesById(UUID id);
+
+    Optional<byte[]> signAgreement(UUID documentId);
 }

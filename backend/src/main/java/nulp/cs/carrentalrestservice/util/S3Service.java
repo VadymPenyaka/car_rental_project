@@ -45,6 +45,15 @@ public class S3Service {
         );
     }
 
+    @SneakyThrows
+    public byte[] getFile(String key, String bucketName) {
+        String bucket = bucketName != null ? bucketName : "cars";
+        
+        return s3Client.getObjectAsBytes(builder -> builder
+                .bucket(bucket)
+                .key(key)
+        ).asByteArray();
+    }
 
     public void deleteFileFromServer(String key) {
         s3Client.deleteObject(builder -> builder
@@ -53,5 +62,6 @@ public class S3Service {
                 .build()
         );
     }
+
 
 }
