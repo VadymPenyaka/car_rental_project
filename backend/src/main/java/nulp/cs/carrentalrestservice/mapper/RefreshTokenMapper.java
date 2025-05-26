@@ -4,9 +4,9 @@ import nulp.cs.carrentalrestservice.entity.RefreshToken;
 import nulp.cs.carrentalrestservice.model.dto.RefreshTokenDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RefreshTokenMapper {
     RefreshTokenDTO entityToDto (RefreshToken entity);
 
-    RefreshToken dtoToEntity (RefreshTokenDTO dto);
+    RefreshToken ToEntity(RefreshTokenDTO dto);
 }

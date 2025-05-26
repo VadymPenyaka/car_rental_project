@@ -7,8 +7,7 @@ import nulp.cs.carrentalrestservice.model.response.CarCustomerDetailsResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
-public interface CarMapper {
+public @Mapper(componentModel = "spring")interface CarMapper {
     @Mapping(source = "carPricing", target = "carPricing")
     @Mapping(source = "location", target = "location")
     @Mapping(source = "model", target = "model")

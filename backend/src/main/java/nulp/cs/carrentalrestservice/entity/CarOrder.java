@@ -26,7 +26,7 @@ public class CarOrder {
     private Admin admin;
     @ManyToOne
     @JoinColumn( nullable = false)
-    private Customer customer;
+    private Person person;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;

@@ -6,10 +6,11 @@ import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.DocumentMapper;
 import nulp.cs.carrentalrestservice.model.dto.*;
 import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
+import nulp.cs.carrentalrestservice.model.request.PersonalInfoRequest;
 import nulp.cs.carrentalrestservice.repository.DocumentRepository;
 import nulp.cs.carrentalrestservice.service.order.OrderService;
 import nulp.cs.carrentalrestservice.service.person.PersonService;
-import nulp.cs.carrentalrestservice.service.person.customer.BankIdService;
+import nulp.cs.carrentalrestservice.service.person.PersonalInfoService;
 import nulp.cs.carrentalrestservice.util.S3Service;
 import nulp.cs.carrentalrestservice.util.pdf.RentalAgreementService;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,9 @@ public class DocumentServiceImpl implements DocumentService {
     private final RentalAgreementService rentalAgreementService;
     private final OrderService orderService;
     private final S3Service s3Service;
-    private final BankIdService bankIdService;
+    private final DigitalSignatureService digitalSignatureService;
     private final PersonService personService;
+    private final PersonalInfoService personalInfoService;
 
     @Override
     public DocumentDTO createDocument(DocumentDTO documentDTO) {
@@ -40,6 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void createRentalAgreementDocument(UUID orderId) {
+        //add document number to method
         Map<String, String> data = getDataForGeneration(orderId);
 
         DocumentDTO documentToSave = DocumentDTO.builder()
@@ -73,30 +76,31 @@ public class DocumentServiceImpl implements DocumentService {
         UUID personId = personService.getAuthenticatedPerson().getId();
         byte[] bytes = getDocumentBytesById(documentId).orElseThrow(()
                 -> new NotFoundException("Document not found!"));
-        return Optional.ofNullable(bankIdService.signAgreement(personId, bytes));
+        return Optional.ofNullable(digitalSignatureService.signAgreement(personId, bytes));
     }
 
     private Map<String, String> getDataForGeneration (UUID orderId) {
-        CarOrderDTO order = orderService.getCarOrderByID(orderId).orElseThrow(() -> new NotFoundException("Order not found!"));
+        CarOrderDTO order = orderService.getCarOrderByID(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found!"));
 
-        AdminDTO admin = order.getAdmin();
-        LocationDTO location = admin.getLocation();
-        PassportDTO passport = order.getCustomer().getPassport();
-        PersonDTO person = order.getCustomer().getPerson();
+        PersonalDataDTO personalInfo = personalInfoService.getCustomerDataById(order.getPerson().getId())
+                .orElseThrow(() -> new NotFoundException("Personal data not found!"));
+
+        LocationDTO location = order.getAdmin().getLocation();
+        PassportDTO passport = personalInfo.getPassport();
         CarScheduleDTO schedule = order.getSchedule();
         CarDTO car = schedule.getCar();
         CarRegistrationInfoDTO carRegistrationInfo = car.getRegistrationInfo();
+
         Map<String, String> data = new HashMap<>();
         data.put("contractNumber", "1");
         data.put("city", location.getCity());
         data.put("date", LocalDate.now().toString());
-        //TODO add full name and address
-        data.put("lesseeName", person.getSureName() + " " + person.getFirstName());
+        data.put("lesseeName", passport.getFullName());
         data.put("passportNumber", passport.getDocumentNumber());
         data.put("issuedBy", passport.getIssuedBy());
         data.put("taxId", passport.getTaxIdentificationNumber());
-        data.put("address", "");
-        data.put("phoneNumber", person.getPhoneNumber());
+        data.put("phoneNumber", personalInfo.getPerson().getPhoneNumber());
 
         data.put("carBrandModel",  car.getModel().getBrandName().getName() + " " + car.getModel().getModelName());
         data.put("carYear", car.getModel().getYear().toString());

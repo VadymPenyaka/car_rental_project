@@ -4,7 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Person;
 import nulp.cs.carrentalrestservice.model.dto.PersonDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PersonMapper {
     Person personDtoToPerson (PersonDTO personDTO);
     PersonDTO personToPersonDto (Person person);

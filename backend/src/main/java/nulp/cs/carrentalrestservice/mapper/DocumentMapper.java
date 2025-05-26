@@ -4,7 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Document;
 import nulp.cs.carrentalrestservice.model.dto.DocumentDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DocumentMapper {
     Document documentDtoToDocument (DocumentDTO documentDTO);
 

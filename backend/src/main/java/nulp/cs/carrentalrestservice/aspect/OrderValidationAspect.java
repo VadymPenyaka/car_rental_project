@@ -10,7 +10,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.ScheduleStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
 import nulp.cs.carrentalrestservice.service.car.CarService;
-import nulp.cs.carrentalrestservice.service.person.customer.CustomerService;
+import nulp.cs.carrentalrestservice.service.person.customer.CustomerInfoService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OrderValidationAspect {
-    private final CustomerService customerService;
+    private final CustomerInfoService customerInfoService;
     private final CarService carService;
     private final CarScheduleService scheduleService;
 
@@ -40,7 +40,7 @@ public class OrderValidationAspect {
      */
     @Before(value = "@annotation(nulp.cs.carrentalrestservice.annotation.VerifyOrder) && args(orderRequest)", argNames = "orderRequest")
     public void validateOrder(OrderCreationRequest orderRequest) {
-        if(!customerService.verifyCustomerForOrder(orderRequest)) {
+        if(!customerInfoService.verifyCustomerForOrder(orderRequest)) {
             throw new CategoryExperienceVerificationException("You have not necessary amount of experience.");
         }
 

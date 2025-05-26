@@ -2,8 +2,6 @@ truncate table public.car_order cascade;
 
 truncate table public.admin cascade;
 
-truncate table public.customer cascade;
-
 truncate table public.car_maintenance cascade;
 
 truncate table public.car_schedule cascade;
@@ -20,18 +18,11 @@ truncate table public.location cascade;
 
 truncate table public.person cascade;
 
-truncate table public.passport cascade;
-
 truncate table public.model cascade;
 
 truncate table public.brand cascade;
 
-truncate table public.driver_license_category cascade;
-
-truncate table public.driver_license cascade;
-
 truncate table public.document cascade;
-
 
 
 INSERT INTO location (id, location_name, region, city, address, latitude, longitude)

@@ -1,8 +1,8 @@
 package nulp.cs.carrentalrestservice.service.person.customer;
 
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
-import nulp.cs.carrentalrestservice.model.dto.CustomerDTO;
-import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
+import nulp.cs.carrentalrestservice.model.dto.PersonalDataDTO;
+import nulp.cs.carrentalrestservice.model.request.PersonalInfoRequest;
 import nulp.cs.carrentalrestservice.model.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 
@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CustomerService {
+public interface CustomerInfoService {
     void registerCustomer (CustomerRegistrationRequest customerData);
 
-    void createCustomerFullInfo(CustomerFullInfoRequest customerDTO);
+    void createCustomerFullInfo(PersonalInfoRequest customerDTO);
 
-    CustomerDTO getAuthenticatedCustomer();
+    void createRandomPersonalData();
+
+    Optional<PersonalDataDTO> getAuthenticatedCustomerInfo();
 
     boolean verifyCustomerForOrder (OrderCreationRequest orderCreationRequest);
 

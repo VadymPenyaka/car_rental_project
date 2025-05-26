@@ -5,7 +5,7 @@ import nulp.cs.carrentalrestservice.model.dto.CarMaintenanceDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CarMaintenanceMapper {
     @Mapping(target = "schedule", source = "schedule")
     CarMaintenanceDTO carMaintenanceToCarMaintenanceDTO(CarMaintenance carMaintenance);

@@ -4,7 +4,7 @@ import nulp.cs.carrentalrestservice.entity.Model;
 import nulp.cs.carrentalrestservice.model.dto.ModelDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ModelMapper {
 //    @Mapping(target = "brandName", source = "brandName")
     Model modelDtoToModel (ModelDTO modelDTO);

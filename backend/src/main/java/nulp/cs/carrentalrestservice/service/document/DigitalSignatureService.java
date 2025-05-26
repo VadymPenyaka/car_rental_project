@@ -1,6 +1,5 @@
-package nulp.cs.carrentalrestservice.service.person.customer;
+package nulp.cs.carrentalrestservice.service.document;
 
-import nulp.cs.carrentalrestservice.model.request.CustomerFullInfoRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Service
-public class BankIdService {
+public class DigitalSignatureService {
     @Value("${bank.id.secret_key}")
     private String key;
 
@@ -22,24 +21,8 @@ public class BankIdService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public CustomerFullInfoRequest getDataFromApi () {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", key);
-
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        String url = "/info/get";
-        ResponseEntity<CustomerFullInfoRequest> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                requestEntity,
-                CustomerFullInfoRequest.class
-        );
-
-        return response.getBody();
-    }
-
     public byte[] signAgreement(UUID personId, byte[] file) throws IOException {
-        String url = baseUrl + "/sign?personId=" + personId.toString();
+        String url = baseUrl + "/api/v1/sign?personId=" + personId.toString();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", key);

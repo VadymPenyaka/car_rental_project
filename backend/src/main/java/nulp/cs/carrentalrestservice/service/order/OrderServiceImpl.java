@@ -1,19 +1,21 @@
 package nulp.cs.carrentalrestservice.service.order;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.event.OrderDocumentEvent;
 import nulp.cs.carrentalrestservice.event.OrderEmailEvent;
 import nulp.cs.carrentalrestservice.exception.InvalidOrderException;
+import nulp.cs.carrentalrestservice.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.model.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.model.dto.CarScheduleDTO;
+import nulp.cs.carrentalrestservice.model.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import nulp.cs.carrentalrestservice.model.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.repository.OrderRepository;
-import nulp.cs.carrentalrestservice.service.document.DocumentService;
-import nulp.cs.carrentalrestservice.service.person.customer.CustomerService;
+import nulp.cs.carrentalrestservice.service.person.customer.CustomerInfoService;
 import nulp.cs.carrentalrestservice.service.person.admin.AdminService;
 import nulp.cs.carrentalrestservice.service.car.CarPricingService;
 import nulp.cs.carrentalrestservice.service.car.CarScheduleService;
@@ -33,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final CarOrderMapper carOrderMapper;
     private final AdminService adminService;
     private final CarScheduleService scheduleService;
-    private final CustomerService customerService;
+    private final CustomerInfoService customerInfoService;
     private final CarPricingService pricingService;
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
@@ -48,8 +50,12 @@ public class OrderServiceImpl implements OrderService {
 //    TODO create method to get authenticated customer+, create method to get schedule with car+,
     @Override
     @VerifyOrder
+    @Transactional
     public void createCarOrder(OrderCreationRequest orderRequest) {
-        if (isCustomerHasOverlapOrder(customerService.getAuthenticatedCustomer().getId(), orderRequest.getStartDate(), orderRequest.getEndDate())) {
+        PersonalDataDTO personalData = customerInfoService.getAuthenticatedCustomerInfo()
+                .orElseThrow(()->new NotFoundException("Personal data not found."));
+
+        if (isCustomerHasOverlapOrder(personalData.getId(), orderRequest.getStartDate(), orderRequest.getEndDate())) {
             throw new InvalidOrderException("You have another order for this period.");
         }
         CarScheduleDTO schedule = scheduleService.createCarScheduleForCarOrder(orderRequest);
@@ -59,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.PENDING)
                 .schedule(schedule)
                 .admin(adminService.getAdminForOrderByLocation(schedule.getCar().getLocation()))
-                .customer(customerService.getAuthenticatedCustomer())
+                .person(personalData.getPerson())
                 .build();
 
         // Publish an event to create a maintenance for the car
@@ -84,10 +90,11 @@ public class OrderServiceImpl implements OrderService {
                 .findById(id).orElse(null)));
 
         if (carOrderDTO.isPresent()) {
-            loggingService.logInfo("Car order updated successfully for ID: " + carOrderDTO.get().getId());
+//            carOrderDTO.get().setPersonalData(customerInfoService.getAuthenticatedCustomerInfo());
         } else {
             loggingService.logDebug("Car order not found for ID: " + id);
         }
+
 
         return carOrderDTO;
     }
@@ -95,30 +102,31 @@ public class OrderServiceImpl implements OrderService {
     //TODO ???
     @Override
     public Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO) {
-        loggingService.logInfo("Updating car order with ID: " + id);
-        AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
-
-        orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
-            foundOrder.setStatus(carOrderDTO.getStatus());
-            publisher.publishEvent(new OrderEmailEvent(this, carOrderDTO, carOrderDTO.getCustomer()));
-            
-            CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
-            atomicReference.set(Optional.of(updatedOrder));
-
-            loggingService.logInfo("Car order updated successfully");
-        }, () -> {
-            loggingService.logDebug("Car order not found for ID: " + id);
-            atomicReference.set(Optional.empty());
-        });
-
-        return atomicReference.get();
+//        loggingService.logInfo("Updating car order with ID: " + id);
+//        AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
+//
+//        orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
+//            foundOrder.setStatus(carOrderDTO.getStatus());
+//            publisher.publishEvent(new OrderEmailEvent(this, carOrderDTO, carOrderDTO.getPersonalData()));
+//
+//            CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
+//            atomicReference.set(Optional.of(updatedOrder));
+//
+//            loggingService.logInfo("Car order updated successfully");
+//        }, () -> {
+//            loggingService.logDebug("Car order not found for ID: " + id);
+//            atomicReference.set(Optional.empty());
+//        });
+//
+//        return atomicReference.get();
+        return null;
     }
 
     @Override
     public boolean isOwner(UUID orderId, String username) {
         loggingService.logInfo("Checking ownership for order ID: " + orderId + " and username: " + username);
         boolean isOwner = orderRepository.findById(orderId)
-                .map(order -> order.getCustomer().getPerson().getUsername().equals(username))
+                .map(order -> order.getPerson().getUsername().equals(username))
                 .orElse(false);
 
         loggingService.logInfo("Ownership check result: " + isOwner);
@@ -126,8 +134,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean isCustomerHasOverlapOrder(UUID customerId, LocalDate startDate, LocalDate endDate) {
-        return orderRepository.isCustomerHasOverlapOrder(customerId, startDate, endDate);
+    public boolean isCustomerHasOverlapOrder(UUID personId, LocalDate startDate, LocalDate endDate) {
+        return orderRepository.isCustomerHasOverlapOrder(personId, startDate, endDate);
     }
 
 }

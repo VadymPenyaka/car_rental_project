@@ -123,7 +123,6 @@ public class RentalAgreementService {
         document.add(new Paragraph("8. DETAILS OF THE PARTIES", boldFont));
         document.add(Chunk.NEWLINE);
 
-        // LESSOR details
         Paragraph lessorDetails = new Paragraph("LESSOR:\n" +
                 "LLC \"5Cars LLC\"\n" +
                 "Company Code (EDRPOU): 42750412\n" +
@@ -134,13 +133,11 @@ public class RentalAgreementService {
         document.add(lessorDetails);
         document.add(Chunk.NEWLINE);
 
-        // LESSEE details
         Paragraph lesseeDetails = new Paragraph("LESSEE:\n" +
                 "Full Name: " + data.get("lesseeName") + "\n" +
                 "Passport: No. " + data.get("passportNumber") + "\n" +
                 "Issued by: " + data.get("issuedBy") + "\n" +
                 "Tax ID: " + data.get("taxId") + "\n" +
-                "Address: " + data.get("address") + "\n" +
                 "Phone: " + data.get("phoneNumber"), regularFont);
         document.add(lesseeDetails);
         document.add(Chunk.NEWLINE);
@@ -157,26 +154,22 @@ public class RentalAgreementService {
         signTable.setWidthPercentage(80);
         signTable.setWidths(new float[]{2, 2});
 
-// LESSOR label
         PdfPCell lessorLabelCell = new PdfPCell(new Paragraph("LESSOR:", regularFont));
         lessorLabelCell.setBorder(Rectangle.NO_BORDER);
         lessorLabelCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         signTable.addCell(lessorLabelCell);
 
-// LESSEE label
         PdfPCell lesseeLabelCell = new PdfPCell(new Paragraph("LESSEE:", regularFont));
         lesseeLabelCell.setBorder(Rectangle.NO_BORDER);
         lesseeLabelCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         signTable.addCell(lesseeLabelCell);
 
-// LESSOR signature (картинка)
         PdfPCell lessorSignCell = new PdfPCell();
         lessorSignCell.setBorder(Rectangle.NO_BORDER);
         lessorSignCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         lessorSignCell.addElement(logo);
         signTable.addCell(lessorSignCell);
 
-// LESSEE підпис (порожнє місце)
         PdfPCell lesseeSignCell = new PdfPCell();
         lesseeSignCell.setBorder(Rectangle.NO_BORDER);
         lesseeSignCell.setMinimumHeight(100);

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.annotation.UniquePassportNumber;
 import nulp.cs.carrentalrestservice.annotation.ValidBirthDate;
 import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
 
@@ -24,7 +23,6 @@ public class PassportDTO {
     private String fullName;
     @ValidBirthDate
     private LocalDate dateOfBirth;
-    @UniquePassportNumber
     @NotBlank(message = "Password ID is mandatory!")
     @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String documentNumber;

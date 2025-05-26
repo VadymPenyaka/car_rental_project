@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.annotation.UniqueDriverLicenseNumber;
 import nulp.cs.carrentalrestservice.annotation.ValidExpiryDate;
 
 import java.time.LocalDate;
@@ -30,7 +29,6 @@ public class DriverLicensesDTO {
     @NotBlank(message = "Authority code is mandatory!")
     @Size(min = 6, max = 6, message = "Must be 6 digit length!")
     private String issuedBy;
-    @UniqueDriverLicenseNumber
     @NotBlank(message = "Password ID is mandatory!")
     @Size(min = 9, max = 9, message = "Must be 9 digit length!")
     private String documentNumber;

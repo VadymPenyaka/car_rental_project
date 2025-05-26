@@ -5,7 +5,7 @@ import nulp.cs.carrentalrestservice.model.dto.AdminDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AdminMapper {
     @Mapping(source = "person", target = "person")
     Admin adminDtoToAdmin (AdminDTO adminDTO);

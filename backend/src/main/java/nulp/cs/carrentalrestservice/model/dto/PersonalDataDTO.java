@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.model.request;
+package nulp.cs.carrentalrestservice.model.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.model.dto.DriverLicensesDTO;
-import nulp.cs.carrentalrestservice.model.dto.PassportDTO;
 
 import java.util.UUID;
 
@@ -15,8 +13,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerFullInfoRequest {
-    private UUID personId;
+public class PersonalDataDTO {
+    private UUID id;
+    @Valid
+    @NotNull(message = "Credentials can not be empty!")
+    private PersonDTO person;
     @Valid
     @NotNull(message = "Passport credentials is required!")
     private PassportDTO passport;
