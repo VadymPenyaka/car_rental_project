@@ -79,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
         publisher.publishEvent(new OrderDocumentEvent(this, savedOrder.getId()));
 
         loggingService.logInfo("Car order created successfully");
-
     }
 
 

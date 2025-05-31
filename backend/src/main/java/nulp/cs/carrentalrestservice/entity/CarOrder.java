@@ -6,6 +6,7 @@ import nulp.cs.carrentalrestservice.model.enumeration.OrderStatus;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +33,8 @@ public class CarOrder {
     private OrderStatus status;
     @Column(nullable = false)
     private long totalPrice;
+    @OneToMany(mappedBy = "order")
+    private Set<Document> documents = new HashSet<>();
     @OneToMany(mappedBy = "order")
     private Set<Payment> payments;
 

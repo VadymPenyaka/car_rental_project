@@ -30,6 +30,10 @@ public class Document {
     @Column(name = "document_number", insertable = false, updatable = false)
     private Integer documentNumber;
 
+    @ManyToOne
+    @JoinColumn()
+    private CarOrder order;
+
     @Column(nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 }

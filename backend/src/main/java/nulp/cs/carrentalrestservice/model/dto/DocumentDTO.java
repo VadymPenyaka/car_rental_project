@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nulp.cs.carrentalrestservice.entity.CarOrder;
 import nulp.cs.carrentalrestservice.model.enumeration.DocumentType;
 
 import java.util.UUID;
@@ -18,6 +19,8 @@ public class DocumentDTO {
     private DocumentType type;
 
     private Integer documentNumber;
+
+    private CarOrder order;
 
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 }
