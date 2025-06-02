@@ -1,0 +1,14 @@
+package nulp.cs.carrentalrestservice.modules.car.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class BrandDTO {
+    private String name;
+}

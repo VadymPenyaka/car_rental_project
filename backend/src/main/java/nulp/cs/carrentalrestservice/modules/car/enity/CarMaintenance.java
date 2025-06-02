@@ -1,0 +1,30 @@
+package nulp.cs.carrentalrestservice.modules.car.enity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import nulp.cs.carrentalrestservice.modules.car.CarSchedule;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CarMaintenance {
+    @Id
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    private UUID id;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private Double price;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private CarSchedule schedule;
+}
