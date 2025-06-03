@@ -8,7 +8,7 @@ import nulp.cs.carrentalrestservice.modules.bankid.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.modules.bankid.mapper.BankIdMapper;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.shared.dto.request.PersonalInfoRequest;
-import nulp.cs.carrentalrestservice.modules.person.PersonService;
+import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;

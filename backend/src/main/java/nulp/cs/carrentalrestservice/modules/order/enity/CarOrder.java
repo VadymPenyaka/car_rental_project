@@ -5,7 +5,7 @@ import lombok.*;
 import nulp.cs.carrentalrestservice.modules.car.CarSchedule;
 import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
 import nulp.cs.carrentalrestservice.modules.payment.Payment;
-import nulp.cs.carrentalrestservice.modules.person.Person;
+import nulp.cs.carrentalrestservice.modules.person.entity.Person;
 import nulp.cs.carrentalrestservice.modules.admin.enity.Admin;
 import nulp.cs.carrentalrestservice.modules.document.enity.Document;
 import org.hibernate.annotations.JdbcTypeCode;

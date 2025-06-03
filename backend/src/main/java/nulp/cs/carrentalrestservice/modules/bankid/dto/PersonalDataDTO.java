@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nulp.cs.carrentalrestservice.modules.person.PersonDTO;
+import nulp.cs.carrentalrestservice.modules.person.dto.PersonDTO;
 
 import java.util.UUID;
 

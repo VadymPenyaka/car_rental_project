@@ -1,9 +1,11 @@
 package nulp.cs.carrentalrestservice.modules.order.service;
 
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
+import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
 import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,4 +21,5 @@ public interface OrderService {
     boolean isCustomerHasOverlapOrder(UUID customerId, LocalDate startDate, LocalDate endDate);
 
 
+    List<CarOrderDTO> getOrdersByPersonId (UUID personId, OrderStatus orderStatus);
 }

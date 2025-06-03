@@ -8,10 +8,10 @@ import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.modules.admin.mapper.AdminMapper;
 import nulp.cs.carrentalrestservice.modules.admin.dto.AdminDTO;
 import nulp.cs.carrentalrestservice.modules.location.dto.LocationDTO;
-import nulp.cs.carrentalrestservice.modules.person.PersonDTO;
-import nulp.cs.carrentalrestservice.modules.security.Role;
+import nulp.cs.carrentalrestservice.modules.person.dto.PersonDTO;
+import nulp.cs.carrentalrestservice.modules.security.dto.Role;
 import nulp.cs.carrentalrestservice.modules.admin.repository.AdminRepository;
-import nulp.cs.carrentalrestservice.modules.person.PersonService;
+import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 import nulp.cs.carrentalrestservice.shared.logging.LoggingService;
 import org.springframework.stereotype.Service;
 

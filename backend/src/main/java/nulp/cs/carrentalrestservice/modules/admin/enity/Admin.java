@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import nulp.cs.carrentalrestservice.modules.location.enity.Location;
 import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
-import nulp.cs.carrentalrestservice.modules.person.Person;
+import nulp.cs.carrentalrestservice.modules.person.entity.Person;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

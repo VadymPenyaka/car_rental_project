@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -133,6 +134,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean isCustomerHasOverlapOrder(UUID personId, LocalDate startDate, LocalDate endDate) {
         return orderRepository.isCustomerHasOverlapOrder(personId, startDate, endDate);
+    }
+
+// TODO add method to controller
+    @Override
+    public List<CarOrderDTO> getOrdersByPersonId(UUID personId, OrderStatus orderStatus) {
+        return orderRepository.findAllByPerson_IdAndStatus(personId, orderStatus)
+                .stream().map(carOrderMapper::carOrderToCarOrderDto).toList();
     }
 
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.admin.dto.AdminDTO;
 import nulp.cs.carrentalrestservice.modules.car.CarScheduleDTO;
-import nulp.cs.carrentalrestservice.modules.person.PersonDTO;
+import nulp.cs.carrentalrestservice.modules.person.dto.PersonDTO;
 
 import java.util.UUID;
 

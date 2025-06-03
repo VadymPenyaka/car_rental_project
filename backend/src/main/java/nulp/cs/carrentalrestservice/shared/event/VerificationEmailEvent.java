@@ -1,7 +1,7 @@
 package nulp.cs.carrentalrestservice.shared.event;
 
 import lombok.Getter;
-import nulp.cs.carrentalrestservice.modules.security.VerificationType;
+import nulp.cs.carrentalrestservice.modules.person.dto.VerificationType;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.UUID;

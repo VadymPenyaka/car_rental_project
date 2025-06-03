@@ -1,10 +1,10 @@
 package nulp.cs.carrentalrestservice.shared.event.listener;
 
-import nulp.cs.carrentalrestservice.modules.security.VerificationType;
+import nulp.cs.carrentalrestservice.modules.person.dto.VerificationType;
 import nulp.cs.carrentalrestservice.shared.event.OrderEmailEvent;
 import nulp.cs.carrentalrestservice.shared.event.VerificationEmailEvent;
-import nulp.cs.carrentalrestservice.shared.mail.EmailContentCreator;
-import nulp.cs.carrentalrestservice.shared.mail.MailingService;
+import nulp.cs.carrentalrestservice.modules.mail.EmailContentCreator;
+import nulp.cs.carrentalrestservice.modules.mail.MailingService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

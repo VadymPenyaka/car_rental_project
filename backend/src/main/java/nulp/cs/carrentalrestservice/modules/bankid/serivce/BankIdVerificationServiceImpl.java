@@ -6,15 +6,15 @@ import nulp.cs.carrentalrestservice.modules.bankid.client.BankIdVerificationClie
 import nulp.cs.carrentalrestservice.modules.bankid.dto.DriverLicenseCategoryDTO;
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
-import nulp.cs.carrentalrestservice.modules.person.PersonDTO;
+import nulp.cs.carrentalrestservice.modules.person.dto.PersonDTO;
 import nulp.cs.carrentalrestservice.shared.exception.CategoryVerificationException;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
-import nulp.cs.carrentalrestservice.modules.security.Role;
+import nulp.cs.carrentalrestservice.modules.security.dto.Role;
 import nulp.cs.carrentalrestservice.shared.dto.request.PersonalInfoRequest;
 import nulp.cs.carrentalrestservice.shared.dto.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.modules.car.dto.CarDTO;
-import nulp.cs.carrentalrestservice.modules.person.PersonService;
+import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 import nulp.cs.carrentalrestservice.modules.car.serivce.CarService;
 import nulp.cs.carrentalrestservice.shared.logging.LoggingService;
 import org.springframework.stereotype.Service;
@@ -31,20 +31,6 @@ public class BankIdVerificationServiceImpl implements BankIdVerificationService 
     private final CarService carService;
     private final LoggingService loggingService;
     private final BankIdVerificationClient bankIdVerificationClient;
-
-    public void registerCustomer(CustomerRegistrationRequest customerData) {
-        PersonDTO personDTO = PersonDTO.builder()
-                .phoneNumber(customerData.getPhoneNumber())
-                .firstName(customerData.getFirstName())
-                .sureName(customerData.getSureName())
-                .password(customerData.getPassword())
-                .username(customerData.getEmail())
-                .role(Role.ROLE_USER)
-                .build();
-
-
-        personService.createPendingPerson(personDTO);
-    }
 
     @Transactional
     public void createCustomerFullInfo(PersonalInfoRequest customerRequest) {

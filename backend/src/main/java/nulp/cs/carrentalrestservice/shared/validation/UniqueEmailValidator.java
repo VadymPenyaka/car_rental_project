@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.shared.annotation.UniqueEmail;
-import nulp.cs.carrentalrestservice.modules.person.PersonService;
+import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 
 
 @RequiredArgsConstructor

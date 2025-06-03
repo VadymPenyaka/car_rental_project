@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import nulp.cs.carrentalrestservice.modules.person.PersonDTO;
+import nulp.cs.carrentalrestservice.modules.person.dto.PersonDTO;
 
 @Converter
 public class PersonDTOConverter implements AttributeConverter<PersonDTO, String> {

@@ -2,7 +2,7 @@ package nulp.cs.carrentalrestservice.shared.event.listener;
 
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.shared.event.SaveCarPicturesEvent;
-import nulp.cs.carrentalrestservice.shared.S3Service;
+import nulp.cs.carrentalrestservice.modules.file.S3Service;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

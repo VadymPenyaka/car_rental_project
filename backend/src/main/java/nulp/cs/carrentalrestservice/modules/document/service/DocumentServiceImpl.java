@@ -16,9 +16,9 @@ import nulp.cs.carrentalrestservice.modules.document.dto.DocumentDTO;
 import nulp.cs.carrentalrestservice.modules.document.repository.DocumentRepository;
 import nulp.cs.carrentalrestservice.modules.location.dto.LocationDTO;
 import nulp.cs.carrentalrestservice.modules.order.service.OrderService;
-import nulp.cs.carrentalrestservice.modules.person.PersonService;
+import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 import nulp.cs.carrentalrestservice.modules.bankid.client.BankIdVerificationClient;
-import nulp.cs.carrentalrestservice.shared.S3Service;
+import nulp.cs.carrentalrestservice.modules.file.S3Service;
 import nulp.cs.carrentalrestservice.modules.document.generator.RentalAgreementService;
 import org.springframework.stereotype.Service;
 
