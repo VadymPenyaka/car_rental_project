@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerRegistrationRequest {
+public class PersonRegistrationRequest {
     private UUID id;
     @NotNull
     @ValidPassword

@@ -7,7 +7,7 @@ import nulp.cs.carrentalrestservice.modules.person.entity.PersonPendingConfirmat
 import nulp.cs.carrentalrestservice.modules.person.mapper.PersonMapper;
 import nulp.cs.carrentalrestservice.modules.person.repository.PersonRepository;
 import nulp.cs.carrentalrestservice.modules.security.dto.Role;
-import nulp.cs.carrentalrestservice.shared.dto.request.CustomerRegistrationRequest;
+import nulp.cs.carrentalrestservice.shared.dto.request.PersonRegistrationRequest;
 import nulp.cs.carrentalrestservice.shared.exception.InvalidVerificationTokenException;
 import nulp.cs.carrentalrestservice.shared.dto.request.UpdatePersonRequest;
 import org.springframework.security.core.Authentication;
@@ -49,7 +49,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void registerPerson(CustomerRegistrationRequest customerData) {
+    public void registerPerson(PersonRegistrationRequest customerData) {
         PersonDTO personDTO = PersonDTO.builder()
                 .phoneNumber(customerData.getPhoneNumber())
                 .firstName(customerData.getFirstName())

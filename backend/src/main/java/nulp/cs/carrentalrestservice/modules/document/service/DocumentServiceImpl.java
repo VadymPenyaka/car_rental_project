@@ -6,6 +6,8 @@ import nulp.cs.carrentalrestservice.modules.bankid.dto.PassportDTO;
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.modules.car.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
+import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
+import nulp.cs.carrentalrestservice.modules.order.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.modules.bankid.serivce.DigitalSignatureService;
 import nulp.cs.carrentalrestservice.modules.document.mapper.DocumentMapper;
@@ -48,13 +50,14 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void createRentalAgreementDocument(UUID orderId) {
+    public void createRentalAgreementDocument(CarOrderDTO order) {
         //add document number to method
-        Map<String, String> data = getDataForGeneration(orderId);
+        Map<String, String> data = getDataForGeneration(order.getId());
 
         DocumentDTO documentToSave = DocumentDTO.builder()
                 .createdAt(LocalDateTime.now())
                 .type(DocumentType.AGREEMENT)
+                .order(order)
                 .build();
 
         UUID documentId = createDocument(documentToSave).getId();
@@ -83,7 +86,11 @@ public class DocumentServiceImpl implements DocumentService {
         UUID personId = personService.getAuthenticatedPerson().getId();
         byte[] bytes = getDocumentBytesById(documentId).orElseThrow(()
                 -> new NotFoundException("Document not found!"));
-        return Optional.ofNullable(digitalSignatureService.signAgreement(personId, bytes));
+
+        byte[] signedFileBytes = digitalSignatureService.signAgreement(personId, bytes);
+
+        s3Service.saveDocumentToServer(signedFileBytes, documentId.toString());
+        return Optional.ofNullable(signedFileBytes);
     }
 
     private Map<String, String> getDataForGeneration (UUID orderId) {

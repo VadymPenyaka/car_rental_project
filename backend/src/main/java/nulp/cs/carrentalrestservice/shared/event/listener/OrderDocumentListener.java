@@ -13,6 +13,6 @@ public class OrderDocumentListener {
 
     @EventListener
     public void createAndSaveAgreement (OrderDocumentEvent event) {
-        documentService.createRentalAgreementDocument(event.getOrderId());
+        documentService.createRentalAgreementDocument(event.getOrder());
     }
 }

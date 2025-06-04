@@ -3,7 +3,6 @@ package nulp.cs.carrentalrestservice.modules.bankid.serivce;
 
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
-import nulp.cs.carrentalrestservice.shared.dto.request.CustomerRegistrationRequest;
 import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 import nulp.cs.carrentalrestservice.shared.dto.request.PersonalInfoRequest;
 

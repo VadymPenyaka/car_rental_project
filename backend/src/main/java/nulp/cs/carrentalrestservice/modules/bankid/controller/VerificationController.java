@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/verification")
+@RequestMapping(VerificationController.BASE_PATH)
 public class VerificationController {
     public static final String BASE_PATH = "/api/v1/verification";
     private final BankIdVerificationService bankIdVerificationService;

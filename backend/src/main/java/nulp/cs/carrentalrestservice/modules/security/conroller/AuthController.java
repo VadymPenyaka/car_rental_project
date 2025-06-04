@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.security.service.AuthService;
-import nulp.cs.carrentalrestservice.shared.dto.request.CustomerRegistrationRequest;
+import nulp.cs.carrentalrestservice.shared.dto.request.PersonRegistrationRequest;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.shared.dto.response.LoginResult;
 import nulp.cs.carrentalrestservice.shared.dto.request.LoginRequest;
@@ -35,15 +35,8 @@ public class AuthController {
     private final PersonService personService;
     private final AuthService authService;
 
-    // TODO move to person controller
-    @GetMapping
-    public PersonDTO getAuthenticatedPersonInfo (@AuthenticationPrincipal PersonDetails personDetails) {
-        return personService.getPersonById(personDetails.person().getId())
-                .orElseThrow(NotFoundException::new);
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<?> registerPerson (@Valid @RequestBody CustomerRegistrationRequest request, BindingResult bindingResult) {
+    public ResponseEntity<?> registerPerson (@Valid @RequestBody PersonRegistrationRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }

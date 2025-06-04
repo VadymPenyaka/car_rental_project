@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
 
         // Publish an event to create a document for the order
-        publisher.publishEvent(new OrderDocumentEvent(this, savedOrder.getId()));
+        publisher.publishEvent(new OrderDocumentEvent(this, savedOrder));
 
         loggingService.logInfo("Car order created successfully");
     }
