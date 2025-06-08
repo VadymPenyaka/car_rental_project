@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.modules.payment;
+package nulp.cs.carrentalrestservice.modules.payment.enity;
 
 
 import jakarta.persistence.*;
@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
+import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentMethod;
+import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentStatus;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

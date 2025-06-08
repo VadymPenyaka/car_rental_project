@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.modules.payment;
+package nulp.cs.carrentalrestservice.modules.payment.dto;
 
 public enum PaymentStatus {
     PAID,

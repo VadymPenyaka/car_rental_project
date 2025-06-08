@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.modules.order.controller;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.modules.order.service.OrderService;
+import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ public class OrderController {
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest) {
-        orderService.createCarOrder(orderRequest);
+        StripeResponse payment = orderService.createCarOrder(orderRequest);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(payment, HttpStatus.CREATED);
     }
 
     @GetMapping(BASE_PATH +"/{id}")

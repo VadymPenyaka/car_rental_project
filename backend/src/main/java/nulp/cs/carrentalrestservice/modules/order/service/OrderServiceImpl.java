@@ -6,6 +6,9 @@ import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
 import nulp.cs.carrentalrestservice.modules.order.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.modules.order.repository.OrderRepository;
+import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
+import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
+import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
 import nulp.cs.carrentalrestservice.shared.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.shared.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.shared.event.OrderDocumentEvent;
@@ -38,11 +41,14 @@ public class OrderServiceImpl implements OrderService {
     private final CarPricingService pricingService;
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
+    private final PaymentService paymentService;
 
 
     /**
      * Creates a new car order.
+     *
      * @param orderRequest the request that contains customer id, car id, start date, end date, and total price
+     * @return
      * @throws InvalidOrderException if the customer has another order for this period
      */
 //    TODO add method to find admin+, calculate price+, aspect to bank, send pay link to customer
@@ -50,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @VerifyOrder
     @Transactional
-    public void createCarOrder(OrderCreationRequest orderRequest) {
+    public StripeResponse createCarOrder(OrderCreationRequest orderRequest) {
         PersonalDataDTO personalData = customerInfoService.getAuthenticatedCustomerInfo()
                 .orElseThrow(()->new NotFoundException("Personal data not found."));
 
@@ -78,6 +84,12 @@ public class OrderServiceImpl implements OrderService {
         publisher.publishEvent(new OrderDocumentEvent(this, savedOrder));
 
         loggingService.logInfo("Car order created successfully");
+
+        return paymentService.createPaymentIntent(StripeRequest.builder()
+                .amount((long) savedOrder.getTotalPrice())
+                .name(savedOrder.getPerson().getUsername())
+                .currency("USD")
+                .build());
     }
 
 
