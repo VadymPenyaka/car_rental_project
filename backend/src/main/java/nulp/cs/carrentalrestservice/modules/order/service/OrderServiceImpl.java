@@ -25,6 +25,7 @@ import nulp.cs.carrentalrestservice.shared.logging.LoggingService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -80,13 +81,14 @@ public class OrderServiceImpl implements OrderService {
         CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository
                 .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
 
+        
         // Publish an event to create a document for the order
         publisher.publishEvent(new OrderDocumentEvent(this, savedOrder));
 
         loggingService.logInfo("Car order created successfully");
 
         return paymentService.createPaymentIntent(StripeRequest.builder()
-                .amount((long) savedOrder.getTotalPrice())
+                .amount(BigDecimal.valueOf(savedOrder.getTotalPrice()))
                 .name(savedOrder.getPerson().getUsername())
                 .currency("USD")
                 .build());

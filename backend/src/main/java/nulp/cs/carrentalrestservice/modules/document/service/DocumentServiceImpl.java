@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.modules.document.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PassportDTO;
@@ -52,7 +53,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public void createRentalAgreementDocument(CarOrderDTO order) {
         //add document number to method
-        Map<String, String> data = getDataForGeneration(order.getId());
+        Map<String, String> data = getDataForGeneration(order);
 
         DocumentDTO documentToSave = DocumentDTO.builder()
                 .createdAt(LocalDateTime.now())
@@ -93,9 +94,7 @@ public class DocumentServiceImpl implements DocumentService {
         return Optional.ofNullable(signedFileBytes);
     }
 
-    private Map<String, String> getDataForGeneration (UUID orderId) {
-        CarOrderDTO order = orderService.getCarOrderByID(orderId)
-                .orElseThrow(() -> new NotFoundException("Order not found!"));
+    private Map<String, String> getDataForGeneration (CarOrderDTO order) {
 
         PersonalDataDTO personalInfo = bankIdVerificationClient.getCustomerDataById(order.getPerson().getId())
                 .orElseThrow(() -> new NotFoundException("Personal data not found!"));

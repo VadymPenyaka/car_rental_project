@@ -74,6 +74,20 @@ public class AICarSearchService {
     }
 
     private String sendHttpRequest(String body) throws IOException {
+        HttpURLConnection con = getHttpURLConnection(body);
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+        }
+
+        return response.toString();
+    }
+
+    private HttpURLConnection getHttpURLConnection(String body) throws IOException {
         String url = "https://api.openai.com/v1/chat/completions";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -87,16 +101,7 @@ public class AICarSearchService {
             writer.write(body);
             writer.flush();
         }
-
-        StringBuilder response = new StringBuilder();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-        }
-
-        return response.toString();
+        return con;
     }
 
     private List<ChatSearchResponse> parseResponseToList(String responseJson) throws JsonProcessingException {

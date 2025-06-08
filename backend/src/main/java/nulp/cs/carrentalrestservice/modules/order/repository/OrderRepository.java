@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaRepository <CarOrder, UUID> {
+    //TODO
     @Query("SELECT COUNT(o) > 0 FROM CarOrder o WHERE o.person.id = :personId " +
             "AND (o.schedule.startDate <= :endDate AND o.schedule.endDate >= :startDate)")
     boolean isCustomerHasOverlapOrder (@Param("personId") UUID personId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);

@@ -31,7 +31,7 @@ public class Document {
     private Integer documentNumber;
 
     @ManyToOne
-    @JoinColumn()
+    @JoinColumn(nullable = false)
     private CarOrder order;
 
     @Column(nullable = false, updatable = false)

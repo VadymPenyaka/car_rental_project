@@ -13,6 +13,8 @@ import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class PaymentService {
     @Value("${stripe.api.key}")
@@ -34,7 +36,7 @@ public class PaymentService {
                 .LineItem.PriceData.builder()
                 .setCurrency(request.getCurrency())
                 .setProductData(productData)
-                .setUnitAmount(request.getAmount())
+                .setUnitAmountDecimal(request.getAmount().multiply(BigDecimal.valueOf(100)))
                 .build();
 
         SessionCreateParams.LineItem lineItem = SessionCreateParams
