@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.modules.payment.dto;
 import lombok.*;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -13,13 +14,25 @@ import java.util.UUID;
 public class PaymentDTO {
     private UUID id;
 
-    private double amount;
+    private BigDecimal amount;
 
-    private PaymentMethod paymentMethod;
+    private String currency;
 
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
 
-    private LocalDateTime paymentDate = LocalDateTime.now();
+    private String paymentIntentId;
+
+    private String sessionId;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime paidAt;
+
+    private String cardBrand;
+
+    private String cardLastDigits;
+
+    private String receiptUrl;
 
     private CarOrderDTO carOrder;
 }

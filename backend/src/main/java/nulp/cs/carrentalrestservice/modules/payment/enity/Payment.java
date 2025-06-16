@@ -1,21 +1,19 @@
 package nulp.cs.carrentalrestservice.modules.payment.enity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
-import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentMethod;
 import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentStatus;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-//TODO delete fields
 @Entity
 @Getter
 @Setter
@@ -28,34 +26,36 @@ public class Payment {
     @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
-    @Column(nullable = false)
-    private long amount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
+
+    @Column(nullable = false, length = 3)
+    private String currency;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private PaymentMethod paymentMethod;
+    private PaymentStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
-    private PaymentStatus paymentStatus;
-
-    @Column(nullable = false)
-    private LocalDateTime paymentDate = LocalDateTime.now();
-    //TODO rename
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String paymentIntentId;
 
-//    @Column
-//    private String cardBrand;
-//
-//    @Column(length = 4)
-//    private String cardLastDigits;
-//
-//    @Column
-//    private Integer cardExpMonth;
-//
-//    @Column
-//    private Integer cardExpYear;
+    @Column(unique = true, length = 100)
+    private String sessionId;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column
+    private LocalDateTime paidAt;
+
+    @Column(length = 20)
+    private String cardBrand;
+
+    @Column(length = 4)
+    private String cardLastDigits;
+
+    @Column(length = 500)
+    private String receiptUrl;
 
     @ManyToOne
     @JoinColumn(nullable = false)

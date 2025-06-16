@@ -5,20 +5,28 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentStatus;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
+import nulp.cs.carrentalrestservice.modules.payment.enity.Payment;
+import nulp.cs.carrentalrestservice.modules.payment.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
 
     @Value("${api.domain}")
     private String domain;
+
+    private final PaymentRepository paymentRepository;
 
     @PostConstruct
     public void init() {
@@ -37,6 +45,8 @@ public class PaymentService {
             throw new RuntimeException(e);
         }
 
+        createPaymentRecord(request, session);
+
         return StripeResponse.builder()
                 .sessionId(session.getId())
                 .status("SUCCESS")
@@ -44,10 +54,20 @@ public class PaymentService {
                 .build();
     }
 
-    private void createPayment (StripeRequest request) {
+    private void createPaymentRecord(StripeRequest request, Session session) {
+        Payment payment = new Payment();
+        payment.setAmount(request.getAmount());
+        payment.setCurrency(request.getCurrency());
+        payment.setStatus(PaymentStatus.PENDING);
+        payment.setPaymentIntentId(session.getPaymentIntent());
+        payment.setSessionId(session.getId());
+        payment.setCreatedAt(LocalDateTime.now());
+        payment.setOrder(request.getCarOrder());
 
-
+        paymentRepository.save(payment);
     }
+
+
 
     private SessionCreateParams createSessionParams(StripeRequest request) {
         SessionCreateParams.LineItem.PriceData.ProductData productData = SessionCreateParams
