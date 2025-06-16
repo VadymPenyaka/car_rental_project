@@ -15,6 +15,7 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+//TODO delete fields
 @Entity
 @Getter
 @Setter
@@ -40,21 +41,21 @@ public class Payment {
 
     @Column(nullable = false)
     private LocalDateTime paymentDate = LocalDateTime.now();
-
+    //TODO rename
     @Column(nullable = false, unique = true)
     private String paymentIntentId;
 
-    @Column
-    private String cardBrand;
-
-    @Column(length = 4)
-    private String cardLastDigits;
-
-    @Column
-    private Integer cardExpMonth;
-
-    @Column
-    private Integer cardExpYear;
+//    @Column
+//    private String cardBrand;
+//
+//    @Column(length = 4)
+//    private String cardLastDigits;
+//
+//    @Column
+//    private Integer cardExpMonth;
+//
+//    @Column
+//    private Integer cardExpYear;
 
     @ManyToOne
     @JoinColumn(nullable = false)

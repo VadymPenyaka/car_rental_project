@@ -1,4 +1,4 @@
-package nulp.cs.carrentalrestservice.shared.aspect;
+package nulp.cs.carrentalrestservice.modules.order.aspect;
 
 
 import lombok.RequiredArgsConstructor;

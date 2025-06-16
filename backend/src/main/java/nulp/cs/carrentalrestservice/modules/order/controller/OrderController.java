@@ -1,5 +1,6 @@
 package nulp.cs.carrentalrestservice.modules.order.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.modules.order.service.OrderService;
@@ -9,6 +10,7 @@ import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,7 +23,8 @@ public class OrderController {
 
     @PostMapping(BASE_PATH)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createCarOrder (@RequestBody OrderCreationRequest orderRequest) {
+    public ResponseEntity<?> createCarOrder (@RequestBody @Valid OrderCreationRequest orderRequest) {
+
         StripeResponse payment = orderService.createCarOrder(orderRequest);
 
         return new ResponseEntity<>(payment, HttpStatus.CREATED);

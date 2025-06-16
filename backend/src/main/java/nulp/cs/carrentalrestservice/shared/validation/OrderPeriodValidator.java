@@ -2,18 +2,24 @@ package nulp.cs.carrentalrestservice.shared.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import nulp.cs.carrentalrestservice.shared.annotation.EndDate;
+import nulp.cs.carrentalrestservice.shared.annotation.StartDate;
 import nulp.cs.carrentalrestservice.shared.annotation.ValidOrderPeriod;
 import nulp.cs.carrentalrestservice.shared.dto.request.CarSearchRequest;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
-public class OrderPeriodValidator implements ConstraintValidator<ValidOrderPeriod, CarSearchRequest> {
+public class OrderPeriodValidator implements ConstraintValidator<ValidOrderPeriod, Object> {
     private static final int MAX_MONTHS_AHEAD = 3;
 
     @Override
-    public boolean isValid(CarSearchRequest request, ConstraintValidatorContext context) {
-        LocalDate start = request.getStartDate();
-        LocalDate end = request.getEndDate();
+    public boolean isValid(Object obj, ConstraintValidatorContext context) {
+        if (obj == null) return true;
+
+        LocalDate start = getAnnotatedDateField(obj, StartDate.class);
+        LocalDate end = getAnnotatedDateField(obj, EndDate.class);
+
         LocalDate maxStartDate = LocalDate.now().plusMonths(MAX_MONTHS_AHEAD);
 
         if (start == null && end == null) return true;
@@ -21,7 +27,8 @@ public class OrderPeriodValidator implements ConstraintValidator<ValidOrderPerio
         context.disableDefaultConstraintViolation();
 
         if (start == null || end == null) {
-            addViolation(context, start == null ? "Start date must not be null." : "End date must not be null.", start == null ? "startDate" : "endDate");
+            addViolation(context, start == null ? "Start date must not be null." : "End date must not be null.",
+                    start == null ? "startDate" : "endDate");
             return false;
         }
 
@@ -40,13 +47,28 @@ public class OrderPeriodValidator implements ConstraintValidator<ValidOrderPerio
             return false;
         }
 
-
         if (start.isAfter(end)) {
             addViolation(context, "Start date must not be later than end date.", "startDate");
             return false;
         }
 
         return true;
+    }
+
+    private LocalDate getAnnotatedDateField(Object obj, Class<? extends java.lang.annotation.Annotation> annotation) {
+        return Arrays.stream(obj.getClass().getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(annotation))
+                .filter(field -> field.getType().equals(LocalDate.class))
+                .findFirst()
+                .map(field -> {
+                    try {
+                        field.setAccessible(true);
+                        return (LocalDate) field.get(obj);
+                    } catch (IllegalAccessException e) {
+                        return null;
+                    }
+                })
+                .orElse(null);
     }
 
     private void addViolation(ConstraintValidatorContext context, String message, String field) {

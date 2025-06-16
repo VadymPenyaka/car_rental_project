@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
      * Creates a new car order.
      *
      * @param orderRequest the request that contains customer id, car id, start date, end date, and total price
-     * @return
+     * @return payment method link
      * @throws InvalidOrderException if the customer has another order for this period
      */
 //    TODO add method to find admin+, calculate price+, aspect to bank, send pay link to customer
@@ -87,9 +88,11 @@ public class OrderServiceImpl implements OrderService {
 
         loggingService.logInfo("Car order created successfully");
 
-        return paymentService.createPaymentIntent(StripeRequest.builder()
+        return paymentService.createPaymentLink(StripeRequest.builder()
                 .amount(BigDecimal.valueOf(savedOrder.getTotalPrice()))
-                .name(savedOrder.getPerson().getUsername())
+                .name(savedOrder.getSchedule().getCar().getModel().getBrandName().getName()
+                        + " " + savedOrder.getSchedule().getCar().getModel().getModelName()
+                        + " for " + ChronoUnit.DAYS.between(savedOrder.getSchedule().getStartDate(), savedOrder.getSchedule().getEndDate()) + " days")
                 .currency("USD")
                 .build());
     }

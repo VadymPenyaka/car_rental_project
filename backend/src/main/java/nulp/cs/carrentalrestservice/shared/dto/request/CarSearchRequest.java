@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nulp.cs.carrentalrestservice.shared.annotation.EndDate;
+import nulp.cs.carrentalrestservice.shared.annotation.StartDate;
 import nulp.cs.carrentalrestservice.shared.annotation.ValidOrderPeriod;
 import nulp.cs.carrentalrestservice.modules.car.dto.CarClass;
 import nulp.cs.carrentalrestservice.modules.car.dto.FuelType;
@@ -24,6 +26,8 @@ public class CarSearchRequest {
     private Double minPrice;
     private Double maxPrice;
     private String brand;
+    @StartDate
     private LocalDate startDate;
+    @EndDate
     private LocalDate endDate;
 }
