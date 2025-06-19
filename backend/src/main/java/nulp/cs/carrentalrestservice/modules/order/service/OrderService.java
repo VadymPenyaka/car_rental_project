@@ -15,7 +15,8 @@ public interface OrderService {
 
     Optional<CarOrderDTO> getCarOrderByID (UUID id);
 
-    Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO);
+    //TODO ???
+    Optional<CarOrderDTO> updateOrderStatusById(UUID id, OrderStatus orderStatus);
 
     boolean isOwner (UUID orderId, String username);
 

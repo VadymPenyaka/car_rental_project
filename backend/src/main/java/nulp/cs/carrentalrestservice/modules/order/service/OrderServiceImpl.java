@@ -12,6 +12,7 @@ import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
 import nulp.cs.carrentalrestservice.shared.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.shared.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.shared.event.OrderDocumentEvent;
+import nulp.cs.carrentalrestservice.shared.event.OrderEmailEvent;
 import nulp.cs.carrentalrestservice.shared.exception.InvalidOrderException;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.modules.car.CarScheduleDTO;
@@ -31,6 +32,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -116,25 +118,23 @@ public class OrderServiceImpl implements OrderService {
 
     //TODO ???
     @Override
-    public Optional<CarOrderDTO> updateCarOrderById(UUID id, CarOrderDTO carOrderDTO) {
-//        loggingService.logInfo("Updating car order with ID: " + id);
-//        AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
-//
-//        orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
-//            foundOrder.setStatus(carOrderDTO.getStatus());
-//            publisher.publishEvent(new OrderEmailEvent(this, carOrderDTO, carOrderDTO.getPersonalData()));
-//
-//            CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
-//            atomicReference.set(Optional.of(updatedOrder));
-//
-//            loggingService.logInfo("Car order updated successfully");
-//        }, () -> {
-//            loggingService.logDebug("Car order not found for ID: " + id);
-//            atomicReference.set(Optional.empty());
-//        });
-//
-//        return atomicReference.get();
-        return null;
+    public Optional<CarOrderDTO> updateOrderStatusById(UUID id, OrderStatus orderStatus) {
+        loggingService.logInfo("Updating car order with ID: " + id);
+        AtomicReference<Optional<CarOrderDTO>> atomicReference = new AtomicReference<>();
+
+        orderRepository.findById(id).ifPresentOrElse(foundOrder -> {
+            foundOrder.setStatus(orderStatus);
+            publisher.publishEvent(new OrderEmailEvent(this, carOrderMapper.carOrderToCarOrderDto(foundOrder), foundOrder.getPerson()));
+
+            CarOrderDTO updatedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository.save(foundOrder));
+            atomicReference.set(Optional.of(updatedOrder));
+            loggingService.logInfo("Car order updated successfully");
+        }, () -> {
+            loggingService.logDebug("Car order not found for ID: " + id);
+            atomicReference.set(Optional.empty());
+        });
+
+        return atomicReference.get();
     }
 
     @Override

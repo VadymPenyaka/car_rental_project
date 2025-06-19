@@ -10,7 +10,6 @@ import nulp.cs.carrentalrestservice.shared.dto.request.OrderCreationRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -40,7 +39,7 @@ public class OrderController {
     @PutMapping(BASE_PATH +"/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateCarOrderByID (@PathVariable("id") UUID id, @RequestBody CarOrderDTO carOrderDTO) {
-        if (orderService.updateCarOrderById(id, carOrderDTO).isEmpty()) {
+        if (orderService.updateOrderStatusById(id, carOrderDTO.getStatus()).isEmpty()) {
             throw new NotFoundException();
         }
 

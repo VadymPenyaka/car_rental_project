@@ -1,15 +1,17 @@
 package nulp.cs.carrentalrestservice.modules.payment.service;
 
 import com.stripe.Stripe;
+import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import com.stripe.model.PaymentIntent;
-import com.stripe.model.TODO;
+import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
+import com.stripe.param.ChargeListParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
 import nulp.cs.carrentalrestservice.modules.order.service.OrderService;
 import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentStatus;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
@@ -64,6 +66,31 @@ public class PaymentService {
                 .build();
     }
 
+//    @Transactional
+//    public boolean processWebhookEvent(String payload, String sigHeader) {
+//        try {
+//            Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
+//
+//            return switch (event.getType()) {
+//                case "payment_intent.succeeded" -> processSuccessfulPayment(event);
+//                case "payment_intent.payment_failed", "payment_intent.canceled" -> handlePaymentFailure(event);
+//                case "checkout.session.completed" -> handleSessionCompleted(event);
+//                case "checkout.session.expired" -> handleSessionExpired(event);
+//                default -> {
+//                    log.debug("Unhandled event type: {}", event.getType());
+//                    yield true;
+//                }
+//            };
+//
+//        } catch (SignatureVerificationException e) {
+//            log.error("Invalid webhook signature", e);
+//            return false;
+//        } catch (Exception e) {
+//            log.error("Error processing webhook", e);
+//            return false;
+//        }
+//    }
+
     @Transactional
     public boolean processSuccessfulPayment(String paymentIntentId) {
         Payment payment = paymentRepository.findByPaymentIntentId(paymentIntentId)
@@ -85,7 +112,7 @@ public class PaymentService {
 
             paymentRepository.save(payment);
 
-//            confirmOrder(payment);
+            confirmOrder(payment);
 
             log.logInfo("Payment successfully processed: " + paymentIntentId);
             return true;
@@ -150,7 +177,7 @@ public class PaymentService {
                 }
 
                 paymentRepository.save(payment);
-//                confirmOrder(payment);
+                confirmOrder(payment);
             }
 
             log.logInfo("Session successfully processed: " + sessionId);
@@ -187,29 +214,64 @@ public class PaymentService {
     }
     //TODO make it work
     private void updatePaymentWithChargeDetails(Payment payment, PaymentIntent paymentIntent) {
-//        if (!paymentIntent.getCharges().getData().isEmpty()) {
-//            Charge charge = paymentIntent.getCharges().getData().get(0);
-//
-//            payment.setReceiptUrl(charge.getReceiptUrl());
-//
-//            if (charge.getPaymentMethodDetails() != null &&
-//                    charge.getPaymentMethodDetails().getCard() != null) {
-//                var card = charge.getPaymentMethodDetails().getCard();
-//                payment.setCardBrand(card.getBrand());
-//                payment.setCardLastDigits(card.getLast4());
-//            }
-//        }
+        try {
+            // Отримуємо всі charges для цього PaymentIntent
+            ChargeCollection charges = Charge.list(
+                    ChargeListParams.builder()
+                            .setPaymentIntent(paymentIntent.getId())
+                            .setLimit(1L)
+                            .build()
+            );
+
+            if (charges.getData() == null || charges.getData().isEmpty()) {
+                log.logDebug("No charges found for PaymentIntent: " + paymentIntent.getId());
+                return;
+            }
+
+            Charge charge = charges.getData().get(0);
+            updatePaymentFromCharge(payment, charge);
+
+        } catch (StripeException e) {
+            log.logError("Error retrieving charges for PaymentIntent", e);
+        }
     }
 
-//    private void confirmOrder(Payment payment) {
-//        try {
-//            orderService.confirmOrderPayment(payment.getOrder().getId(), payment.getPaymentIntentId());
-//            log.info("Order confirmed: {}", payment.getOrder().getId());
-//        } catch (Exception e) {
-//            log.error("Failed to confirm order: {}", payment.getOrder().getId(), e);
-//            // Не кидаємо exception - платіж все одно успішний
-//        }
-//    }
+    private void updatePaymentFromCharge(Payment payment, Charge charge) {
+        try {
+            if (charge.getReceiptUrl() != null && !charge.getReceiptUrl().isEmpty()) {
+                payment.setReceiptUrl(charge.getReceiptUrl());
+            }
+
+            if (charge.getPaymentMethodDetails() != null) {
+                var paymentMethodDetails = charge.getPaymentMethodDetails();
+
+                if (paymentMethodDetails.getCard() != null) {
+                    var card = paymentMethodDetails.getCard();
+
+                    if (card.getBrand() != null) {
+                        payment.setCardBrand(card.getBrand());
+                    }
+
+                    if (card.getLast4() != null) {
+                        payment.setCardLastDigits(card.getLast4());
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            log.logError("Error retrieving charges for PaymentIntent:", e);
+        }
+    }
+
+    private void confirmOrder(Payment payment) {
+        try {
+            orderService.updateOrderStatusById(payment.getOrder().getId(), OrderStatus.PAID);
+            log.logInfo("Order confirmed: " + payment.getOrder().getId());
+        } catch (Exception e) {
+            log.logError("Failed to confirm order: " + payment.getOrder().getId(), e);
+        }
+    }
 
     private void createPaymentRecord(StripeRequest request, Session session) {
         Payment payment = new Payment();
