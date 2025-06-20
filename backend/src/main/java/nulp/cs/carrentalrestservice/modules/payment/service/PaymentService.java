@@ -1,5 +1,7 @@
 package nulp.cs.carrentalrestservice.modules.payment.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -29,7 +31,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
+//TODO make all method parse parameter using json
+//TODO refactor handle methods extract common parts(exception handling, get payment from db)
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
@@ -102,15 +105,31 @@ public class PaymentService {
 
     private boolean handlePaymentSuccess(Event event) {
         try {
-            PaymentIntent paymentIntent = (PaymentIntent) event.getDataObjectDeserializer()
-                    .getObject().orElse(null);
+            String paymentIntentStr = event.getDataObjectDeserializer().getRawJson();
 
-            if (paymentIntent == null) {
-//                log.logError("Failed to deserialize PaymentIntent");
+            if (paymentIntentStr == null || paymentIntentStr.trim().isEmpty()) {
+                log.logError("Payment intent JSON is null or empty", new Exception());
                 return false;
             }
 
-            return processSuccessfulPayment(paymentIntent.getId());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(paymentIntentStr);
+
+            JsonNode idNode = jsonNode.get("id");
+            if (idNode == null || idNode.isNull()) {
+                log.logError("Payment ID not found in JSON", new Exception());
+                return false;
+            }
+
+            String paymentIntentId = idNode.asText();
+
+            if (paymentIntentId == null || paymentIntentId.trim().isEmpty()) {
+                log.logError("Payment ID is null or empty", new Exception());
+                return false;
+            }
+
+            return processSuccessfulPayment(paymentIntentId);
+
         } catch (Exception e) {
             log.logError("Error handling payment success", e);
             return false;
@@ -394,13 +413,12 @@ public class PaymentService {
         payment.setAmount(request.getAmount());
         payment.setCurrency(request.getCurrency());
         payment.setStatus(PaymentStatus.PENDING);
-        payment.setPaymentIntentId(session.getPaymentIntent());
         payment.setSessionId(session.getId());
         payment.setCreatedAt(LocalDateTime.now());
         payment.setOrder(request.getCarOrder());
         System.out.println(payment);
-        paymentRepository.save(payment);
-        log.logInfo("Payment record created for session: " + payment.getSessionId());
+        Payment savedPayment = paymentRepository.save(payment);
+        log.logInfo("Payment record created for session: " + savedPayment.getPaymentIntentId());
     }
 
     private SessionCreateParams createSessionParams(StripeRequest request) {

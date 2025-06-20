@@ -17,10 +17,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    /**
-     * Основний endpoint для Stripe webhook'ів
-     * URL для Stripe Dashboard: https://yourdomain.com/api/v1/webhooks/stripe
-     */
+
     @PostMapping("/stripe")
     public ResponseEntity<Map<String, Object>> handleStripeWebhook(
             @RequestBody String payload,

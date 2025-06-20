@@ -36,10 +36,10 @@ public class Payment {
     @Column(nullable = false, length = 20)
     private PaymentStatus status;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100, name = "payment_intent_id")
     private String paymentIntentId;
 
-    @Column(unique = true, length = 100)
+    @Column(unique = true, length = 100, name = "session_id")
     private String sessionId;
 
     @Column(nullable = false)
@@ -58,6 +58,6 @@ public class Payment {
     private String receiptUrl;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "order_id")
     private CarOrder order;
 }
