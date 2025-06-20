@@ -21,49 +21,49 @@ public class PaymentController {
      * Основний endpoint для Stripe webhook'ів
      * URL для Stripe Dashboard: https://yourdomain.com/api/v1/webhooks/stripe
      */
-//    @PostMapping("/stripe")
-//    public ResponseEntity<Map<String, Object>> handleStripeWebhook(
-//            @RequestBody String payload,
-//            @RequestHeader(value = "Stripe-Signature", required = false) String sigHeader) {
-//
-//        long startTime = System.currentTimeMillis();
-//
-//        try {
-//            log.info("Received Stripe webhook at {}", LocalDateTime.now());
-//            log.debug("Payload size: {} bytes", payload.length());
-//
-//            boolean processed = paymentService.processWebhookEvent(payload, sigHeader);
-//
-//            long processingTime = System.currentTimeMillis() - startTime;
-//
-//            Map<String, Object> response = Map.of(
-//                    "received", true,
-//                    "processed", processed,
-//                    "processingTimeMs", processingTime,
-//                    "timestamp", LocalDateTime.now()
-//            );
-//
-//            if (processed) {
-//                log.info("Webhook processed successfully in {}ms", processingTime);
-//                return ResponseEntity.ok(response);
-//            } else {
-//                log.warn("Webhook processing failed in {}ms", processingTime);
-//                return ResponseEntity.badRequest().body(response);
-//            }
-//
-//        } catch (Exception e) {
-//            long processingTime = System.currentTimeMillis() - startTime;
-//            log.error("Webhook processing error after {}ms: {}", processingTime, e.getMessage(), e);
-//
-//            return ResponseEntity.badRequest().body(Map.of(
-//                    "received", false,
-//                    "processed", false,
-//                    "error", e.getMessage(),
-//                    "processingTimeMs", processingTime,
-//                    "timestamp", LocalDateTime.now()
-//            ));
-//        }
-//    }
+    @PostMapping("/stripe")
+    public ResponseEntity<Map<String, Object>> handleStripeWebhook(
+            @RequestBody String payload,
+            @RequestHeader(value = "Stripe-Signature", required = false) String sigHeader) {
+
+        long startTime = System.currentTimeMillis();
+
+        try {
+            log.info("Received Stripe webhook at {}", LocalDateTime.now());
+            log.debug("Payload size: {} bytes", payload.length());
+
+            boolean processed = paymentService.processWebhookEvent(payload, sigHeader);
+
+            long processingTime = System.currentTimeMillis() - startTime;
+
+            Map<String, Object> response = Map.of(
+                    "received", true,
+                    "processed", processed,
+                    "processingTimeMs", processingTime,
+                    "timestamp", LocalDateTime.now()
+            );
+
+            if (processed) {
+                log.info("Webhook processed successfully in {}ms", processingTime);
+                return ResponseEntity.ok(response);
+            } else {
+                log.warn("Webhook processing failed in {}ms", processingTime);
+                return ResponseEntity.badRequest().body(response);
+            }
+
+        } catch (Exception e) {
+            long processingTime = System.currentTimeMillis() - startTime;
+            log.error("Webhook processing error after {}ms: {}", processingTime, e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(Map.of(
+                    "received", false,
+                    "processed", false,
+                    "error", e.getMessage(),
+                    "processingTimeMs", processingTime,
+                    "timestamp", LocalDateTime.now()
+            ));
+        }
+    }
 
     /**
      * Health check для webhook endpoint

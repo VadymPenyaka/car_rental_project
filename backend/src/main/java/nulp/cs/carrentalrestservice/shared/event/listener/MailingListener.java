@@ -21,7 +21,7 @@ public class MailingListener {
 
     @EventListener
     public void handleEmailEvent (OrderEmailEvent event) {
-        mailingService.sendEmail(event.getCustomer().getPerson().getUsername(), EmailContentCreator.generateSubjectForStatusEmail(event),
+        mailingService.sendEmail(event.getPerson().getUsername(), EmailContentCreator.generateSubjectForStatusEmail(event),
                 EmailContentCreator.generateBodyForStatusEmail(event));
     }
 
