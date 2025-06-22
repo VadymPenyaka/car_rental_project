@@ -3,6 +3,7 @@ package nulp.cs.carrentalrestservice.modules.payment.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
+import nulp.cs.carrentalrestservice.modules.payment.service.StripeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private final StripeService stripeService;
 
 
     @PostMapping("/stripe")
@@ -29,7 +30,7 @@ public class PaymentController {
             log.info("Received Stripe webhook at {}", LocalDateTime.now());
             log.debug("Payload size: {} bytes", payload.length());
 
-            boolean processed = paymentService.processWebhookEvent(payload, sigHeader);
+            boolean processed = stripeService.processWebhookEvent(payload, sigHeader);
 
             long processingTime = System.currentTimeMillis() - startTime;
 
@@ -62,9 +63,6 @@ public class PaymentController {
         }
     }
 
-    /**
-     * Health check для webhook endpoint
-     */
     @GetMapping("/stripe/health")
     public ResponseEntity<Map<String, Object>> webhookHealthCheck() {
         return ResponseEntity.ok(Map.of(

@@ -1,0 +1,2 @@
+ALTER TABLE payment
+    ADD COLUMN customer_email VARCHAR(255) NOT NULL DEFAULT '';

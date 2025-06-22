@@ -45,6 +45,9 @@ public class SecurityConfiguration {
                         .requestMatchers(ChatController.BASE_PATH).permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/verify/**").permitAll()
+                        .requestMatchers("/api/v1/webhook/**").permitAll()
+                        .requestMatchers("/favicon.ico", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/api/v1/success", "/api/v1/cancel", "/error").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

@@ -9,6 +9,7 @@ import nulp.cs.carrentalrestservice.modules.order.repository.OrderRepository;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
 import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
+import nulp.cs.carrentalrestservice.modules.payment.service.StripeService;
 import nulp.cs.carrentalrestservice.shared.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.shared.event.CreateMaintenanceEvent;
 import nulp.cs.carrentalrestservice.shared.event.OrderDocumentEvent;
@@ -45,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     private final CarPricingService pricingService;
     private final ApplicationEventPublisher publisher;
     private final LoggingService loggingService;
-    private final PaymentService paymentService;
+    private final StripeService stripeService;
 
 
     /**
@@ -90,7 +91,8 @@ public class OrderServiceImpl implements OrderService {
 
         loggingService.logInfo("Car order created successfully");
 
-        return paymentService.createPaymentLink(StripeRequest.builder()
+        return stripeService.createPaymentLink(StripeRequest.builder()
+                        .customerEmail(carOrderDTO.getPerson().getUsername())
                 .amount(BigDecimal.valueOf(savedOrder.getTotalPrice()))
                 .name(savedOrder.getSchedule().getCar().getModel().getBrandName().getName()
                         + " " + savedOrder.getSchedule().getCar().getModel().getModelName()

@@ -57,6 +57,9 @@ public class Payment {
     @Column(length = 500)
     private String receiptUrl;
 
+    @Column(nullable = false)
+    private String customerEmail;
+
     @ManyToOne
     @JoinColumn(nullable = false, name = "order_id")
     private CarOrder order;

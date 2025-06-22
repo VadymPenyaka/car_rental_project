@@ -18,4 +18,5 @@ public class StripeRequest {
     private String currency;
     private String name;
     private CarOrder carOrder;
+    private String customerEmail;
 }

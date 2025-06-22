@@ -35,4 +35,6 @@ public class PaymentDTO {
     private String receiptUrl;
 
     private CarOrderDTO carOrder;
+
+    private String customerEmail;
 }
