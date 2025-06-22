@@ -90,15 +90,9 @@ public class PaymentService {
             payment = paymentRepository.findByIdWithLock(payment.getId())
                     .orElseThrow(() -> new NotFoundException("Payment not found: "));
 
-            if (payment.getStatus() == PaymentStatus.PAID) {
-                log.logInfo("Payment already completed: " + paymentIntentId);
-                return true;
-            }
-
+            updatePaymentWithChargeData(payment, chargeData);
             payment.setStatus(PaymentStatus.PAID);
             payment.setPaidAt(LocalDateTime.now());
-
-            updatePaymentWithChargeData(payment, chargeData);
 
             paymentRepository.saveAndFlush(payment);
 
@@ -180,7 +174,7 @@ public class PaymentService {
             publisher.publishEvent(new OrderStatusEvent(this, payment.getOrder().getId(), OrderStatus.PAID));
             log.logInfo("Order confirmed: " + payment.getOrder().getId());
         } catch (Exception e) {
-            log.logError("Failed to confirm order: " + payment.getOrder().getId(), e);
+            log.logError("Failed to confirm order: ", e);
         }
     }
 
