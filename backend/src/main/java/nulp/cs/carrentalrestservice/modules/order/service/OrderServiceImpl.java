@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
+import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
 import nulp.cs.carrentalrestservice.modules.order.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.modules.order.repository.OrderRepository;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
@@ -82,17 +83,19 @@ public class OrderServiceImpl implements OrderService {
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
 
         // Save the order to the database
-        CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository
-                .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
+        CarOrder savedOrder = orderRepository.save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO));
+        CarOrderDTO savedOrderDto = carOrderMapper.carOrderToCarOrderDto(savedOrder);
+
 
         
         // Publish an event to create a document for the order
-        publisher.publishEvent(new OrderDocumentEvent(this, savedOrder));
+        publisher.publishEvent(new OrderDocumentEvent(this, savedOrderDto));
 
         loggingService.logInfo("Car order created successfully");
 
         return stripeService.createPaymentLink(StripeRequest.builder()
                         .customerEmail(carOrderDTO.getPerson().getUsername())
+                        .carOrder(savedOrder)
                 .amount(BigDecimal.valueOf(savedOrder.getTotalPrice()))
                 .name(savedOrder.getSchedule().getCar().getModel().getBrandName().getName()
                         + " " + savedOrder.getSchedule().getCar().getModel().getModelName()

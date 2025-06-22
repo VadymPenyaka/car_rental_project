@@ -86,6 +86,7 @@ public class StripeService {
                 .setSuccessUrl(domain + "/api/v1/success?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl(domain + "/api/v1/cancel?session_id={CHECKOUT_SESSION_ID}")
                 .addLineItem(lineItem)
+                .putMetadata("orderId", request.getCarOrder().getId().toString())
                 .build();
     }
 

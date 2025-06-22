@@ -1,7 +1,6 @@
 package nulp.cs.carrentalrestservice.modules.payment.service;
 
 import com.stripe.exception.StripeException;
-import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
@@ -35,14 +34,7 @@ public class PaymentService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean processCompletedSession(String sessionId, String paymentIntentId) {
         try {
-            Optional<Payment> paymentOpt = paymentRepository.findBySessionId(sessionId);
-
-            if (paymentOpt.isEmpty()) {
-//                log.logError("Payment not found for session: " + sessionId);
-                return false;
-            }
-
-            Payment payment = paymentOpt.get();
+            Payment payment = findBySessionId(sessionId);
 
             payment = paymentRepository.findByIdWithLock(payment.getId())
                     .orElseThrow(() -> new NotFoundException("Payment not found: "));
@@ -81,7 +73,7 @@ public class PaymentService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean processSuccessfulPayment(String paymentIntentId, PaymentChargeData chargeData) {
         try {
-            Payment payment = findPaymentWithRetry(paymentIntentId, 3);
+            Payment payment = findPaymentWithRetry(paymentIntentId);
 
             if (payment == null) {
                 return false;
@@ -110,7 +102,7 @@ public class PaymentService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean processFailedPayment(String paymentIntentId, String errorMessage) {
         try {
-            Payment payment = findPaymentWithRetry(paymentIntentId, 3);
+            Payment payment = findPaymentWithRetry(paymentIntentId);
 
             if (payment == null) {
                 return false;
@@ -126,17 +118,17 @@ public class PaymentService {
             }
 
             paymentRepository.saveAndFlush(payment);
+            eventPublisher.publishEvent(new PaymentStatusEvent(this, PaymentStatus.FAILED, payment.getCustomerEmail()));
 
             return true;
-
         } catch (Exception e) {
             log.logError("Error processing failed payment: " + paymentIntentId, e);
             throw e;
         }
     }
 
-    private Payment findPaymentWithRetry(String paymentIntentId, int maxRetries) {
-        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+    private Payment findPaymentWithRetry(String paymentIntentId) {
+        for (int attempt = 1; attempt <= 3; attempt++) {
             try {
                 Optional<Payment> paymentOpt = paymentRepository.findByPaymentIntentId(paymentIntentId);
 
@@ -144,7 +136,7 @@ public class PaymentService {
                     return paymentOpt.get();
                 }
 
-                if (attempt < maxRetries) {
+                if (attempt < 3) {
                     Thread.sleep(100 * attempt);
                 }
 
@@ -159,15 +151,10 @@ public class PaymentService {
         return null;
     }
 
-//    public Payment findByPaymentIntentId(String paymentIntentId) {
-//        return paymentRepository.findByPaymentIntentId(paymentIntentId)
-//                .orElseThrow(() -> new NotFoundException("Payment not found for PaymentIntent: " + paymentIntentId));
-//    }
-//
-//    public Payment findBySessionId(String sessionId) {
-//        return paymentRepository.findBySessionId(sessionId)
-//                .orElseThrow(() -> new NotFoundException("Payment not found for session: " + sessionId));
-//    }
+    public Payment findBySessionId(String sessionId) {
+        return paymentRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new NotFoundException("Payment not found for session: " + sessionId));
+    }
 
     private void confirmOrder(Payment payment) {
         try {
