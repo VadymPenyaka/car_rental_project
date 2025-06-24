@@ -52,8 +52,6 @@ public class PersonServiceImpl implements PersonService {
     public void registerPerson(PersonRegistrationRequest customerData) {
         PersonDTO personDTO = PersonDTO.builder()
                 .phoneNumber(customerData.getPhoneNumber())
-                .firstName(customerData.getFirstName())
-                .sureName(customerData.getSureName())
                 .password(customerData.getPassword())
                 .username(customerData.getEmail())
                 .role(Role.ROLE_USER)

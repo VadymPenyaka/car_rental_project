@@ -35,12 +35,12 @@ public class Person {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    @Convert(converter = SensitiveDataConverter.class)
-    private String sureName;
-    @Column(nullable = false)
-    @Convert(converter = SensitiveDataConverter.class)
-    private String firstName;
+//    @Column(nullable = false)
+//    @Convert(converter = SensitiveDataConverter.class)
+//    private String sureName;
+//    @Column(nullable = false)
+//    @Convert(converter = SensitiveDataConverter.class)
+//    private String firstName;
     @Convert(converter = SensitiveDataConverter.class)
     @Column(nullable = false, unique = true)
     private String phoneNumber;

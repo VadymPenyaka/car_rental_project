@@ -4,12 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.OrderStatus;
-import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
 import nulp.cs.carrentalrestservice.modules.order.mapper.CarOrderMapper;
 import nulp.cs.carrentalrestservice.modules.order.repository.OrderRepository;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
-import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
 import nulp.cs.carrentalrestservice.modules.payment.service.StripeService;
 import nulp.cs.carrentalrestservice.shared.annotation.VerifyOrder;
 import nulp.cs.carrentalrestservice.shared.event.CreateMaintenanceEvent;
@@ -83,19 +81,17 @@ public class OrderServiceImpl implements OrderService {
         publisher.publishEvent(new CreateMaintenanceEvent(this, carOrderDTO));
 
         // Save the order to the database
-        CarOrder savedOrder = orderRepository.save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO));
-        CarOrderDTO savedOrderDto = carOrderMapper.carOrderToCarOrderDto(savedOrder);
-
+        CarOrderDTO savedOrder = carOrderMapper.carOrderToCarOrderDto(orderRepository
+                .save(carOrderMapper.carOrderDtoToCarOrder(carOrderDTO)));
 
         
         // Publish an event to create a document for the order
-        publisher.publishEvent(new OrderDocumentEvent(this, savedOrderDto));
+        publisher.publishEvent(new OrderDocumentEvent(this, savedOrder));
 
         loggingService.logInfo("Car order created successfully");
 
         return stripeService.createPaymentLink(StripeRequest.builder()
                         .customerEmail(carOrderDTO.getPerson().getUsername())
-                        .carOrder(savedOrder)
                 .amount(BigDecimal.valueOf(savedOrder.getTotalPrice()))
                 .name(savedOrder.getSchedule().getCar().getModel().getBrandName().getName()
                         + " " + savedOrder.getSchedule().getCar().getModel().getModelName()

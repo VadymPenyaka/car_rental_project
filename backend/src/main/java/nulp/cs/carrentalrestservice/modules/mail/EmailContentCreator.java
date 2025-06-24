@@ -10,8 +10,7 @@ public class EmailContentCreator {
     }
 
     public static String generateBodyForStatusEmail(OrderEmailEvent event) {
-        return "Dear " + event.getPerson().getFirstName()
-                + ". The status of your order has been changed to "
+        return "Dear customer! The status of your order has been changed to "
                 + event.getCarOrder().getStatus().toString().toLowerCase();
     }
 }
