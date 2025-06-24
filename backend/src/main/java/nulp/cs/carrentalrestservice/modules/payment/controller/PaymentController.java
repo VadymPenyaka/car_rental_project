@@ -1,74 +1,43 @@
 package nulp.cs.carrentalrestservice.modules.payment.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import nulp.cs.carrentalrestservice.modules.payment.service.PaymentService;
-import nulp.cs.carrentalrestservice.modules.payment.service.StripeService;
+import nulp.cs.carrentalrestservice.shared.dto.response.PaymentStatusResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
-@Slf4j
-@RestController
-@RequestMapping("/api/v1/webhooks")
-@RequiredArgsConstructor
+@Controller
+@RequestMapping(PaymentController.BASE_PATH)
 public class PaymentController {
+    public final static String BASE_PATH = "/api/v1/payments";
 
-    private final StripeService stripeService;
+    @GetMapping("/success")
+    @ResponseBody
+    public ResponseEntity<PaymentStatusResponse> handleSuccessfulPayment(
+            @RequestParam("session_id") String sessionId) {
 
+        PaymentStatusResponse response = new PaymentStatusResponse(
+                "success",
+                "Your order has been successfully paid",
+                sessionId
+        );
 
-    @PostMapping("/stripe")
-    public ResponseEntity<Map<String, Object>> handleStripeWebhook(
-            @RequestBody String payload,
-            @RequestHeader(value = "Stripe-Signature", required = false) String sigHeader) {
-
-        long startTime = System.currentTimeMillis();
-
-        try {
-            log.info("Received Stripe webhook at {}", LocalDateTime.now());
-            log.debug("Payload size: {} bytes", payload.length());
-
-            boolean processed = stripeService.processWebhookEvent(payload, sigHeader);
-
-            long processingTime = System.currentTimeMillis() - startTime;
-
-            Map<String, Object> response = Map.of(
-                    "received", true,
-                    "processed", processed,
-                    "processingTimeMs", processingTime,
-                    "timestamp", LocalDateTime.now()
-            );
-
-            if (processed) {
-                log.info("Webhook processed successfully in {}ms", processingTime);
-                return ResponseEntity.ok(response);
-            } else {
-                log.warn("Webhook processing failed in {}ms", processingTime);
-                return ResponseEntity.badRequest().body(response);
-            }
-
-        } catch (Exception e) {
-            long processingTime = System.currentTimeMillis() - startTime;
-            log.error("Webhook processing error after {}ms: {}", processingTime, e.getMessage(), e);
-
-            return ResponseEntity.badRequest().body(Map.of(
-                    "received", false,
-                    "processed", false,
-                    "error", e.getMessage(),
-                    "processingTimeMs", processingTime,
-                    "timestamp", LocalDateTime.now()
-            ));
-        }
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/stripe/health")
-    public ResponseEntity<Map<String, Object>> webhookHealthCheck() {
-        return ResponseEntity.ok(Map.of(
-                "status", "healthy",
-                "service", "stripe-webhook",
-                "timestamp", LocalDateTime.now()
-        ));
+    @GetMapping("/cancel")
+    @ResponseBody
+    public ResponseEntity<PaymentStatusResponse> handleCancelledPayment(
+            @RequestParam("session_id") String sessionId) {
+
+        PaymentStatusResponse response = new PaymentStatusResponse(
+                "cancelled",
+                "Your order has not been paid",
+                sessionId
+        );
+
+        return ResponseEntity.ok(response);
     }
 }

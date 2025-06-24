@@ -1,14 +1,12 @@
 package nulp.cs.carrentalrestservice.modules.document.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PassportDTO;
 import nulp.cs.carrentalrestservice.modules.bankid.dto.PersonalDataDTO;
 import nulp.cs.carrentalrestservice.modules.car.CarScheduleDTO;
 import nulp.cs.carrentalrestservice.modules.order.dto.CarOrderDTO;
-import nulp.cs.carrentalrestservice.modules.order.enity.CarOrder;
-import nulp.cs.carrentalrestservice.modules.order.mapper.CarOrderMapper;
+import nulp.cs.carrentalrestservice.shared.dto.response.DocumentInfoResponse;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.modules.bankid.serivce.DigitalSignatureService;
 import nulp.cs.carrentalrestservice.modules.document.mapper.DocumentMapper;
@@ -18,7 +16,6 @@ import nulp.cs.carrentalrestservice.modules.car.dto.CarRegistrationInfoDTO;
 import nulp.cs.carrentalrestservice.modules.document.dto.DocumentDTO;
 import nulp.cs.carrentalrestservice.modules.document.repository.DocumentRepository;
 import nulp.cs.carrentalrestservice.modules.location.dto.LocationDTO;
-import nulp.cs.carrentalrestservice.modules.order.service.OrderService;
 import nulp.cs.carrentalrestservice.modules.person.service.PersonService;
 import nulp.cs.carrentalrestservice.modules.bankid.client.BankIdVerificationClient;
 import nulp.cs.carrentalrestservice.modules.file.S3Service;
@@ -27,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +32,6 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final DocumentMapper documentMapper;
     private final RentalAgreementService rentalAgreementService;
-    private final OrderService orderService;
     private final S3Service s3Service;
     private final DigitalSignatureService digitalSignatureService;
     private final PersonService personService;
@@ -92,6 +85,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         s3Service.saveDocumentToServer(signedFileBytes, documentId.toString());
         return Optional.ofNullable(signedFileBytes);
+    }
+
+    @Override
+    public List<DocumentInfoResponse> getUnsignedDocumentsByPersonId(UUID personId) {
+        return documentRepository.findUnsignedDocumentsByPersonId(personId.toString()).stream()
+                .map(documentMapper::documentToDocumentResponse).toList();
     }
 
     private Map<String, String> getDataForGeneration (CarOrderDTO order) {

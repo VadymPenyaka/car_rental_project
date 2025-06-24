@@ -1,12 +1,14 @@
 package nulp.cs.carrentalrestservice.modules.document.controller;
 
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.shared.dto.response.DocumentInfoResponse;
 import nulp.cs.carrentalrestservice.shared.exception.NotFoundException;
 import nulp.cs.carrentalrestservice.modules.document.dto.DocumentDTO;
 import nulp.cs.carrentalrestservice.modules.document.service.DocumentService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,7 +41,12 @@ public class DocumentController {
                 -> new NotFoundException("Document not found"));
     }
 
-    @PostMapping("/agreements/{id}/sign")
+    @GetMapping("/unsigned/{personId}")
+    public List<DocumentInfoResponse> getDocumentsInfoById (@PathVariable UUID personId) {
+        return documentService.getUnsignedDocumentsByPersonId(personId);
+    }
+
+    @PostMapping("/{id}/sign")
     public ResponseEntity<byte[]> signAgreement(@PathVariable UUID id) {
         byte[] signedBytes = documentService.signAgreement(id).orElseThrow(()
                 -> new NotFoundException("Document not found"));
@@ -53,5 +60,6 @@ public class DocumentController {
                 }})
                 .body(signedBytes);
     }
+
 
 }

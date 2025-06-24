@@ -12,6 +12,7 @@ import com.stripe.param.ChargeListParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import nulp.cs.carrentalrestservice.modules.payment.controller.PaymentController;
 import nulp.cs.carrentalrestservice.modules.payment.dto.PaymentChargeData;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeRequest;
 import nulp.cs.carrentalrestservice.modules.payment.dto.StripeResponse;
@@ -83,8 +84,8 @@ public class StripeService {
 
         return SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(domain + "/api/v1/success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl(domain + "/api/v1/cancel?session_id={CHECKOUT_SESSION_ID}")
+                .setSuccessUrl(domain + PaymentController.BASE_PATH+ "/success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl(domain + PaymentController.BASE_PATH + "/cancel?session_id={CHECKOUT_SESSION_ID}")
                 .addLineItem(lineItem)
                 .putMetadata("orderId", request.getCarOrder().getId().toString())
                 .build();

@@ -21,12 +21,6 @@ public class PersonRegistrationRequest {
     @ValidPassword
     @NotBlank(message = "Password is mandatory!")
     private String password;
-    @NotBlank(message = "Sure name is mandatory!")
-    @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
-    private String sureName;
-    @NotBlank(message = "Name is mandatory!")
-    @Size(min = 3, max = 50, message = "Must be between 3 and 50!")
-    private String firstName;
     @NotNull
     @ValidEmail
     @UniqueEmail
